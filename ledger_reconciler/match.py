@@ -14,6 +14,8 @@ from __future__ import annotations
 from datetime import timedelta
 from difflib import SequenceMatcher
 
+from docguard.coverage import CoverageError
+
 from .models import Invoice, LedgerRow, MatchResult
 
 DATE_WINDOW_DAYS = 5
@@ -106,14 +108,11 @@ def reconcile(invoices: list[Invoice], ledger_rows: list[LedgerRow]) -> list[Mat
     return results
 
 
-class CoverageError(Exception):
-    """An invoice or ledger row went into reconcile() and didn't come back
-    out in the results — a bug in the matching logic, not a data problem.
-    Modeled on the same principle as a YMM coverage check: a silent drop is
-    worse than a wrong flag, because a wrong flag gets noticed and a missing
-    row doesn't."""
-
-
+# reconcile()'s own invariant isn't the same shape as docguard.coverage's
+# rule-based bucketing (there's no regex classification here, just "did
+# every input row make it into the output"), so this check stays local —
+# only the exception type is shared, so callers of either library catch
+# the same thing.
 def _assert_full_coverage(invoices: list[Invoice], ledger_rows: list[LedgerRow],
                            results: list[MatchResult]) -> None:
     seen_invoices = [r.invoice for r in results if r.invoice is not None]

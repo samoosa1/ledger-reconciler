@@ -20,13 +20,23 @@ no real company, invoice, or transaction anywhere in it.
 
 ## Safety / integrity checks
 
+Built on `docguard` (sibling repo, not yet pushed) — a small shared library
+of hardening patterns (never silently drop a record, distinguish "verified"
+from "couldn't verify," don't let untrusted text become a spreadsheet
+formula) used across more than one of my document-automation projects, so
+a lesson learned once doesn't have to be relearned per-repo:
+
 - **Coverage guarantee** — `reconcile()` asserts every invoice and every
-  ledger row appears in the output exactly once, and raises `CoverageError`
-  rather than let a bug silently drop a row.
+  ledger row appears in the output exactly once, and raises
+  `docguard.coverage.CoverageError` rather than let a bug silently drop a
+  row.
 - **Formula-injection safe** — a vendor name or ledger description pulled
   from untrusted document content that happens to start with `=`, `+`, `-`,
-  or `@` is written to the report as literal text, not reinterpreted by
-  Excel as a formula.
+  or `@` is written to the report as literal text (`docguard.safe_xlsx`),
+  not reinterpreted by Excel as a formula.
+- **Honest PDF errors** — a missing file, a zero-byte upload, or a corrupt
+  PDF degrades to "nothing extracted" (`docguard.safe_pdf`) instead of
+  crashing the whole batch over one bad file.
 
 ## How matching works
 

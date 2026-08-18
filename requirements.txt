@@ -1,2 +1,5 @@
 openpyxl>=3.1
 pypdf>=6.0
+# docguard is a sibling local package (../docguard) — install separately:
+#   pip install -e ../docguard
+# See its README for what it does and why it's a separate repo.

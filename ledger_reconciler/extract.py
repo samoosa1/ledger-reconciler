@@ -13,7 +13,7 @@ import re
 from datetime import date, datetime
 from pathlib import Path
 
-from pypdf import PdfReader
+from docguard.safe_pdf import SourceError, read_pdf_text
 
 from .models import Invoice
 
@@ -135,7 +135,14 @@ def _extract_vendor(text: str) -> str | None:
 
 
 def extract_invoice(pdf_path: Path) -> Invoice:
-    text = PdfReader(str(pdf_path)).pages[0].extract_text() or ""
+    # require_text=False and a broad except: a corrupt file, a zero-byte
+    # upload, or a scanned image with no text layer should all degrade to
+    # "nothing extracted" (surfaced downstream as unreadable_invoice) rather
+    # than crash the whole batch over one bad file among possibly dozens.
+    try:
+        text, _ = read_pdf_text(pdf_path, require_text=False, max_pages=1)
+    except SourceError:
+        text = ""
     return Invoice(
         source_file=pdf_path.name,
         invoice_number=_extract_number(text),
