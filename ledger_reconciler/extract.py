@@ -17,9 +17,15 @@ from pypdf import PdfReader
 
 from .models import Invoice
 
+# [ \t]* (not \s*) between label and value deliberately stays on one line —
+# text-layer extraction doesn't preserve visual column layout, so letting a
+# match cross a newline risks grabbing the next field's label instead of a
+# value (this is exactly how a real multi-column invoice broke this before:
+# "Invoice number" was immediately followed in the text stream by the next
+# column's "Customer ref. 1" label, not by its own value).
 _NUMBER_PATTERNS = [
-    re.compile(r"Invoice\s*(?:#|No\.?|Number)\s*:?\s*([A-Za-z0-9\-]+)", re.I),
-    re.compile(r"Ref(?:erence)?\s*(?:#|No\.?)?\s*:?\s*([A-Za-z0-9\-]+)", re.I),
+    re.compile(r"Invoice\s*(?:#|No\.?|Number)[ \t]*:?[ \t]*([A-Za-z0-9\-]+)", re.I),
+    re.compile(r"Ref(?:erence)?\s*(?:#|No\.?)?[ \t]*:?[ \t]*([A-Za-z0-9\-]+)", re.I),
 ]
 
 _AMOUNT_PATTERNS = [
@@ -28,14 +34,41 @@ _AMOUNT_PATTERNS = [
     re.compile(r"\$\s*([0-9][0-9,]*\.[0-9]{2})\s*due", re.I),
 ]
 
+_DATE_LABEL = r"(?:Invoice\s*Date|Issue\s*Date|Date)\s*:?\s*"
 _DATE_LABEL_PATTERNS = [
-    re.compile(r"(?:Invoice\s*)?Date\s*:?\s*([0-9]{4}-[0-9]{2}-[0-9]{2})", re.I),
-    re.compile(r"Issue\s*Date\s*:?\s*([A-Za-z]+ [0-9]{1,2},? [0-9]{4})", re.I),
+    re.compile(_DATE_LABEL + r"([0-9]{4}-[0-9]{2}-[0-9]{2})", re.I),
+    re.compile(_DATE_LABEL + r"([A-Za-z]+ [0-9]{1,2},? [0-9]{4})", re.I),
 ]
 _DATE_BARE_PATTERN = re.compile(r"\b([0-9]{4}/[0-9]{2}/[0-9]{2})\b")
 
-_VENDOR_LABEL_PATTERN = re.compile(r"^Vendor\s*:?\s*(.+)$", re.I | re.M)
-_SKIP_HEADER_WORDS = {"invoice", "receipt", "bill to", "ship to"}
+# Same-line: "Vendor: Acme Co" / "From: Acme Co". Next-line: a bare label
+# line ("From:") followed by the name on the line below — very common when
+# the letterhead sits under a "From" field instead of inline with it.
+_VENDOR_LABEL_SAMELINE = re.compile(r"^(?:Vendor|From|Sold\s*By|Company)\s*:?\s*(\S.*)$", re.I | re.M)
+_VENDOR_LABEL_NEXTLINE = re.compile(r"^(?:Vendor|From|Sold\s*By|Company)\s*:?\s*$\n(.+)$", re.I | re.M)
+
+# Words/phrases that mean "this line is boilerplate, not a company name" —
+# checked against the START of a candidate line.
+_BOILERPLATE_START = (
+    "invoice", "receipt", "bill to", "ship to", "page", "payment", "customer",
+    "contact", "thanks", "please", "terms", "note", "due", "total", "order",
+    "date", "ref",
+)
+_VENDOR_SCAN_WINDOW = 6  # only trust a positional guess this close to the top
+
+
+def _looks_like_a_name(line: str) -> bool:
+    low = line.lower()
+    if any(low.startswith(w) for w in _BOILERPLATE_START):
+        return False
+    words = line.split()
+    if not (1 <= len(words) <= 6):
+        return False  # real disclaimers/sentences run long; names don't
+    if not any(c.isalpha() for c in line):
+        return False  # pure numbers/dates aren't a company name
+    if low.endswith(".") and not line.isupper():
+        return False  # reads like the end of a prose sentence
+    return True
 
 
 def _parse_amount(raw: str) -> float:
@@ -81,14 +114,22 @@ def _extract_date(text: str) -> date | None:
 
 
 def _extract_vendor(text: str) -> str | None:
-    m = _VENDOR_LABEL_PATTERN.search(text)
+    m = _VENDOR_LABEL_SAMELINE.search(text)
     if m:
         return m.group(1).strip()
-    # Fallback: the first non-empty line that isn't a generic document
-    # heading is almost always the issuing company's letterhead name.
-    for line in text.splitlines():
-        line = line.strip()
-        if line and line.lower() not in _SKIP_HEADER_WORDS:
+    m = _VENDOR_LABEL_NEXTLINE.search(text)
+    if m:
+        return m.group(1).strip()
+
+    # No explicit label — only trust a positional guess near the very top
+    # of the document, and only if it actually looks like a name rather
+    # than boilerplate. Text-layer extraction doesn't preserve visual
+    # column layout, so scanning deeper into the document risks grabbing
+    # something from an unrelated column; better to report "not found"
+    # than to confidently return the wrong company.
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    for line in lines[:_VENDOR_SCAN_WINDOW]:
+        if _looks_like_a_name(line):
             return line
     return None
 
