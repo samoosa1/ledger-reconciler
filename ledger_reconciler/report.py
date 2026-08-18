@@ -20,6 +20,22 @@ _DETAIL_HEADERS = [
 ]
 
 
+def _safe_write(cell, value) -> None:
+    """Write a value that may come from untrusted document content (a vendor
+    name, a ledger description) without letting Excel reinterpret it as a
+    formula. openpyxl treats any string starting with '=' (also '+', '-',
+    '@' in some Excel versions) as a formula rather than a label — a vendor
+    literally named "=SUM(A1:A9)" or a memo field a malicious PDF crafted on
+    purpose would otherwise silently execute as a formula, or render as
+    #NAME? / blank instead of the actual text. Prefixing a single quote
+    forces it back to a text label; openpyxl strips the quote from display,
+    Excel does not treat it as formula input."""
+    if isinstance(value, str) and value[:1] in ("=", "+", "-", "@"):
+        cell.value = "'" + value
+    else:
+        cell.value = value
+
+
 def _style_header(ws, headers: list[str]) -> None:
     for col, title in enumerate(headers, start=1):
         cell = ws.cell(row=1, column=col, value=title)
@@ -80,7 +96,8 @@ def build_report(results: list[MatchResult], out_path: Path) -> None:
         ]
         fill = _OK_FILL if not r.flags else _FLAG_FILL
         for col, value in enumerate(values, start=1):
-            cell = detail_ws.cell(row=i, column=col, value=value)
+            cell = detail_ws.cell(row=i, column=col)
+            _safe_write(cell, value)
             cell.fill = fill
 
     wb.save(out_path)

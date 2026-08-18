@@ -13,7 +13,20 @@ no real company, invoice, or transaction anywhere in it.
 - **Undocumented payment** — a ledger entry with no invoice on file
 - **Amount mismatch** — matched, but the recorded amount differs from the invoice
 - **Duplicate invoice** — the same invoice number appears more than once
-- **Unreadable invoice** — a PDF the extractor genuinely couldn't parse (flagged, not guessed at)
+- **Unreadable invoice** — a PDF the extractor genuinely couldn't parse. This is
+  its own terminal state, not layered under a "no ledger entry" finding — an
+  invoice with nothing to search on gets reported as *unverifiable*, not as a
+  false claim that a search happened and came up empty.
+
+## Safety / integrity checks
+
+- **Coverage guarantee** — `reconcile()` asserts every invoice and every
+  ledger row appears in the output exactly once, and raises `CoverageError`
+  rather than let a bug silently drop a row.
+- **Formula-injection safe** — a vendor name or ledger description pulled
+  from untrusted document content that happens to start with `=`, `+`, `-`,
+  or `@` is written to the report as literal text, not reinterpreted by
+  Excel as a formula.
 
 ## How matching works
 

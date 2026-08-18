@@ -76,14 +76,23 @@ def reconcile(invoices: list[Invoice], ledger_rows: list[LedgerRow]) -> list[Mat
         if inv.invoice_number is None or inv.vendor is None or inv.invoice_date is None or inv.amount is None:
             flags.append("unreadable_invoice")
 
-        match = _find_by_reference(inv, unmatched_ledger) or _find_by_amount_and_date(inv, unmatched_ledger)
-
-        if match:
-            unmatched_ledger.remove(match)
-            if not _amounts_close(inv.amount, match.amount):
-                flags.append("amount_mismatch")
-        else:
-            flags.append("no_ledger_entry")
+        # Both matching strategies need either an invoice number or an
+        # amount+date pair. If neither is present, there's nothing to
+        # search with — reporting "no_ledger_entry" on top of that would
+        # claim a real finding (searched, found nothing) when actually
+        # nothing was searched at all. Distinguishing these two matters:
+        # one means "the payment might genuinely be missing," the other
+        # means "we can't say anything about this invoice."
+        can_attempt = bool(inv.invoice_number) or (inv.amount is not None and inv.invoice_date is not None)
+        match = None
+        if can_attempt:
+            match = _find_by_reference(inv, unmatched_ledger) or _find_by_amount_and_date(inv, unmatched_ledger)
+            if match:
+                unmatched_ledger.remove(match)
+                if not _amounts_close(inv.amount, match.amount):
+                    flags.append("amount_mismatch")
+            else:
+                flags.append("no_ledger_entry")
 
         if inv.invoice_number and number_counts[inv.invoice_number] > 1:
             flags.append("duplicate_invoice")
@@ -93,4 +102,30 @@ def reconcile(invoices: list[Invoice], ledger_rows: list[LedgerRow]) -> list[Mat
     for row in unmatched_ledger:
         results.append(MatchResult(invoice=None, ledger_row=row, flags=["no_invoice"]))
 
+    _assert_full_coverage(invoices, ledger_rows, results)
     return results
+
+
+class CoverageError(Exception):
+    """An invoice or ledger row went into reconcile() and didn't come back
+    out in the results — a bug in the matching logic, not a data problem.
+    Modeled on the same principle as a YMM coverage check: a silent drop is
+    worse than a wrong flag, because a wrong flag gets noticed and a missing
+    row doesn't."""
+
+
+def _assert_full_coverage(invoices: list[Invoice], ledger_rows: list[LedgerRow],
+                           results: list[MatchResult]) -> None:
+    seen_invoices = [r.invoice for r in results if r.invoice is not None]
+    seen_ledger = [r.ledger_row for r in results if r.ledger_row is not None]
+
+    if len(seen_invoices) != len(invoices):
+        raise CoverageError(
+            f"{len(invoices)} invoices went in, {len(seen_invoices)} came back out "
+            f"in the results — reconcile() dropped {len(invoices) - len(seen_invoices)}."
+        )
+    if len(seen_ledger) != len(ledger_rows):
+        raise CoverageError(
+            f"{len(ledger_rows)} ledger rows went in, {len(seen_ledger)} came back out "
+            f"in the results — reconcile() dropped {len(ledger_rows) - len(seen_ledger)}."
+        )
