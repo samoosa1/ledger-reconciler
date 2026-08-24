@@ -12,5 +12,13 @@ export default defineConfig({
   test: {
     environment: 'node', // domain layer is pure TS, no DOM needed
     include: ['tests/**/*.test.ts'],
+    alias: {
+      // TESTS ONLY. pdf.js's default build reaches for DOMMatrix at import
+      // time, which Node does not have; the legacy build is the one pdf.js
+      // ships for non-browser environments. This alias lives under `test`
+      // so the app bundle still gets the modern build, which is smaller and
+      // is what actually runs in a browser.
+      'pdfjs-dist': 'pdfjs-dist/legacy/build/pdf.mjs',
+    },
   },
 })
