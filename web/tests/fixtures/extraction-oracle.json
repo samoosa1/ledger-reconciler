@@ -1,0 +1,79 @@
+[
+  {
+    "name": "messy_nordway",
+    "sourceFile": "messy_nordway.pdf",
+    "text": "Nordway Logistics\n1220 Harbor Rd, Suite 4, Portland OR\nINVOICE\nBill To: Acme Retail Group\nInvoice No: NW-88231\nIssue Date: March 14, 2025\nDue Date: April 13, 2025\nDescription                          Total\nFreight services, Q1 route              $1,940.00\nTotal Due: $1,940.00\n",
+    "expected": {
+      "invoiceNumber": "NW-88231",
+      "vendor": "Nordway Logistics",
+      "invoiceDate": "2025-03-14",
+      "amount": 1940.0
+    }
+  },
+  {
+    "name": "messy_cedarfinch",
+    "sourceFile": "messy_cedarfinch.pdf",
+    "text": "Cedar & Finch Consulting\nReceipt / Invoice\nRef#  CF-2025-014\n2025/03/22\nConsulting retainer - March\n$875.00 due\n",
+    "expected": {
+      "invoiceNumber": "CF-2025-014",
+      "vendor": "Cedar & Finch Consulting",
+      "invoiceDate": "2025-03-22",
+      "amount": 875.0
+    }
+  },
+  {
+    "name": "messy_badscan",
+    "sourceFile": "messy_badscan.pdf",
+    "text": "invoice\namberlake\n279 27\n",
+    "expected": {
+      "invoiceNumber": null,
+      "vendor": "amberlake",
+      "invoiceDate": null,
+      "amount": null
+    }
+  },
+  {
+    "name": "canadapost",
+    "sourceFile": "canadapost.pdf",
+    "text": "Page 1 / 2\n Invoice date (Y-M-D)\nCustomer number\nInvoice number\nCustomer ref. 1\nCustomer ref. 2\n90000001620\n2025-06-21\nContact us\nGeneral inquiries | Tracking\n1-866-607-6301\nQuestions about your invoice / account\n1-800-267-7651\ncmg@canadapost.ca\ncanadapost.ca/billing\nSummary of charges\nTotal amount of this invoice $ 1,673.01\nCLIENT1, CLIENT2\nSAMPLE BUSINESS NM\nADDRESS LINE1\nBARRIE ON L4M 3C2\nCanada Post registration nos.: HST/GST 119321495; QST 1006393299 \nReturn this slip with your payment\nCustomer number\nInvoice number\n1234567 \n90000001620\n15 days from date of invoice. Late payment fees at 18% per annum will be charged on \nany invoice paid after due date.   $\n2025-07-06\n$ 1,673.01Amount due\nDue date (Y-M-D)\n000000072766970900000016200000167301 001\nYour payment is due by (Y-M-D) 2025-07-06\nSubtotal GST HST(page 2) PST/QST Total\nParcels 97.98 97.98\nCommercial/Smartmail Marketing 216.90 216.90\nSpecialized services 1,240.00 1,240.00\nShipments 168.13 168.13\nAdjustments -50.00 -50.00\nTotal 1,673.01 $ 1,673.01\nAmount paid\nCLIENT1, CLIENT2\nSAMPLE BUSINESS NM\nADDRESS LINE1\nBARRIE ON L4M 3C2\nOTTAWA ON K1A 1L7\n2701 RIVERSIDE DR\nPAYMENT PROCESSING\nCANADA POST CORPORATION\n1234567\nSample invoice",
+    "expected": {
+      "invoiceNumber": null,
+      "vendor": null,
+      "invoiceDate": null,
+      "amount": 1673.01
+    }
+  },
+  {
+    "name": "slicedinvoices",
+    "sourceFile": "slicedinvoices.pdf",
+    "text": "Invoice\nPayment is due within 30 days from date of invoice. Late payment is subject to fees of 5% per month.\nThanks for choosing DEMO - Sliced Invoices | admin@slicedinvoices.com\nPage 1/1\nFrom:\nDEMO - Sliced Invoices\nSuite 5A-1204\n123 Somewhere Street\nYour City AZ 12345\nadmin@slicedinvoices.com\nInvoice Number INV-3337\nOrder Number 12345\nInvoice Date January 25, 2016\nDue Date January 31, 2016\nTotal Due $93.50\nTo:\nTest Business\n123 Somewhere St\nMelbourne, VIC 3000\ntest@test.com\nHrs/Qty Service Rate/Price Adjust Sub Total\n1.00 Web Design\nThis is a sample description... $85.00 0.00% $85.00\nSub Total $85.00\nTax $8.50\nTotal $93.50\nANZ Bank\nACC # 1234 1234\nBSB # 4321 432 Paid",
+    "expected": {
+      "invoiceNumber": "INV-3337",
+      "vendor": "DEMO - Sliced Invoices",
+      "invoiceDate": "2016-01-25",
+      "amount": 93.5
+    }
+  },
+  {
+    "name": "sample_INV-1001",
+    "sourceFile": "INV-1001.pdf",
+    "text": "INVOICE\nInvoice #: INV-1001\nDate: 2025-01-10\nVendor: Nordway Logistics\nAmount Due: $858.34\nThank you for your business.\n",
+    "expected": {
+      "invoiceNumber": "INV-1001",
+      "vendor": "Nordway Logistics",
+      "invoiceDate": "2025-01-10",
+      "amount": 858.34
+    }
+  },
+  {
+    "name": "sample_INV-1002",
+    "sourceFile": "INV-1002.pdf",
+    "text": "INVOICE\nInvoice #: INV-1002\nDate: 2025-01-14\nVendor: Cedar & Finch Consulting\nAmount Due: $463.94\nThank you for your business.\n",
+    "expected": {
+      "invoiceNumber": "INV-1002",
+      "vendor": "Cedar & Finch Consulting",
+      "invoiceDate": "2025-01-14",
+      "amount": 463.94
+    }
+  }
+]

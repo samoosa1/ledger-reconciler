@@ -3,3 +3,8 @@ __pycache__/
 *.pyc
 .pytest_cache/
 *.egg-info/
+
+# TypeScript / web
+web/node_modules/
+web/dist/
+web/.vite/

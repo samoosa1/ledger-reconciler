@@ -1,0 +1,329 @@
+{
+  "invoices": [
+    {
+      "sourceFile": "INV-1001.pdf",
+      "text": "INVOICE\nInvoice #: INV-1001\nDate: 2025-01-10\nVendor: Nordway Logistics\nAmount Due: $858.34\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1002.pdf",
+      "text": "INVOICE\nInvoice #: INV-1002\nDate: 2025-01-14\nVendor: Cedar & Finch Consulting\nAmount Due: $463.94\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1003.pdf",
+      "text": "INVOICE\nInvoice #: INV-1003\nDate: 2025-01-18\nVendor: Pinehollow Office Co\nAmount Due: $1,604.13\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1004.pdf",
+      "text": "INVOICE\nInvoice #: INV-1004\nDate: 2025-01-22\nVendor: Meridian Print Services\nAmount Due: $285.15\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1005.pdf",
+      "text": "INVOICE\nInvoice #: INV-1005\nDate: 2025-01-26\nVendor: Amberlake Facilities\nAmount Due: $1,341.81\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1006.pdf",
+      "text": "INVOICE\nInvoice #: INV-1006\nDate: 2025-01-30\nVendor: Bluefern Supplies Ltd\nAmount Due: $953.77\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1007.pdf",
+      "text": "INVOICE\nInvoice #: INV-1007\nDate: 2025-02-03\nVendor: Nordway Logistics\nAmount Due: $252.24\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1008.pdf",
+      "text": "INVOICE\nInvoice #: INV-1008\nDate: 2025-02-07\nVendor: Cedar & Finch Consulting\nAmount Due: $1,276.95\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1009.pdf",
+      "text": "INVOICE\nInvoice #: INV-1009\nDate: 2025-02-11\nVendor: Pinehollow Office Co\nAmount Due: $205.49\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1010.pdf",
+      "text": "INVOICE\nInvoice #: INV-1010\nDate: 2025-02-15\nVendor: Meridian Print Services\nAmount Due: $1,108.71\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1011.pdf",
+      "text": "INVOICE\nInvoice #: INV-1011\nDate: 2025-02-19\nVendor: Amberlake Facilities\nAmount Due: $279.27\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1011_rescan.pdf",
+      "text": "INVOICE\nInvoice #: INV-1011\nDate: 2025-02-19\nVendor: Amberlake Facilities\nAmount Due: $279.27\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1012.pdf",
+      "text": "INVOICE\nInvoice #: INV-1012\nDate: 2025-02-23\nVendor: Bluefern Supplies Ltd\nAmount Due: $326.83\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1013.pdf",
+      "text": "INVOICE\nInvoice #: INV-1013\nDate: 2025-02-27\nVendor: Nordway Logistics\nAmount Due: $1,087.90\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1014.pdf",
+      "text": "INVOICE\nInvoice #: INV-1014\nDate: 2025-03-03\nVendor: Cedar & Finch Consulting\nAmount Due: $2,005.22\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1015.pdf",
+      "text": "INVOICE\nInvoice #: INV-1015\nDate: 2025-03-07\nVendor: Pinehollow Office Co\nAmount Due: $402.27\nThank you for your business.\n"
+    },
+    {
+      "sourceFile": "INV-1016.pdf",
+      "text": "INVOICE\nInvoice #: INV-1016\nDate: 2025-03-11\nVendor: Meridian Print Services\nAmount Due: $628.98\nThank you for your business.\n"
+    }
+  ],
+  "ledgerGrid": [
+    [
+      "Date",
+      "Description",
+      "Reference",
+      "Amount"
+    ],
+    [
+      {
+        "__date": "2025-01-10"
+      },
+      "Payment to Nordway Logistics",
+      "INV-1001",
+      858.34
+    ],
+    [
+      {
+        "__date": "2025-01-14"
+      },
+      "Payment to Cedar & Finch Consulting",
+      "INV-1002",
+      463.94
+    ],
+    [
+      {
+        "__date": "2025-01-18"
+      },
+      "Payment to Pinehollow Office Co",
+      "INV-1003",
+      1604.13
+    ],
+    [
+      {
+        "__date": "2025-01-26"
+      },
+      "Payment to Amberlake Facilities",
+      "INV-1005",
+      1341.81
+    ],
+    [
+      {
+        "__date": "2025-01-30"
+      },
+      "Payment to Bluefern Supplies Ltd",
+      "INV-1006",
+      953.77
+    ],
+    [
+      {
+        "__date": "2025-02-03"
+      },
+      "Payment to Nordway Logistics",
+      "INV-1007",
+      252.24
+    ],
+    [
+      {
+        "__date": "2025-02-05"
+      },
+      "Wire transfer - Amberlake Facilities",
+      null,
+      875
+    ],
+    [
+      {
+        "__date": "2025-02-07"
+      },
+      "Payment to Cedar & Finch Consulting",
+      "INV-1008",
+      1326.95
+    ],
+    [
+      {
+        "__date": "2025-02-11"
+      },
+      "Payment to Pinehollow Office Co",
+      "INV-1009",
+      205.49
+    ],
+    [
+      {
+        "__date": "2025-02-15"
+      },
+      "Payment to Meridian Print Services",
+      "INV-1010",
+      1108.71
+    ],
+    [
+      {
+        "__date": "2025-02-19"
+      },
+      "Payment to Amberlake Facilities",
+      "INV-1011",
+      279.27
+    ],
+    [
+      {
+        "__date": "2025-02-23"
+      },
+      "Payment to Bluefern Supplies Ltd",
+      "INV-1012",
+      326.83
+    ],
+    [
+      {
+        "__date": "2025-02-27"
+      },
+      "Payment to Nordway Logistics",
+      "INV-1013",
+      1087.9
+    ],
+    [
+      {
+        "__date": "2025-03-03"
+      },
+      "Payment to Cedar & Finch Consulting",
+      "INV-1014",
+      2005.22
+    ],
+    [
+      {
+        "__date": "2025-03-07"
+      },
+      "Payment to Pinehollow Office Co",
+      "INV-1015",
+      402.27
+    ],
+    [
+      {
+        "__date": "2025-03-11"
+      },
+      "Payment to Meridian Print Services",
+      "INV-1016",
+      628.98
+    ]
+  ],
+  "expected": [
+    {
+      "sourceFile": "INV-1001.pdf",
+      "invoiceNumber": "INV-1001",
+      "ledgerRowIndex": 2,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1002.pdf",
+      "invoiceNumber": "INV-1002",
+      "ledgerRowIndex": 3,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1003.pdf",
+      "invoiceNumber": "INV-1003",
+      "ledgerRowIndex": 4,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1004.pdf",
+      "invoiceNumber": "INV-1004",
+      "ledgerRowIndex": null,
+      "flags": [
+        "no_ledger_entry"
+      ]
+    },
+    {
+      "sourceFile": "INV-1005.pdf",
+      "invoiceNumber": "INV-1005",
+      "ledgerRowIndex": 5,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1006.pdf",
+      "invoiceNumber": "INV-1006",
+      "ledgerRowIndex": 6,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1007.pdf",
+      "invoiceNumber": "INV-1007",
+      "ledgerRowIndex": 7,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1008.pdf",
+      "invoiceNumber": "INV-1008",
+      "ledgerRowIndex": 9,
+      "flags": [
+        "amount_mismatch"
+      ]
+    },
+    {
+      "sourceFile": "INV-1009.pdf",
+      "invoiceNumber": "INV-1009",
+      "ledgerRowIndex": 10,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1010.pdf",
+      "invoiceNumber": "INV-1010",
+      "ledgerRowIndex": 11,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1011.pdf",
+      "invoiceNumber": "INV-1011",
+      "ledgerRowIndex": 12,
+      "flags": [
+        "duplicate_invoice"
+      ]
+    },
+    {
+      "sourceFile": "INV-1011_rescan.pdf",
+      "invoiceNumber": "INV-1011",
+      "ledgerRowIndex": null,
+      "flags": [
+        "no_ledger_entry",
+        "duplicate_invoice"
+      ]
+    },
+    {
+      "sourceFile": "INV-1012.pdf",
+      "invoiceNumber": "INV-1012",
+      "ledgerRowIndex": 13,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1013.pdf",
+      "invoiceNumber": "INV-1013",
+      "ledgerRowIndex": 14,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1014.pdf",
+      "invoiceNumber": "INV-1014",
+      "ledgerRowIndex": 15,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1015.pdf",
+      "invoiceNumber": "INV-1015",
+      "ledgerRowIndex": 16,
+      "flags": []
+    },
+    {
+      "sourceFile": "INV-1016.pdf",
+      "invoiceNumber": "INV-1016",
+      "ledgerRowIndex": 17,
+      "flags": []
+    },
+    {
+      "sourceFile": null,
+      "invoiceNumber": null,
+      "ledgerRowIndex": 8,
+      "flags": [
+        "no_invoice"
+      ]
+    }
+  ]
+}
