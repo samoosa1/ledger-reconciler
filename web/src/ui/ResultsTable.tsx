@@ -6,7 +6,6 @@ import { FLAG_EXPLANATIONS, FLAG_LABELS, summarise } from './pipeline'
 
 interface Props {
   results: MatchResult[]
-  onReset: () => void
 }
 
 const money = (n: number | null | undefined) =>
@@ -14,9 +13,9 @@ const money = (n: number | null | undefined) =>
     ? '—'
     : n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
-export function ResultsTable({ results, onReset }: Props) {
+export function ResultsTable({ results }: Props) {
   const [filter, setFilter] = useState<string | null>(null)
-  // Keyed by stable identity, not list index: filtering reorders `shown`,
+  // Keyed by stable identity, not list index: filtering reorders the list,
   // so an index would leave a different row expanded than the one clicked.
   const [openRow, setOpenRow] = useState<string | null>(null)
   const summary = summarise(results)
@@ -26,17 +25,21 @@ export function ResultsTable({ results, onReset }: Props) {
     : results
 
   return (
-    <section className="panel">
-      <div className="stat-strip">
-        <Stat label="Items" value={String(summary.total)} />
-        <Stat label="Matched" value={String(summary.matched)} tone="ok" />
-        <Stat label="Flagged" value={String(summary.flagged)} tone={summary.flagged ? 'warn' : undefined} />
-        <Stat label="Match rate" value={`${Math.round(summary.matchRate * 100)}%`} />
+    <section className="rise">
+      <div className="figures">
+        <Figure value={String(summary.total)} label="items" />
+        <Figure value={String(summary.matched)} label="reconciled" tone="ok" />
+        <Figure
+          value={String(summary.flagged)}
+          label="to review"
+          tone={summary.flagged > 0 ? 'warn' : undefined}
+        />
+        <Figure value={`${Math.round(summary.matchRate * 100)}%`} label="match rate" />
       </div>
 
       {summary.flagged === 0 ? (
         <p className="notice ok">
-          Everything reconciled. Every invoice has a matching ledger entry and
+          Everything reconciled. Every invoice has a matching ledger entry, and
           every ledger entry has an invoice.
         </p>
       ) : (
@@ -46,7 +49,7 @@ export function ResultsTable({ results, onReset }: Props) {
             className={`chip${filter === null ? ' on' : ''}`}
             onClick={() => setFilter(null)}
           >
-            All {results.length}
+            Everything {results.length}
           </button>
           {Object.entries(summary.counts).map(([flag, n]) => (
             <button
@@ -67,12 +70,12 @@ export function ResultsTable({ results, onReset }: Props) {
           <thead>
             <tr>
               <th>Status</th>
-              <th>Invoice #</th>
+              <th>Invoice</th>
               <th>Vendor</th>
               <th>Date</th>
               <th className="num">Invoice</th>
               <th className="num">Ledger</th>
-              <th>Ledger entry</th>
+              <th className="num">Row</th>
               <th />
             </tr>
           </thead>
@@ -85,28 +88,53 @@ export function ResultsTable({ results, onReset }: Props) {
               const isOpen = openRow === id
               return (
                 <Fragment key={id}>
-                  <tr
-                    className={clean ? 'row-ok' : 'row-warn'}
-                    onClick={() => setOpenRow(isOpen ? null : id)}
-                  >
+                  <tr className="clickable" onClick={() => setOpenRow(isOpen ? null : id)}>
                     <td>
                       {clean ? (
-                        <span className="pill ok">matched</span>
+                        <span className="tag ok">reconciled</span>
                       ) : (
                         r.flags.map((f) => (
-                          <span className="pill warn" key={f}>
+                          <span className="tag warn" key={f}>
                             {FLAG_LABELS[f] ?? f}
                           </span>
                         ))
                       )}
                     </td>
-                    <td className="mono">{inv?.invoiceNumber ?? '—'}</td>
-                    <td>{inv?.vendor ?? '—'}</td>
-                    <td className="mono">{inv?.invoiceDate ? toISO(inv.invoiceDate) : '—'}</td>
+                    <td className="mono">{inv?.invoiceNumber ?? <span className="faint">—</span>}</td>
+                    <td className="clip">{inv?.vendor ?? <span className="faint">—</span>}</td>
+                    <td className="mono">
+                      {inv?.invoiceDate ? toISO(inv.invoiceDate) : <span className="faint">—</span>}
+                    </td>
                     <td className="num mono">{money(inv?.amount)}</td>
                     <td className="num mono">{money(row?.amount)}</td>
-                    <td className="clip">{row ? `row ${row.rowIndex} · ${row.description}` : '—'}</td>
-                    <td className="chev">{isOpen ? '▾' : '▸'}</td>
+                    {/* Just the row number: the description repeated the
+                        vendor two columns left and pushed the Status column
+                        out of view on a 1280px screen. The full description
+                        is in the drill-down, where there is room for it. */}
+                    <td className="num mono faint">
+                      {row ? row.rowIndex : <span className="faint">—</span>}
+                    </td>
+                    <td className="chev">
+                      {/* A real button, not just a clickable <tr>: a table row
+                          is not focusable, so without this the finding
+                          explanations are unreachable by keyboard. The row
+                          click stays as a convenience for pointer users. */}
+                      <button
+                        type="button"
+                        className="disclose"
+                        aria-expanded={isOpen}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setOpenRow(isOpen ? null : id)
+                        }}
+                      >
+                        <span className="sr-only">
+                          {isOpen ? 'Hide details for' : 'Show details for'}{' '}
+                          {inv?.invoiceNumber ?? `ledger row ${row?.rowIndex}`}
+                        </span>
+                        <span aria-hidden="true">{isOpen ? '−' : '+'}</span>
+                      </button>
+                    </td>
                   </tr>
                   {isOpen && (
                     <tr className="detail">
@@ -145,7 +173,12 @@ export function ResultsTable({ results, onReset }: Props) {
                           <p className="why" key={f}>
                             <strong>{FLAG_LABELS[f] ?? f}.</strong> {FLAG_EXPLANATIONS[f]}
                             {f === 'amount_mismatch' && inv && row && (
-                              <> Difference: <span className="mono">{money(Math.abs((inv.amount ?? 0) - (row.amount ?? 0)))}</span>.</>
+                              <>
+                                {' '}Difference:{' '}
+                                <span className="mono">
+                                  {money(Math.abs((inv.amount ?? 0) - (row.amount ?? 0)))}
+                                </span>.
+                              </>
                             )}
                           </p>
                         ))}
@@ -160,27 +193,22 @@ export function ResultsTable({ results, onReset }: Props) {
       </div>
 
       <div className="actions">
-        <span className="muted export-note">
-          Generated in this browser · nothing uploaded
+        <span className="muted">
+          A flag is a record to review, not a confirmed error.
         </span>
-        <button className="btn" onClick={onReset} type="button">Start over</button>
-        <button
-          className="btn primary"
-          type="button"
-          onClick={() => downloadReport(results)}
-        >
-          Download report (.xlsx)
+        <button className="btn primary push" type="button" onClick={() => downloadReport(results)}>
+          Download .xlsx
         </button>
       </div>
     </section>
   )
 }
 
-function Stat({ label, value, tone }: { label: string; value: string; tone?: 'ok' | 'warn' }) {
+function Figure({ value, label, tone }: { value: string; label: string; tone?: 'ok' | 'warn' }) {
   return (
-    <div className={`stat${tone ? ` ${tone}` : ''}`}>
-      <div className="stat-value">{value}</div>
-      <div className="stat-label">{label}</div>
+    <div className={`figure${tone ? ` ${tone}` : ''}`}>
+      <div className="figure-value">{value}</div>
+      <div className="figure-label">{label}</div>
     </div>
   )
 }

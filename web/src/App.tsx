@@ -48,7 +48,7 @@ export default function App() {
     (files: File[]) => {
       const { invoices, ledgers, ignored } = sortDroppedFiles(files)
 
-      // Say what is wrong before doing any work, rather than after.
+      // Name what is wrong before doing any work, rather than after.
       if (ledgers.length === 0) {
         setError(
           ignored.length > 0
@@ -107,54 +107,83 @@ export default function App() {
   }, [ledger, progress])
 
   return (
-    <div className="app">
-      <header className="topbar">
-        <div className="brand">Ledger Reconciler</div>
-        <div className="tagline">Invoices against your books, in your browser</div>
-      </header>
+    <div className="shell">
+      <aside className="rail">
+        <div className="masthead">
+          <h1>Reconcile invoices against your ledger</h1>
+          <p>
+            Drop a folder of invoice PDFs and your ledger export. Whatever
+            doesn&rsquo;t tie out is listed for review.
+          </p>
+        </div>
 
-      <main>
+        <DropZone onFiles={handleFiles} onTrySample={handleSample} busy={busy} />
+
+        {stage !== 'idle' && (
+          <button className="btn" type="button" onClick={reset}>
+            Start over
+          </button>
+        )}
+
+        <p className="privacy">
+          <strong>Your files never leave this browser.</strong> There is no
+          server to send them to. Disconnect from the internet and it still
+          works.
+        </p>
+      </aside>
+
+      <main className="stage">
         {error && (
           <p className="notice bad" role="alert">
             {error}
           </p>
         )}
 
-        {stage === 'idle' && (
-          <>
-            <section className="intro">
-              <h1>Match invoices against your ledger</h1>
-              <p>
-                Drop a folder of invoice PDFs and your ledger export. Anything that
-                does not reconcile is flagged: missing payments, undocumented
-                payments, amount differences and duplicates.
-              </p>
-              <p className="privacy">
-                <strong>Your files never leave this browser.</strong> Everything is
-                processed on your own machine, nothing is uploaded, and there is no
-                server to send it to. You can disconnect from the internet and it
-                still works.
-              </p>
-            </section>
-            <DropZone onFiles={handleFiles} onTrySample={handleSample} busy={busy} />
-          </>
-        )}
+        {stage === 'idle' && <EmptyState />}
 
         {stage === 'reading' && (
           <ExtractionReview
             progress={progress}
             ledgerName={ledger?.name ?? null}
             onContinue={handleReconcile}
-            onReset={reset}
+            busy={busy}
           />
         )}
 
-        {stage === 'results' && <ResultsTable results={results} onReset={reset} />}
+        {stage === 'results' && <ResultsTable results={results} />}
       </main>
-
-      <footer className="foot">
-        Processed locally · no upload · reads text PDFs, not scans
-      </footer>
     </div>
+  )
+}
+
+/**
+ * Teaches the interface rather than saying "nothing here": naming the five
+ * findings up front means the output area is legible before it has output,
+ * and a visitor understands what the tool looks for without running it.
+ */
+function EmptyState() {
+  const findings: [string, string][] = [
+    ['Missing payment', 'An invoice with no matching entry in the ledger.'],
+    ['Undocumented payment', 'A ledger entry with no invoice to support it.'],
+    ['Amount differs', 'Matched, but the two figures disagree.'],
+    ['Duplicate invoice', 'The same invoice number appears more than once.'],
+    ['Could not read', 'A PDF with no extractable text, reported rather than guessed at.'],
+  ]
+  return (
+    <section className="empty rise">
+      <h2>What this looks for</h2>
+      <ol>
+        {findings.map(([name, detail]) => (
+          <li key={name}>
+            <b>{name}</b>
+            <span>{detail}</span>
+          </li>
+        ))}
+      </ol>
+      <p className="muted" style={{ marginTop: 'var(--sp-5)' }}>
+        Reads text-based PDFs. Scanned images aren&rsquo;t run through OCR;
+        they&rsquo;re reported as unreadable instead of silently dropped.
+      </p>
+    </section>
   )
 }

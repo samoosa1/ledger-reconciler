@@ -1,181 +1,476 @@
 /*
- * Dense financial-tool styling, not consumer SaaS. Restrained palette,
- * money right-aligned in a monospace face so digits line up by column,
- * strong gridlines, no gradients or decorative flourish. The reader is an
- * accountant scanning for what does not tie out.
+ * Dark editorial reading surface.
+ *
+ * Mood: late-evening desk lamp on a ledger. Only the numbers are lit.
+ *
+ * Two anti-references drove this. It is not the navy enterprise chrome
+ * this project shipped first, and it is not neon-terminal dark, which is
+ * the reflex any finance tool falls into once it decides against navy.
+ * What it is instead: a serious reading surface. Type does the hierarchy,
+ * colour only ever signals state, and the figures are the subject.
+ *
+ * Strategy: Restrained. Neutral near-black surfaces, one cobalt accent
+ * carrying focus and selection, semantic colour reserved for findings.
  */
 
 :root {
-  --navy: #1f3864;
-  --navy-dark: #16294a;
-  --ink: #1a1a1a;
-  --muted: #6b7280;
-  --line: #d6dae1;
-  --soft: #f4f6f9;
-  --ok: #1c6b3c;
-  --ok-bg: #e6f4ea;
-  --warn: #8a5a00;
-  --warn-bg: #fdf3d8;
-  --bad: #a01722;
-  --bad-bg: #fce8e9;
+  /* ---- surfaces: pure neutral, no hue tint ---- */
+  --bg: oklch(0.13 0 0);
+  --surface: oklch(0.175 0 0);
+  --raised: oklch(0.215 0 0);
+  --line: oklch(0.28 0 0);
+  --line-soft: oklch(0.23 0 0);
+
+  /* ---- ink: a whisper of the brand hue, nothing more ---- */
+  --ink: oklch(0.95 0.005 240);
+  --muted: oklch(0.68 0.008 240);
+  /* L chosen so 11px uppercase column headers still clear WCAG AA 4.5:1
+     on BOTH bg (5.12:1) and surface (4.83:1). At 0.52 it measured 3.68:1,
+     which only passes as large text, and none of its uses are large. */
+  --faint: oklch(0.60 0.008 240);
+
+  /* ---- action: near-white fill. Editorial, unmistakable, and it
+         sidesteps the contrast trap of white text on a mid-blue. ---- */
+  --action: oklch(0.95 0.01 240);
+  --action-hover: oklch(1 0 0);
+  --on-action: oklch(0.13 0 0);
+
+  /* ---- accent: the seed hue, for focus, selection and links only ---- */
+  --accent: oklch(0.72 0.13 240);
+  --accent-dim: oklch(0.52 0.10 240);
+  --accent-wash: oklch(0.72 0.13 240 / 0.14);
+
+  /* ---- semantic: lightness deliberately spread so the three remain
+         distinguishable without hue, for colour-vision deficiency.
+         Every status also carries a text label; colour never stands
+         alone. ---- */
+  --ok: oklch(0.76 0.13 160);
+  --ok-wash: oklch(0.76 0.13 160 / 0.13);
+  --warn: oklch(0.84 0.14 85);
+  --warn-wash: oklch(0.84 0.14 85 / 0.13);
+  --bad: oklch(0.66 0.19 25);
+  --bad-wash: oklch(0.66 0.19 25 / 0.15);
+
+  /* ---- type ---- */
+  --serif: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Fixed rem scale, ratio ~1.2. Product UI is viewed at consistent DPI;
+     fluid clamp headings shrink in panels and look worse, not better. */
+  --t-xs: 0.6875rem;
+  --t-sm: 0.8125rem;
+  --t-base: 0.875rem;
+  --t-md: 1rem;
+  --t-lg: 1.25rem;
+  --t-xl: 1.75rem;
+  --t-2xl: 2.25rem;
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+
+  /* Semantic, never arbitrary. */
+  --z-base: 0;
+  --z-sticky: 100;
+  --z-overlay: 200;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1); /* ease-out-quart */
+  --dur: 180ms;
 }
 
 * { box-sizing: border-box; }
 
-/* The Vite scaffold centres the body with place-items and sets a dark
- * scheme; both are reset here so the app controls its own layout. */
 body {
   margin: 0;
   display: block;
   place-items: normal;
+  background: var(--bg);
   color: var(--ink);
-  background: var(--soft);
-  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--sans);
+  font-size: var(--t-base);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 
-.app { min-height: 100vh; display: flex; flex-direction: column; text-align: left; }
+/* Numbers are the subject: tabular figures everywhere by default so
+   columns of money align on the decimal without per-cell effort. */
+.num, .mono, table { font-variant-numeric: tabular-nums; }
 
-.topbar {
-  background: var(--navy);
-  color: #fff;
-  padding: 12px 20px;
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ============================ shell ============================ */
+/* Single screen: controls on the left, output on the right. Nothing
+   navigates away, so the user never loses sight of what they dropped. */
+.shell {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(340px, 400px) 1fr;
+}
+
+.rail {
+  border-right: 1px solid var(--line-soft);
+  padding: var(--sp-6) var(--sp-5);
   display: flex;
-  align-items: baseline;
-  gap: 14px;
+  flex-direction: column;
+  gap: var(--sp-5);
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: 100svh;
+  overflow-y: auto;
 }
-.brand { font-weight: 700; font-size: 16px; letter-spacing: .2px; }
-.tagline { color: #b9c6dd; font-size: 12.5px; }
 
-main { flex: 1; width: 100%; max-width: 1180px; margin: 0 auto; padding: 22px 20px 40px; }
+.stage {
+  padding: var(--sp-6) var(--sp-6) var(--sp-7);
+  min-width: 0; /* lets wide tables scroll instead of blowing out the grid */
+}
 
-.intro { max-width: 760px; margin-bottom: 20px; }
-.intro h1 { font-size: 22px; margin: 0 0 10px; color: var(--navy-dark); }
-.intro p { margin: 0 0 10px; color: #333; }
+/* ============================ masthead ============================ */
+.masthead h1 {
+  font-family: var(--serif);
+  font-size: var(--t-2xl);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--sp-3);
+  text-wrap: balance;
+}
+.masthead p {
+  color: var(--muted);
+  font-size: var(--t-base);
+  max-width: 42ch;
+  text-wrap: pretty;
+}
+
 .privacy {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--navy);
-  padding: 10px 12px;
-  font-size: 13.5px;
+  font-size: var(--t-sm);
+  color: var(--muted);
+  border-top: 1px solid var(--line-soft);
+  padding-top: var(--sp-4);
 }
+.privacy strong { color: var(--ink); font-weight: 600; }
 
-/* ---------- drop zone ---------- */
-.drop-wrap { max-width: 760px; }
+/* ============================ drop zone ============================ */
 .dropzone {
-  background: #fff;
-  border: 2px dashed var(--line);
-  padding: 40px 20px;
+  border: 1px dashed var(--line);
+  background: var(--surface);
+  border-radius: 3px;
+  padding: var(--sp-7) var(--sp-4);
   text-align: center;
   cursor: pointer;
-  transition: border-color .12s, background .12s;
+  transition: border-color var(--dur) var(--ease),
+              background var(--dur) var(--ease);
 }
-.dropzone:hover, .dropzone.over { border-color: var(--navy); background: #fbfcfe; }
-.dropzone.busy { opacity: .55; cursor: default; }
-.drop-title { font-size: 16px; font-weight: 600; color: var(--navy-dark); }
-.drop-sub { color: var(--muted); margin-top: 6px; font-size: 13px; }
+.dropzone:hover { border-color: var(--faint); background: var(--raised); }
+.dropzone.over {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+  border-style: solid;
+}
+.dropzone.busy { opacity: 0.5; cursor: default; }
 
-.drop-alt { margin-top: 12px; display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.drop-title { font-size: var(--t-md); font-weight: 600; }
+.drop-sub {
+  color: var(--muted);
+  font-size: var(--t-sm);
+  margin-top: var(--sp-2);
+  text-wrap: pretty;
+}
+
+.drop-alt {
+  margin-top: var(--sp-3);
+  font-size: var(--t-sm);
+  color: var(--muted);
+  text-align: center;
+}
 .link-btn {
-  background: none; border: none; padding: 0;
-  color: var(--navy); font: inherit; font-weight: 600;
-  text-decoration: underline; cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
-.link-btn:disabled { color: var(--muted); cursor: default; }
+.link-btn:hover { color: var(--ink); }
+.link-btn:disabled { color: var(--faint); cursor: default; text-decoration: none; }
 
-/* ---------- panels ---------- */
-.panel { background: #fff; border: 1px solid var(--line); }
-.panel-head {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--soft);
+/* ============================ stage states ============================ */
+/* An empty state that teaches the interface rather than saying "nothing
+   here": it names the five findings before any file is dropped, so the
+   output area is legible before it has output. */
+.empty { max-width: 60ch; }
+.empty h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--t-xl);
+  margin: 0 0 var(--sp-4);
+  letter-spacing: -0.015em;
 }
-.panel-head h2 { margin: 0; font-size: 15px; color: var(--navy-dark); }
-.muted { color: var(--muted); font-size: 12.5px; }
+.empty ol { margin: 0; padding: 0; list-style: none; counter-reset: f; }
+.empty li {
+  counter-increment: f;
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: baseline;
+}
+.empty li::before {
+  content: counter(f, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  color: var(--faint);
+}
+.empty li b { font-weight: 600; }
+/* Both the name and its description belong in the content column. Without
+   the explicit grid-column the description falls into the 2.25rem counter
+   column on the next row and wraps one word per line. */
+.empty li span { grid-column: 2; color: var(--muted); font-size: var(--t-sm); }
 
-.notice { margin: 0 0 14px; padding: 10px 12px; border: 1px solid; font-size: 13.5px; }
-.notice.ok   { background: var(--ok-bg);   border-color: #b7ddc4; color: var(--ok); }
-.notice.warn { background: var(--warn-bg); border-color: #e8d29a; color: var(--warn); }
-.notice.bad  { background: var(--bad-bg);  border-color: #eeb9bd; color: var(--bad); }
-.panel .notice { margin: 12px 14px; }
+.stage-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
+}
+.stage-head h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--t-xl);
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+.muted { color: var(--muted); font-size: var(--t-sm); }
+.faint { color: var(--faint); }
 
-/* ---------- stats ---------- */
-.stat-strip { display: flex; border-bottom: 1px solid var(--line); }
-.stat { flex: 1; padding: 12px 14px; border-right: 1px solid var(--line); }
-.stat:last-child { border-right: none; }
-.stat-value { font-family: var(--mono); font-size: 20px; font-weight: 600; }
-.stat-label { color: var(--muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; }
-.stat.ok .stat-value { color: var(--ok); }
-.stat.warn .stat-value { color: var(--bad); }
+/* ============================ figures ============================ */
+/* Deliberately not stat cards. A rule, a big figure, a label: the
+   hierarchy comes from scale and space rather than four boxes. */
+.figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-6);
+  padding-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--sp-5);
+}
+.figure-value {
+  font-family: var(--serif);
+  font-size: var(--t-2xl);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.figure-label {
+  font-size: var(--t-xs);
+  color: var(--faint);
+  margin-top: var(--sp-2);
+}
+.figure.ok .figure-value { color: var(--ok); }
+.figure.warn .figure-value { color: var(--warn); }
 
-/* ---------- filters ---------- */
-.filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+/* ============================ filters ============================ */
+.filters { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-4); }
 .chip {
-  border: 1px solid var(--line); background: #fff; color: #333;
-  padding: 4px 10px; font: inherit; font-size: 12.5px; cursor: pointer;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 3px 11px;
+  font: inherit;
+  font-size: var(--t-sm);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
-.chip:hover { border-color: var(--navy); }
-.chip.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+.chip:hover { color: var(--ink); border-color: var(--faint); }
+.chip.on { background: var(--action); color: var(--on-action); border-color: var(--action); }
 
-/* ---------- tables ---------- */
+/* ============================ tables ============================ */
 .table-scroll { overflow-x: auto; }
-table.grid { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.grid { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
 table.grid th {
-  background: var(--navy); color: #fff; text-align: left;
-  padding: 8px 10px; font-weight: 600; white-space: nowrap; font-size: 12.5px;
+  text-align: left;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding: 0 var(--sp-3) var(--sp-2);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
 }
-table.grid td { padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-table.grid tbody tr:hover { background: #fbfcfe; }
+table.grid td {
+  padding: var(--sp-3);
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+table.grid tbody tr { transition: background var(--dur) var(--ease); }
+table.grid tbody tr:hover { background: var(--surface); }
 .num { text-align: right; }
-.mono { font-family: var(--mono); font-size: 12.5px; }
-.clip { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.chev { color: var(--muted); width: 20px; }
+/* Short identifiers (invoice numbers, ISO dates, row refs) must never
+   break mid-value. When the table is wider than the stage the wrapper
+   scrolls; compressing a date into two lines is never the right answer. */
+.mono { font-family: var(--mono); font-size: var(--t-xs); white-space: nowrap; }
+.clip { max-width: 34ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chev { color: var(--faint); width: 1.5rem; text-align: right; }
+tbody tr.clickable { cursor: pointer; }
 
-tr.row-ok td:first-child { border-left: 3px solid var(--ok); }
-tr.row-warn td:first-child { border-left: 3px solid var(--warn); }
-tr.row-bad td:first-child { border-left: 3px solid var(--bad); }
-tbody tr { cursor: pointer; }
-
-tr.detail td { background: var(--soft); padding: 14px; cursor: default; }
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 10px; }
-.detail-grid h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
-.detail-grid dl { display: grid; grid-template-columns: 92px 1fr; gap: 3px 10px; margin: 0; }
-.detail-grid dt { color: var(--muted); font-size: 12.5px; }
-.detail-grid dd { margin: 0; font-size: 13px; }
-.why { margin: 6px 0 0; font-size: 13px; color: #333; }
-
-/* ---------- pills ---------- */
-.pill {
-  display: inline-block; padding: 1px 7px; margin: 1px 3px 1px 0;
-  border: 1px solid var(--line); background: #fff;
-  font-size: 11.5px; white-space: nowrap;
+tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: default; }
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-6);
 }
-.pill.ok   { background: var(--ok-bg);   border-color: #b7ddc4; color: var(--ok); }
-.pill.warn { background: var(--warn-bg); border-color: #e8d29a; color: var(--warn); }
-.pill.bad  { background: var(--bad-bg);  border-color: #eeb9bd; color: var(--bad); }
-.pill.reading { background: #e8eefb; border-color: #bdcdeb; color: var(--navy); }
+.detail-grid h4 {
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0 0 var(--sp-3);
+  font-weight: 600;
+}
+.detail-grid dl { display: grid; grid-template-columns: 7rem 1fr; gap: var(--sp-2) var(--sp-3); margin: 0; }
+.detail-grid dt { color: var(--faint); font-size: var(--t-sm); }
+.detail-grid dd { margin: 0; }
+.why {
+  margin: var(--sp-4) 0 0;
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: var(--t-sm);
+  max-width: 70ch;
+}
+.why strong { color: var(--ink); }
 
-/* ---------- buttons ---------- */
-.actions { display: flex; gap: 8px; justify-content: flex-end; padding: 12px 14px; border-top: 1px solid var(--line); }
+/* ============================ status ============================ */
+/* Every status pairs colour with a word. Colour is reinforcement, never
+   the only channel, so the table stays readable with any colour vision. */
+.tag {
+  display: inline-block;
+  font-size: var(--t-xs);
+  padding: 2px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  margin: 0 var(--sp-1) var(--sp-1) 0;
+}
+.tag.ok { background: var(--ok-wash); color: var(--ok); }
+.tag.warn { background: var(--warn-wash); color: var(--warn); }
+.tag.bad { background: var(--bad-wash); color: var(--bad); }
+.tag.idle { background: var(--raised); color: var(--muted); }
+.tag.live { background: var(--accent-wash); color: var(--accent); }
+
+/* ============================ notices ============================ */
+.notice {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 3px;
+  font-size: var(--t-sm);
+  margin-bottom: var(--sp-4);
+  border: 1px solid;
+  max-width: 80ch;
+}
+.notice.ok { background: var(--ok-wash); border-color: transparent; color: var(--ok); }
+.notice.warn { background: var(--warn-wash); border-color: transparent; color: var(--warn); }
+.notice.bad { background: var(--bad-wash); border-color: transparent; color: var(--bad); }
+
+/* ============================ buttons ============================ */
+.actions {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
+}
 .btn {
-  border: 1px solid var(--line); background: #fff; color: #222;
-  padding: 7px 14px; font: inherit; font-size: 13px; cursor: pointer;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 3px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: var(--t-sm);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
-.btn:hover { border-color: var(--navy); }
-.btn.primary { background: var(--navy); color: #fff; border-color: var(--navy); font-weight: 600; }
-.btn.primary:hover { background: var(--navy-dark); }
-.btn:disabled { opacity: .5; cursor: default; }
-.btn.primary:disabled:hover { background: var(--navy); }
+.btn:hover { border-color: var(--faint); background: var(--surface); }
+.btn.primary {
+  background: var(--action);
+  color: var(--on-action);
+  border-color: var(--action);
+  font-weight: 600;
+}
+.btn.primary:hover { background: var(--action-hover); border-color: var(--action-hover); }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.btn:disabled:hover { background: transparent; border-color: var(--line); }
+.btn.primary:disabled:hover { background: var(--action); }
+.push { margin-left: auto; }
 
-.foot {
-  border-top: 1px solid var(--line); background: #fff;
-  padding: 12px 20px; color: var(--muted); font-size: 12.5px; text-align: center;
+/* ============================ motion ============================ */
+/* Entrances enhance an already-visible default: opacity starts at 1 in
+   the reduced-motion case rather than being gated behind the animation,
+   so content can never ship invisible if the transition never fires. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+.rise { animation: rise var(--dur) var(--ease) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .rise { animation: none; opacity: 1; transform: none; }
 }
 
-@media (max-width: 720px) {
-  .detail-grid { grid-template-columns: 1fr; }
-  .stat-strip { flex-wrap: wrap; }
-  .stat { min-width: 50%; }
+/* ============================ responsive ============================ */
+/* Structural, not fluid type: the rail stops being a sidebar and becomes
+   a header band. */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail {
+    position: static;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .stage { padding: var(--sp-5) var(--sp-4) var(--sp-6); }
 }
 
-/* Keeps the provenance note left while the buttons stay right-aligned. */
-.export-note { margin-right: auto; align-self: center; }
+/* The drop zone is a real <button>, so its children need to be blocks and
+   the browser's default button typography has to be reset. */
+.dropzone { display: block; width: 100%; font: inherit; color: inherit; }
+.drop-title, .drop-sub { display: block; }
+
+/* Visually hidden but available to screen readers and keyboard users. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.disclose {
+  background: none;
+  border: none;
+  padding: 0 var(--sp-1);
+  font: inherit;
+  color: var(--faint);
+  cursor: pointer;
+  line-height: 1;
+}
+.disclose:hover { color: var(--ink); }

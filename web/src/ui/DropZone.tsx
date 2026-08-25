@@ -9,6 +9,10 @@ interface Props {
 /**
  * One drop target, not two. Files are sorted by extension downstream,
  * because sorting for the user beats making them read labels and aim.
+ *
+ * It is a real <button>, not a div with a click handler, so it is
+ * keyboard-operable and announced correctly without reimplementing those
+ * affordances by hand.
  */
 export function DropZone({ onFiles, onTrySample, busy }: Props) {
   const [over, setOver] = useState(false)
@@ -25,21 +29,18 @@ export function DropZone({ onFiles, onTrySample, busy }: Props) {
   )
 
   return (
-    <div className="drop-wrap">
-      <div
+    <div>
+      <button
+        type="button"
         className={`dropzone${over ? ' over' : ''}${busy ? ' busy' : ''}`}
+        disabled={busy}
         onDragOver={(e) => {
           e.preventDefault()
           if (!busy) setOver(true)
         }}
         onDragLeave={() => setOver(false)}
         onDrop={handleDrop}
-        onClick={() => !busy && inputRef.current?.click()}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') inputRef.current?.click()
-        }}
+        onClick={() => inputRef.current?.click()}
       >
         <input
           ref={inputRef}
@@ -53,18 +54,18 @@ export function DropZone({ onFiles, onTrySample, busy }: Props) {
             e.target.value = ''
           }}
         />
-        <div className="drop-title">Drop invoices and your ledger here</div>
-        <div className="drop-sub">
-          PDF invoices plus one spreadsheet (.xlsx or .csv), or click to browse
-        </div>
-      </div>
+        <span className="drop-title">Drop your files</span>
+        <span className="drop-sub">
+          Invoice PDFs and one ledger export (.xlsx or .csv), or click to browse
+        </span>
+      </button>
 
-      <div className="drop-alt">
-        <span>No files to hand?</span>
+      <p className="drop-alt">
+        or{' '}
         <button type="button" className="link-btn" onClick={onTrySample} disabled={busy}>
-          Try it with sample data
+          try it with sample data
         </button>
-      </div>
+      </p>
     </div>
   )
 }
