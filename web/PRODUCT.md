@@ -107,3 +107,43 @@ reassuring adjectives, no claims the code cannot back.
   instant state change.
 - **Full keyboard access**, including the drop zone, which must be
   operable without a pointer.
+
+## Colour strategy (revised)
+
+Started as **Restrained**: chroma-0 near-black surfaces with one cobalt
+accent used only for focus and selection. That was correct on the
+accessibility numbers and wrong in the room. Because the accent only ever
+appeared on interaction, the page at rest was pure greyscale, and it read
+as plain rather than as restrained.
+
+Now **Committed**, around hue 278 (iris rather than the 240 it started at;
+240 is navy, the exact enterprise register the redesign set out to leave).
+
+One rule governs the palette:
+
+> The findings own the warm half of the spectrum, so the interface owns the
+> cool half.
+
+Green, amber and red carry specific meaning in the results, so nothing
+decorative may borrow them. Surface, accent, focus ring, links and the
+primary button all draw from the single iris band. The consequence is the
+point: an unread page is entirely cool, so the first warm pixel on screen
+is always a result, never chrome.
+
+### Measured, not assumed
+
+Contrast is checked on rendered elements via canvas, because
+`getComputedStyle` returns `oklch()` strings that a naive regex reads as
+RGB. Two real defects came out of measuring rather than trusting the
+palette maths:
+
+- The match-rate meter's two segments sat 1.07:1 apart. They were tuned to
+  be readable *as text* on a dark ground, which lands them at nearly the
+  same lightness, so side by side they differed by hue alone and anyone
+  with red-green deficiency saw one uninterrupted band. Meter fills are now
+  separate tokens, spread in lightness (3.14:1) and split by a hairline gap
+  so the boundary is positional as well as chromatic.
+- Interactive borders sat below the WCAG 1.4.11 3:1 floor for component
+  boundaries. A `--edge` token now covers chips, buttons and the drop zone
+  (3.30–3.83:1). Table rules deliberately keep the softer `--line`: a row
+  separator is decoration between content, not the edge of a control.

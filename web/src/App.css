@@ -1,5 +1,5 @@
 /*
- * Dark editorial reading surface.
+ * Dark editorial reading surface, lit in iris.
  *
  * Mood: late-evening desk lamp on a ledger. Only the numbers are lit.
  *
@@ -7,49 +7,86 @@
  * this project shipped first, and it is not neon-terminal dark, which is
  * the reflex any finance tool falls into once it decides against navy.
  * What it is instead: a serious reading surface. Type does the hierarchy,
- * colour only ever signals state, and the figures are the subject.
+ * and the figures are the subject.
  *
- * Strategy: Restrained. Neutral near-black surfaces, one cobalt accent
- * carrying focus and selection, semantic colour reserved for findings.
+ * Strategy: Committed. The surface is not neutral grey-black; it is a
+ * deep iris that carries about half the visible area, with a single
+ * lighter iris doing every interactive job.
+ *
+ * ONE RULE GOVERNS THE WHOLE PALETTE, and it is worth stating because it
+ * decides every colour below: the findings own the warm half of the
+ * spectrum, so the interface owns the cool half. Green, amber and red
+ * mean something specific here, and nothing decorative is allowed to
+ * borrow them. That is why the surface, the accent, the focus ring, the
+ * links and the primary button all sit in one narrow band around hue 278
+ * -- an unread page is entirely cool, so the first warm pixel on screen
+ * is always a result, never chrome.
+ *
+ * Hue 278 rather than the 240 this started at. 240 is navy, which is the
+ * exact enterprise register the redesign set out to leave; pushing into
+ * iris keeps the coolness while dropping the association.
  */
 
 :root {
-  /* ---- surfaces: pure neutral, no hue tint ---- */
-  --bg: oklch(0.13 0 0);
-  --surface: oklch(0.175 0 0);
-  --raised: oklch(0.215 0 0);
-  --line: oklch(0.28 0 0);
-  --line-soft: oklch(0.23 0 0);
+  /* ---- surfaces: deep iris, not neutral black ---- */
+  --bg: oklch(0.155 0.030 278);
+  --surface: oklch(0.205 0.034 278);
+  --raised: oklch(0.252 0.038 278);
+  --line: oklch(0.335 0.040 278);
+  --line-soft: oklch(0.268 0.034 278);
+  /* Separate token for the outline of an interactive control. WCAG 1.4.11
+     asks 3:1 for the boundary that identifies a component, which --line
+     (1.63:1) does not meet. Table rules keep --line: a row separator is
+     decoration between content, not the edge of a control. */
+  --edge: oklch(0.505 0.050 278);
 
-  /* ---- ink: a whisper of the brand hue, nothing more ---- */
-  --ink: oklch(0.95 0.005 240);
-  --muted: oklch(0.68 0.008 240);
+  /* ---- ink: carries the surface hue so text sits in the page rather
+         than floating on top of it ---- */
+  --ink: oklch(0.96 0.012 278);
+  --muted: oklch(0.755 0.030 278);
   /* L chosen so 11px uppercase column headers still clear WCAG AA 4.5:1
-     on BOTH bg (5.12:1) and surface (4.83:1). At 0.52 it measured 3.68:1,
-     which only passes as large text, and none of its uses are large. */
-  --faint: oklch(0.60 0.008 240);
+     on BOTH bg and surface. At 0.52 it measured 3.68:1, which only passes
+     as large text, and none of its uses are large. Re-measured after the
+     surfaces gained chroma; the tinted background is slightly lighter in
+     luminance than the neutral one, so this floor had to rise with it. */
+  --faint: oklch(0.655 0.032 278);
 
-  /* ---- action: near-white fill. Editorial, unmistakable, and it
-         sidesteps the contrast trap of white text on a mid-blue. ---- */
-  --action: oklch(0.95 0.01 240);
-  --action-hover: oklch(1 0 0);
-  --on-action: oklch(0.13 0 0);
+  /* ---- accent: the lit iris. Focus, selection, links, the drop target
+         and the primary button all draw from this one colour, which is
+         what makes the interface read as coloured rather than as a grey
+         page with a coloured detail. ---- */
+  --accent: oklch(0.755 0.155 278);
+  --accent-hover: oklch(0.815 0.145 278);
+  --accent-dim: oklch(0.56 0.13 278);
+  --accent-wash: oklch(0.755 0.155 278 / 0.16);
+  --accent-edge: oklch(0.755 0.155 278 / 0.62);
 
-  /* ---- accent: the seed hue, for focus, selection and links only ---- */
-  --accent: oklch(0.72 0.13 240);
-  --accent-dim: oklch(0.52 0.10 240);
-  --accent-wash: oklch(0.72 0.13 240 / 0.14);
+  /* ---- action: the accent itself, with the page's own dark as the
+         label. A near-white button was the safe call and it was also the
+         one thing keeping the screen looking monochrome. ---- */
+  --action: var(--accent);
+  --action-hover: var(--accent-hover);
+  --on-action: oklch(0.155 0.030 278);
 
-  /* ---- semantic: lightness deliberately spread so the three remain
-         distinguishable without hue, for colour-vision deficiency.
-         Every status also carries a text label; colour never stands
-         alone. ---- */
-  --ok: oklch(0.76 0.13 160);
-  --ok-wash: oklch(0.76 0.13 160 / 0.13);
-  --warn: oklch(0.84 0.14 85);
-  --warn-wash: oklch(0.84 0.14 85 / 0.13);
-  --bad: oklch(0.66 0.19 25);
-  --bad-wash: oklch(0.66 0.19 25 / 0.15);
+  /* ---- semantic: the warm half, reserved. Lightness is deliberately
+         spread so the three remain distinguishable without hue, for
+         colour-vision deficiency. Every status also carries a text
+         label; colour never stands alone. ---- */
+  --ok: oklch(0.80 0.155 158);
+  --ok-wash: oklch(0.80 0.155 158 / 0.15);
+  --warn: oklch(0.845 0.150 78);
+  --warn-wash: oklch(0.845 0.150 78 / 0.15);
+  --bad: oklch(0.685 0.195 25);
+  --bad-wash: oklch(0.685 0.195 25 / 0.17);
+
+  /* Meter fills only. --ok and --warn are tuned to be readable AS TEXT on
+     a dark ground, which puts them at nearly the same lightness, so side
+     by side in a bar they differ by hue alone (measured 1.07:1). Anyone
+     with red-green deficiency would see one uninterrupted band. These two
+     are spread in lightness instead, and the bar also carries a hairline
+     gap so the split is positional as well as chromatic. */
+  --meter-ok: oklch(0.80 0.155 158);
+  --meter-warn: oklch(0.53 0.145 55);
 
   /* ---- type ---- */
   --serif: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", serif;
@@ -160,9 +197,11 @@ body {
 .privacy strong { color: var(--ink); font-weight: 600; }
 
 /* ============================ drop zone ============================ */
+/* Tinted at rest, not just on hover. This is the one thing the page is
+   asking the visitor to do, and a grey box asks quietly. */
 .dropzone {
-  border: 1px dashed var(--line);
-  background: var(--surface);
+  border: 1px dashed var(--accent-edge);
+  background: var(--accent-wash);
   border-radius: 3px;
   padding: var(--sp-7) var(--sp-4);
   text-align: center;
@@ -170,7 +209,7 @@ body {
   transition: border-color var(--dur) var(--ease),
               background var(--dur) var(--ease);
 }
-.dropzone:hover { border-color: var(--faint); background: var(--raised); }
+.dropzone:hover { border-color: var(--accent); background: oklch(0.755 0.155 278 / 0.24); }
 .dropzone.over {
   border-color: var(--accent);
   background: var(--accent-wash);
@@ -202,14 +241,18 @@ body {
   text-underline-offset: 3px;
   cursor: pointer;
 }
-.link-btn:hover { color: var(--ink); }
+.link-btn:hover { color: var(--accent-hover); }
 .link-btn:disabled { color: var(--faint); cursor: default; text-decoration: none; }
 
 /* ============================ stage states ============================ */
 /* An empty state that teaches the interface rather than saying "nothing
    here": it names the five findings before any file is dropped, so the
    output area is legible before it has output. */
-.empty { max-width: 60ch; }
+/* Centred in the stage rather than pinned to the top. The landing screen
+   has one short block of content and a tall viewport; top-aligning it
+   left the lower two thirds of the page visibly empty. */
+.empty { max-width: 58ch; }
+.stage:has(.empty) { display: grid; align-content: center; }
 .empty h2 {
   font-family: var(--serif);
   font-weight: 400;
@@ -217,27 +260,24 @@ body {
   margin: 0 0 var(--sp-4);
   letter-spacing: -0.015em;
 }
-.empty ol { margin: 0; padding: 0; list-style: none; counter-reset: f; }
+.empty ol { margin: 0; padding: 0; list-style: none; }
 .empty li {
-  counter-increment: f;
   display: grid;
-  grid-template-columns: 2.25rem 1fr;
+  grid-template-columns: 12rem 1fr;
   gap: var(--sp-3);
   padding: var(--sp-3) 0;
   border-bottom: 1px solid var(--line-soft);
   align-items: baseline;
 }
-.empty li::before {
-  content: counter(f, decimal-leading-zero);
-  font-family: var(--mono);
-  font-size: var(--t-xs);
-  color: var(--faint);
+.empty li .tag { justify-self: start; }
+/* Both halves are explicitly placed. Without the column the description
+   falls into the tag column on the next row and wraps one word per line. */
+.empty li .detail { grid-column: 2; color: var(--muted); font-size: var(--t-sm); }
+
+@media (max-width: 560px) {
+  .empty li { grid-template-columns: 1fr; gap: var(--sp-1); }
+  .empty li .detail { grid-column: 1; }
 }
-.empty li b { font-weight: 600; }
-/* Both the name and its description belong in the content column. Without
-   the explicit grid-column the description falls into the 2.25rem counter
-   column on the next row and wraps one word per line. */
-.empty li span { grid-column: 2; color: var(--muted); font-size: var(--t-sm); }
 
 .stage-head {
   display: flex;
@@ -281,10 +321,33 @@ body {
 .figure.ok .figure-value { color: var(--ok); }
 .figure.warn .figure-value { color: var(--warn); }
 
+/* ============================ meter ============================ */
+/* The one piece of purely proportional information on the page, and the
+   only place colour carries meaning on its own -- so it is labelled for
+   screen readers and the same split is stated in figures directly above
+   it. It exists because "13 of 18" is a fact you read, while a bar is a
+   fact you see. */
+.meter {
+  display: flex;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--meter-warn);
+  margin: calc(var(--sp-5) * -1 + var(--sp-1)) 0 var(--sp-5);
+}
+.meter-ok {
+  background: var(--meter-ok);
+  border-right: 2px solid var(--bg);
+  transition: width 600ms var(--ease);
+}
+/* Nothing to divide when one side is empty. */
+.meter-ok[style*="width: 100%"] { border-right: none; }
+@media (prefers-reduced-motion: reduce) { .meter-ok { transition: none; } }
+
 /* ============================ filters ============================ */
 .filters { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-4); }
 .chip {
-  border: 1px solid var(--line);
+  border: 1px solid var(--edge);
   background: transparent;
   color: var(--muted);
   border-radius: 999px;
@@ -295,7 +358,7 @@ body {
   transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 .chip:hover { color: var(--ink); border-color: var(--faint); }
-.chip.on { background: var(--action); color: var(--on-action); border-color: var(--action); }
+.chip.on { background: var(--accent); color: var(--on-action); border-color: var(--accent); font-weight: 600; }
 
 /* ============================ tables ============================ */
 .table-scroll { overflow-x: auto; }
@@ -394,7 +457,7 @@ tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: defau
   border-top: 1px solid var(--line);
 }
 .btn {
-  border: 1px solid var(--line);
+  border: 1px solid var(--edge);
   background: transparent;
   color: var(--ink);
   border-radius: 3px;
@@ -413,7 +476,7 @@ tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: defau
 }
 .btn.primary:hover { background: var(--action-hover); border-color: var(--action-hover); }
 .btn:disabled { opacity: 0.45; cursor: default; }
-.btn:disabled:hover { background: transparent; border-color: var(--line); }
+.btn:disabled:hover { background: transparent; border-color: var(--edge); }
 .btn.primary:disabled:hover { background: var(--action); }
 .push { margin-left: auto; }
 

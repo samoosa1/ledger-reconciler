@@ -18,7 +18,27 @@ export function ResultsTable({ results }: Props) {
   // Keyed by stable identity, not list index: filtering reorders the list,
   // so an index would leave a different row expanded than the one clicked.
   const [openRow, setOpenRow] = useState<string | null>(null)
+  // The report writer now fetches SheetJS on demand, so the download can
+  // fail on a bad connection where it previously could not. Surfaced
+  // rather than swallowed: a button that does nothing is worse than one
+  // that says why.
+  const [exportError, setExportError] = useState<string | null>(null)
+  const [exporting, setExporting] = useState(false)
   const summary = summarise(results)
+
+  const handleDownload = async () => {
+    setExporting(true)
+    setExportError(null)
+    try {
+      await downloadReport(results)
+    } catch (e) {
+      setExportError(
+        `Could not build the report: ${e instanceof Error ? e.message : String(e)}`,
+      )
+    } finally {
+      setExporting(false)
+    }
+  }
 
   const shown = filter
     ? results.filter((r) => (r.flags as string[]).includes(filter))
@@ -36,6 +56,19 @@ export function ResultsTable({ results }: Props) {
         />
         <Figure value={`${Math.round(summary.matchRate * 100)}%`} label="match rate" />
       </div>
+
+      {summary.total > 0 && (
+        <div
+          className="meter"
+          role="img"
+          aria-label={`${summary.matched} of ${summary.total} items reconciled`}
+        >
+          <span
+            className="meter-ok"
+            style={{ width: `${summary.matchRate * 100}%` }}
+          />
+        </div>
+      )}
 
       {summary.flagged === 0 ? (
         <p className="notice ok">
@@ -93,8 +126,15 @@ export function ResultsTable({ results }: Props) {
                       {clean ? (
                         <span className="tag ok">reconciled</span>
                       ) : (
+                        /* An unreadable file is a different kind of
+                           outcome from a mismatch: the tool never got to
+                           look, so it is not a finding about the books.
+                           Coloured apart for that reason, not severity. */
                         r.flags.map((f) => (
-                          <span className="tag warn" key={f}>
+                          <span
+                            className={`tag ${f === 'unreadable_invoice' ? 'bad' : 'warn'}`}
+                            key={f}
+                          >
                             {FLAG_LABELS[f] ?? f}
                           </span>
                         ))
@@ -194,10 +234,15 @@ export function ResultsTable({ results }: Props) {
 
       <div className="actions">
         <span className="muted">
-          A flag is a record to review, not a confirmed error.
+          {exportError ?? 'A flag is a record to review, not a confirmed error.'}
         </span>
-        <button className="btn primary push" type="button" onClick={() => downloadReport(results)}>
-          Download .xlsx
+        <button
+          className="btn primary push"
+          type="button"
+          disabled={exporting}
+          onClick={() => void handleDownload()}
+        >
+          {exporting ? 'Building\u2026' : 'Download .xlsx'}
         </button>
       </div>
     </section>

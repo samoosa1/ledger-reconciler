@@ -7,17 +7,23 @@
  * pulling a later page's text into the match.
  */
 
-import * as pdfjs from 'pdfjs-dist'
+import type * as PdfjsTypes from 'pdfjs-dist'
 import type { TextItem } from 'pdfjs-dist/types/src/display/api'
 
 import workerUrl from 'pdfjs-dist/build/pdf.worker.mjs?url'
 
 /**
- * `?url` is the Vite-specific way to get an asset's final hashed URL. It
- * has to be an import: `new URL('pdfjs-dist/...', import.meta.url)` looks
- * equivalent but is not, because Vite does not resolve bare package
- * specifiers inside `new URL()`. That form silently produces a path
- * relative to this file and pdf.js then fails to start its worker.
+ * pdf.js is loaded on first read, not at module scope. It is the heaviest
+ * dependency in the app and nothing on the landing page needs it: a
+ * visitor who never drops a file never pays for a PDF engine.
+ *
+ * The worker URL stays a static import. `?url` is the Vite-specific way to
+ * get an asset's final hashed URL, and it emits only that string into the
+ * bundle, not the worker itself. It has to be an import: `new
+ * URL('pdfjs-dist/...', import.meta.url)` looks equivalent but is not,
+ * because Vite does not resolve bare package specifiers inside `new
+ * URL()`. That form silently produces a path relative to this file and
+ * pdf.js then fails to start its worker.
  *
  * Under Node (the test run) there is no worker to fetch. The legacy build
  * parses inline, and handing it a browser asset URL makes it try to import
@@ -25,8 +31,16 @@ import workerUrl from 'pdfjs-dist/build/pdf.worker.mjs?url'
  */
 const isBrowser = typeof window !== 'undefined'
 
-if (isBrowser) {
-  pdfjs.GlobalWorkerOptions.workerSrc = workerUrl
+let cached: typeof PdfjsTypes | undefined
+
+async function loadPdfjs(): Promise<typeof PdfjsTypes> {
+  if (!cached) {
+    cached = await import('pdfjs-dist')
+    if (isBrowser) {
+      cached.GlobalWorkerOptions.workerSrc = workerUrl
+    }
+  }
+  return cached
 }
 
 /**
@@ -88,6 +102,8 @@ function assemble(items: unknown[]): string {
 export async function readPdfText(file: Blob, fileName: string): Promise<string> {
   const bytes = new Uint8Array(await file.arrayBuffer())
   if (bytes.length === 0) return ''
+
+  const pdfjs = await loadPdfjs()
 
   // The loading task, not the document proxy, owns teardown in pdf.js v6:
   // the proxy exposes only cleanup(), which frees page resources but

@@ -13,10 +13,11 @@
  * functional one.
  */
 
-import * as XLSX from 'xlsx'
+import type * as XLSX from 'xlsx'
 import { toISO } from '../domain/dates'
 import type { MatchResult } from '../domain/types'
 import { FLAG_LABELS, summarise } from '../ui/pipeline'
+import { loadXlsx } from './xlsx'
 
 /**
  * No apostrophe-escaping here, deliberately, and the reasoning is worth
@@ -60,7 +61,7 @@ const DETAIL_HEADERS = [
  * SheetJS's own reader discards them on round-trip. */
 const DETAIL_WIDTHS = [26, 14, 26, 13, 15, 11, 13, 34, 14, 22]
 
-function buildDetailSheet(results: MatchResult[]): XLSX.WorkSheet {
+function buildDetailSheet(xlsx: typeof XLSX, results: MatchResult[]): XLSX.WorkSheet {
   const rows: (string | number | null)[][] = [DETAIL_HEADERS]
 
   for (const r of results) {
@@ -84,14 +85,14 @@ function buildDetailSheet(results: MatchResult[]): XLSX.WorkSheet {
     ])
   }
 
-  const sheet = XLSX.utils.aoa_to_sheet(rows)
+  const sheet = xlsx.utils.aoa_to_sheet(rows)
   sheet['!cols'] = DETAIL_WIDTHS.map((wch) => ({ wch }))
   // Keeps the header visible when scrolling a long reconciliation.
   sheet['!freeze'] = { xSplit: '0', ySplit: '1' }
   return sheet
 }
 
-function buildSummarySheet(results: MatchResult[]): XLSX.WorkSheet {
+function buildSummarySheet(xlsx: typeof XLSX, results: MatchResult[]): XLSX.WorkSheet {
   const s = summarise(results)
   const rows: (string | number)[][] = [
     ['Reconciliation Summary'],
@@ -109,15 +110,21 @@ function buildSummarySheet(results: MatchResult[]): XLSX.WorkSheet {
   rows.push(['Generated', new Date().toISOString().slice(0, 19).replace('T', ' ')])
   rows.push(['Note', 'Flagged items are records to review, not confirmed errors.'])
 
-  const sheet = XLSX.utils.aoa_to_sheet(rows)
+  const sheet = xlsx.utils.aoa_to_sheet(rows)
   sheet['!cols'] = [{ wch: 26 }, { wch: 58 }]
   return sheet
 }
 
-export function buildWorkbook(results: MatchResult[]): XLSX.WorkBook {
-  const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, buildSummarySheet(results), 'Summary')
-  XLSX.utils.book_append_sheet(wb, buildDetailSheet(results), 'Detail')
+/**
+ * Async because SheetJS is fetched on first use rather than bundled into
+ * the initial payload. Nothing here needs the parser until a report is
+ * actually asked for.
+ */
+export async function buildWorkbook(results: MatchResult[]): Promise<XLSX.WorkBook> {
+  const xlsx = await loadXlsx()
+  const wb = xlsx.utils.book_new()
+  xlsx.utils.book_append_sheet(wb, buildSummarySheet(xlsx, results), 'Summary')
+  xlsx.utils.book_append_sheet(wb, buildDetailSheet(xlsx, results), 'Detail')
   return wb
 }
 
@@ -130,8 +137,12 @@ export function buildWorkbook(results: MatchResult[]): XLSX.WorkBook {
  * where a Uint8Array<ArrayBufferLike> is rejected because it might be
  * backed by a SharedArrayBuffer.
  */
-export function workbookBytes(results: MatchResult[]): ArrayBuffer {
-  return XLSX.write(buildWorkbook(results), { type: 'array', bookType: 'xlsx' }) as ArrayBuffer
+export async function workbookBytes(results: MatchResult[]): Promise<ArrayBuffer> {
+  const xlsx = await loadXlsx()
+  return xlsx.write(await buildWorkbook(results), {
+    type: 'array',
+    bookType: 'xlsx',
+  }) as ArrayBuffer
 }
 
 /**
@@ -139,8 +150,11 @@ export function workbookBytes(results: MatchResult[]): ArrayBuffer {
  * because it otherwise pins the whole workbook in memory for the lifetime
  * of the document.
  */
-export function downloadReport(results: MatchResult[], fileName = 'reconciliation-report.xlsx'): void {
-  const blob = new Blob([workbookBytes(results)], {
+export async function downloadReport(
+  results: MatchResult[],
+  fileName = 'reconciliation-report.xlsx',
+): Promise<void> {
+  const blob = new Blob([await workbookBytes(results)], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   })
   const url = URL.createObjectURL(blob)

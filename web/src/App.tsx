@@ -157,26 +157,38 @@ export default function App() {
 }
 
 /**
- * Teaches the interface rather than saying "nothing here": naming the five
- * findings up front means the output area is legible before it has output,
- * and a visitor understands what the tool looks for without running it.
+ * Teaches the interface rather than saying "nothing here": naming every
+ * outcome up front means the output area is legible before it has output,
+ * and a visitor understands what the tool does without running it.
+ *
+ * It shows the REAL tags, in the real colours they will appear in, rather
+ * than a numbered list describing them. Two reasons. The legend and the
+ * results then teach each other, so nothing has to be re-learned when the
+ * table arrives. And "reconciled" is listed first because it is the most
+ * common outcome by far; a legend made only of failures quietly implies
+ * the tool mostly finds problems, which is not what it does.
  */
 function EmptyState() {
-  const findings: [string, string][] = [
-    ['Missing payment', 'An invoice with no matching entry in the ledger.'],
-    ['Undocumented payment', 'A ledger entry with no invoice to support it.'],
-    ['Amount differs', 'Matched, but the two figures disagree.'],
-    ['Duplicate invoice', 'The same invoice number appears more than once.'],
-    ['Could not read', 'A PDF with no extractable text, reported rather than guessed at.'],
+  const outcomes: [string, 'ok' | 'warn' | 'bad', string][] = [
+    ['reconciled', 'ok', 'The invoice and the ledger entry agree. Most rows land here.'],
+    ['No matching payment', 'warn', 'An invoice with no matching entry in the ledger.'],
+    ['Payment with no invoice', 'warn', 'A ledger entry with no invoice to support it.'],
+    ['Amount differs', 'warn', 'Matched, but the two figures disagree.'],
+    ['Duplicate invoice', 'warn', 'The same invoice number appears more than once.'],
+    [
+      'Could not read invoice',
+      'bad',
+      'A PDF with no extractable text. Reported, never guessed at.',
+    ],
   ]
   return (
     <section className="empty rise">
-      <h2>What this looks for</h2>
+      <h2>Every row comes back as one of these</h2>
       <ol>
-        {findings.map(([name, detail]) => (
+        {outcomes.map(([name, tone, detail]) => (
           <li key={name}>
-            <b>{name}</b>
-            <span>{detail}</span>
+            <span className={`tag ${tone}`}>{name}</span>
+            <span className="detail">{detail}</span>
           </li>
         ))}
       </ol>

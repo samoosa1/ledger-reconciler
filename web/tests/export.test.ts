@@ -24,8 +24,8 @@ const row = (o: Partial<LedgerRow> = {}): LedgerRow => ({
 })
 
 /** Round-trips through real bytes, not the in-memory object. */
-function readBack(results: MatchResult[]) {
-  const wb = XLSX.read(workbookBytes(results), { type: 'array' })
+async function readBack(results: MatchResult[]) {
+  const wb = XLSX.read(await workbookBytes(results), { type: 'array' })
   return {
     names: wb.SheetNames,
     detail: XLSX.utils.sheet_to_json<unknown[]>(wb.Sheets.Detail, { header: 1 }) as (string | number)[][],
@@ -33,20 +33,20 @@ function readBack(results: MatchResult[]) {
   }
 }
 
-test('produces a Summary and a Detail sheet', () => {
-  const { names } = readBack(reconcile([inv()], [row()]))
+test('produces a Summary and a Detail sheet', async () => {
+  const { names } = await readBack(reconcile([inv()], [row()]))
   expect(names).toEqual(['Summary', 'Detail'])
 })
 
-test('detail sheet has one header row plus one row per result', () => {
+test('detail sheet has one header row plus one row per result', async () => {
   const results = reconcile([inv()], [row({ rowIndex: 3, reference: null, amount: 999 })])
-  const { detail } = readBack(results)
+  const { detail } = await readBack(results)
   expect(detail[0][0]).toBe('Status')
   expect(detail.length).toBe(results.length + 1)
 })
 
-test('a clean match is reported as matched, with both amounts', () => {
-  const { detail } = readBack(reconcile([inv()], [row()]))
+test('a clean match is reported as matched, with both amounts', async () => {
+  const { detail } = await readBack(reconcile([inv()], [row()]))
   const [status, number, vendor, date, invAmt, ledgerRow] = detail[1]
   expect(status).toBe('matched')
   expect(number).toBe('INV-1')
@@ -56,15 +56,15 @@ test('a clean match is reported as matched, with both amounts', () => {
   expect(ledgerRow).toBe(2)
 })
 
-test('flags are written in plain language, not internal names', () => {
-  const { detail } = readBack(reconcile([inv()], []))
+test('flags are written in plain language, not internal names', async () => {
+  const { detail } = await readBack(reconcile([inv()], []))
   expect(detail[1][0]).toBe('No matching payment')
   expect(String(detail[1][0])).not.toContain('no_ledger_entry')
 })
 
-test('summary reports the counts and the match rate', () => {
+test('summary reports the counts and the match rate', async () => {
   const results = reconcile([inv(), inv({ sourceFile: 'b.pdf', invoiceNumber: 'INV-2' })], [row()])
-  const { summary } = readBack(results)
+  const { summary } = await readBack(results)
   const find = (label: string) => summary.find((r) => r[0] === label)?.[1]
   expect(find('Total items')).toBe(2)
   expect(find('Matched clean')).toBe(1)
@@ -87,9 +87,9 @@ test('summary reports the counts and the match rate', () => {
  */
 test.each(['=SUM(A1:A9)', '+1+1', '-1-1', '@SUM(A1)'])(
   'writes %s as text, unchanged and not as a formula',
-  (hostile) => {
+  async (hostile) => {
     const results = reconcile([inv({ vendor: hostile })], [])
-    const wb = XLSX.read(workbookBytes(results), { type: 'array' })
+    const wb = XLSX.read(await workbookBytes(results), { type: 'array' })
     const cell = wb.Sheets.Detail.C2
 
     expect(cell.t).toBe('s')
@@ -99,9 +99,9 @@ test.each(['=SUM(A1:A9)', '+1+1', '-1-1', '@SUM(A1)'])(
 )
 
 /** No <f> element anywhere is the format-level statement of the above. */
-test('the emitted sheet contains no formula cells at all', () => {
+test('the emitted sheet contains no formula cells at all', async () => {
   const results = reconcile([inv({ vendor: '=SUM(A1:A9)' })], [row()])
-  const wb = XLSX.read(workbookBytes(results), { type: 'array' })
+  const wb = XLSX.read(await workbookBytes(results), { type: 'array' })
   const detail = wb.Sheets.Detail
   const formulaCells = Object.keys(detail)
     .filter((k) => !k.startsWith('!'))
@@ -109,20 +109,20 @@ test('the emitted sheet contains no formula cells at all', () => {
   expect(formulaCells).toEqual([])
 })
 
-test('an ordinary vendor name is written unchanged', () => {
-  const { detail } = readBack(reconcile([inv({ vendor: 'Acme Co' })], []))
+test('an ordinary vendor name is written unchanged', async () => {
+  const { detail } = await readBack(reconcile([inv({ vendor: 'Acme Co' })], []))
   expect(detail[1][2]).toBe('Acme Co')
 })
 
-test('a payment with no invoice leaves the invoice columns empty', () => {
-  const { detail } = readBack(reconcile([], [row({ description: 'Wire transfer' })]))
+test('a payment with no invoice leaves the invoice columns empty', async () => {
+  const { detail } = await readBack(reconcile([], [row({ description: 'Wire transfer' })]))
   const r = detail[1]
   expect(r[0]).toBe('Payment with no invoice')
   expect(r[1] ?? '').toBe('') // invoice number
   expect(r[7]).toBe('Wire transfer')
 })
 
-test('column widths are written into the file', () => {
-  const wb = buildWorkbook(reconcile([inv()], [row()]))
+test('column widths are written into the file', async () => {
+  const wb = await buildWorkbook(reconcile([inv()], [row()]))
   expect(wb.Sheets.Detail['!cols']).toHaveLength(10)
 })

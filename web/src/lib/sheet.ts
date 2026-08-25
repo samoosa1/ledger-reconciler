@@ -6,10 +6,16 @@
  * npm. The npm-published `xlsx` stopped at 0.18.5 and carries unpatched
  * prototype-pollution and ReDoS advisories, which matters here because
  * this parses spreadsheets from people we do not trust.
+ *
+ * SheetJS is loaded on demand, not at module scope. The extension tests
+ * below are what the landing page actually calls, and they are two
+ * regexes; importing the parser for them would make a visitor download a
+ * spreadsheet engine before deciding whether to drop a file.
  */
 
-import * as XLSX from 'xlsx'
+import type * as XLSXTypes from 'xlsx'
 import type { CellValue } from '../domain/ledger'
+import { loadXlsx } from './xlsx'
 
 export class SheetReadError extends Error {}
 
@@ -23,9 +29,10 @@ export class SheetReadError extends Error {}
  * happily accept as an amount.
  */
 export async function readSheetGrid(file: Blob, fileName: string): Promise<CellValue[][]> {
+  const XLSX = await loadXlsx()
   const buffer = await file.arrayBuffer()
 
-  let workbook: XLSX.WorkBook
+  let workbook: XLSXTypes.WorkBook
   try {
     workbook = XLSX.read(buffer, { type: 'array', cellDates: true })
   } catch (cause) {
