@@ -176,3 +176,6 @@ tr.detail td { background: var(--soft); padding: 14px; cursor: default; }
   .stat-strip { flex-wrap: wrap; }
   .stat { min-width: 50%; }
 }
+
+/* Keeps the provenance note left while the buttons stay right-aligned. */
+.export-note { margin-right: auto; align-self: center; }

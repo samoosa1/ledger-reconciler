@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react'
 import { toISO } from '../domain/dates'
 import type { MatchResult } from '../domain/types'
+import { downloadReport } from '../lib/export'
 import { FLAG_EXPLANATIONS, FLAG_LABELS, summarise } from './pipeline'
 
 interface Props {
@@ -159,7 +160,17 @@ export function ResultsTable({ results, onReset }: Props) {
       </div>
 
       <div className="actions">
+        <span className="muted export-note">
+          Generated in this browser · nothing uploaded
+        </span>
         <button className="btn" onClick={onReset} type="button">Start over</button>
+        <button
+          className="btn primary"
+          type="button"
+          onClick={() => downloadReport(results)}
+        >
+          Download report (.xlsx)
+        </button>
       </div>
     </section>
   )
