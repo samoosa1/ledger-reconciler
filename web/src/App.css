@@ -88,20 +88,74 @@
   --meter-ok: oklch(0.80 0.155 158);
   --meter-warn: oklch(0.53 0.145 55);
 
-  /* ---- type ---- */
-  --serif: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", serif;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  /* ---- type ----
+     Two families, each with a job the other cannot do.
 
-  /* Fixed rem scale, ratio ~1.2. Product UI is viewed at consistent DPI;
-     fluid clamp headings shrink in panels and look worse, not better. */
-  --t-xs: 0.6875rem;
-  --t-sm: 0.8125rem;
-  --t-base: 0.875rem;
-  --t-md: 1rem;
-  --t-lg: 1.25rem;
-  --t-xl: 1.75rem;
-  --t-2xl: 2.25rem;
+     Archivo for everything the interface says. An American grotesque
+     drawn for heavy weights and small sizes: squared skeleton, tight
+     apertures, no bookish softness. It replaces two earlier attempts that
+     both failed the same way -- Georgia at 400 was thin-stroked and made
+     a reconciliation tool look like an essay, and IBM Plex Sans, while
+     better, is humanist enough that even 600 reads soft. Archivo has real
+     mass at 600-700, which is what "solid" actually asks for.
+
+     Deliberately not Inter, the face every tool in this category reaches
+     for by default.
+
+     IBM Plex Mono for figures only. A proportional face cannot align a
+     column of money no matter how it is tuned, so this is the one place a
+     second family earns its keep. Both carry full Latin Extended, so
+     Turkish dotted/dotless i renders rather than falling back mid-word. */
+  --display: 'Archivo Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --sans: 'Archivo Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* ---- weight ----
+     Named by role, not number, because the dark surface shifts what each
+     number does. Light text on a dark ground optically thins, so every
+     role sits one notch heavier than it would on white. Archivo is
+     variable, so these are real values rather than the nearest of four
+     static cuts. */
+  --w-body: 420;
+  --w-medium: 520;
+  --w-label: 580;
+  --w-display: 700;
+
+  /* ---- size ----
+     Named for the role each size serves, not its place in a ramp, so a
+     rule reads as a decision rather than a lookup. Fixed rem, not fluid:
+     product UI is viewed at consistent DPI and a clamped heading only
+     shrinks in a narrow panel.
+
+     --t-body is 1rem. It was 0.875rem, and that single value was doing
+     most of the damage the last two font swaps were blamed for: prose set
+     at 14px with 13px secondary text reads as flimsy under any typeface.
+     Density is kept where density is earned -- table cells and column
+     headers -- and nowhere else. */
+  --t-micro: 0.75rem;   /* column headers, tags, figure labels */
+  --t-data: 0.8125rem;  /* table cells: dense by intent */
+  --t-ui: 0.875rem;     /* buttons, chips, inline controls */
+  --t-body: 1rem;       /* prose the visitor actually reads */
+  --t-lead: 1.125rem;   /* the one paragraph under the masthead */
+  --t-h2: 1.75rem;
+  --t-h1: 2.5rem;
+
+  /* ---- leading ----
+     Headings previously inherited the body's 1.55, which is why they read
+     as loose and weak at 28px. Leading tightens as size grows. */
+  --lh-display: 1.08;
+  --lh-h2: 1.16;
+  --lh-body: 1.6;
+  --lh-tight: 1.35;
+
+  /* ---- tracking ----
+     Negative on display to close the gaps a large grotesque opens up;
+     slightly positive on small light-on-dark text, which optically
+     smears without it. Floor of -0.04em per the display rule. */
+  --tr-h1: -0.028em;
+  --tr-h2: -0.022em;
+  --tr-body: 0.005em;
+  --tr-micro: 0.02em;
 
   --sp-1: 4px;
   --sp-2: 8px;
@@ -129,8 +183,10 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: var(--t-base);
-  line-height: 1.55;
+  font-size: var(--t-body);
+  font-weight: var(--w-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--tr-body);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -173,28 +229,29 @@ body {
 
 /* ============================ masthead ============================ */
 .masthead h1 {
-  font-family: var(--serif);
-  font-size: var(--t-2xl);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-family: var(--display);
+  font-size: var(--t-h1);
+  font-weight: var(--w-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-h1);
   margin: 0 0 var(--sp-3);
   text-wrap: balance;
 }
 .masthead p {
   color: var(--muted);
-  font-size: var(--t-base);
-  max-width: 42ch;
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  max-width: 40ch;
   text-wrap: pretty;
 }
 
 .privacy {
-  font-size: var(--t-sm);
+  font-size: var(--t-body);
   color: var(--muted);
   border-top: 1px solid var(--line-soft);
   padding-top: var(--sp-4);
 }
-.privacy strong { color: var(--ink); font-weight: 600; }
+.privacy strong { color: var(--ink); font-weight: var(--w-label); }
 
 /* ============================ drop zone ============================ */
 /* Tinted at rest, not just on hover. This is the one thing the page is
@@ -217,17 +274,21 @@ body {
 }
 .dropzone.busy { opacity: 0.5; cursor: default; }
 
-.drop-title { font-size: var(--t-md); font-weight: 600; }
+.drop-title {
+  font-size: var(--t-lead);
+  font-weight: var(--w-display);
+  letter-spacing: -0.01em;
+}
 .drop-sub {
   color: var(--muted);
-  font-size: var(--t-sm);
+  font-size: var(--t-ui);
   margin-top: var(--sp-2);
   text-wrap: pretty;
 }
 
 .drop-alt {
   margin-top: var(--sp-3);
-  font-size: var(--t-sm);
+  font-size: var(--t-ui);
   color: var(--muted);
   text-align: center;
 }
@@ -254,11 +315,12 @@ body {
 .empty { max-width: 58ch; }
 .stage:has(.empty) { display: grid; align-content: center; }
 .empty h2 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: var(--t-xl);
-  margin: 0 0 var(--sp-4);
-  letter-spacing: -0.015em;
+  font-family: var(--display);
+  font-weight: var(--w-display);
+  font-size: var(--t-h2);
+  line-height: var(--lh-h2);
+  margin: 0 0 var(--sp-5);
+  letter-spacing: var(--tr-h2);
 }
 .empty ol { margin: 0; padding: 0; list-style: none; }
 .empty li {
@@ -272,7 +334,7 @@ body {
 .empty li .tag { justify-self: start; }
 /* Both halves are explicitly placed. Without the column the description
    falls into the tag column on the next row and wraps one word per line. */
-.empty li .detail { grid-column: 2; color: var(--muted); font-size: var(--t-sm); }
+.empty li .detail { grid-column: 2; color: var(--muted); font-size: var(--t-body); }
 
 @media (max-width: 560px) {
   .empty li { grid-template-columns: 1fr; gap: var(--sp-1); }
@@ -287,13 +349,14 @@ body {
   margin-bottom: var(--sp-5);
 }
 .stage-head h2 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: var(--t-xl);
-  letter-spacing: -0.015em;
+  font-family: var(--display);
+  font-weight: var(--w-display);
+  font-size: var(--t-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--tr-h2);
   margin: 0;
 }
-.muted { color: var(--muted); font-size: var(--t-sm); }
+.muted { color: var(--muted); font-size: var(--t-ui); }
 .faint { color: var(--faint); }
 
 /* ============================ figures ============================ */
@@ -307,14 +370,19 @@ body {
   border-bottom: 1px solid var(--line);
   margin-bottom: var(--sp-5);
 }
+/* The figures are the subject of the page, so they get the heaviest
+   weight in the file. Tabular by inheritance from the global rule. */
 .figure-value {
-  font-family: var(--serif);
-  font-size: var(--t-2xl);
+  font-family: var(--display);
+  font-weight: var(--w-display);
+  font-size: var(--t-h1);
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--tr-h1);
 }
 .figure-label {
-  font-size: var(--t-xs);
+  font-size: var(--t-micro);
+  font-weight: var(--w-medium);
+  letter-spacing: var(--tr-micro);
   color: var(--faint);
   margin-top: var(--sp-2);
 }
@@ -351,9 +419,10 @@ body {
   background: transparent;
   color: var(--muted);
   border-radius: 999px;
-  padding: 3px 11px;
+  padding: 4px 12px;
   font: inherit;
-  font-size: var(--t-sm);
+  font-size: var(--t-ui);
+  font-weight: var(--w-medium);
   cursor: pointer;
   transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
@@ -362,12 +431,12 @@ body {
 
 /* ============================ tables ============================ */
 .table-scroll { overflow-x: auto; }
-table.grid { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+table.grid { width: 100%; border-collapse: collapse; font-size: var(--t-data); }
 table.grid th {
   text-align: left;
-  font-size: var(--t-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: var(--t-micro);
+  font-weight: var(--w-label);
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--faint);
   padding: 0 var(--sp-3) var(--sp-2);
@@ -385,7 +454,9 @@ table.grid tbody tr:hover { background: var(--surface); }
 /* Short identifiers (invoice numbers, ISO dates, row refs) must never
    break mid-value. When the table is wider than the stage the wrapper
    scrolls; compressing a date into two lines is never the right answer. */
-.mono { font-family: var(--mono); font-size: var(--t-xs); white-space: nowrap; }
+/* Figures sit a step below the surrounding sans on purpose: Plex Mono
+   runs optically larger than Archivo at the same nominal size. */
+.mono { font-family: var(--mono); font-size: var(--t-micro); white-space: nowrap; }
 .clip { max-width: 34ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .chev { color: var(--faint); width: 1.5rem; text-align: right; }
 tbody tr.clickable { cursor: pointer; }
@@ -397,33 +468,35 @@ tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: defau
   gap: var(--sp-6);
 }
 .detail-grid h4 {
-  font-size: var(--t-xs);
-  letter-spacing: 0.04em;
+  font-size: var(--t-micro);
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--faint);
   margin: 0 0 var(--sp-3);
-  font-weight: 600;
+  font-weight: var(--w-label);
 }
 .detail-grid dl { display: grid; grid-template-columns: 7rem 1fr; gap: var(--sp-2) var(--sp-3); margin: 0; }
-.detail-grid dt { color: var(--faint); font-size: var(--t-sm); }
+.detail-grid dt { color: var(--faint); font-size: var(--t-ui); }
 .detail-grid dd { margin: 0; }
 .why {
   margin: var(--sp-4) 0 0;
   padding-top: var(--sp-4);
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: var(--t-sm);
+  font-size: var(--t-ui);
+  line-height: var(--lh-tight);
   max-width: 70ch;
 }
-.why strong { color: var(--ink); }
+.why strong { color: var(--ink); font-weight: var(--w-label); }
 
 /* ============================ status ============================ */
 /* Every status pairs colour with a word. Colour is reinforcement, never
    the only channel, so the table stays readable with any colour vision. */
 .tag {
   display: inline-block;
-  font-size: var(--t-xs);
-  padding: 2px 8px;
+  font-size: var(--t-micro);
+  font-weight: var(--w-medium);
+  padding: 3px 9px;
   border-radius: 3px;
   white-space: nowrap;
   margin: 0 var(--sp-1) var(--sp-1) 0;
@@ -438,7 +511,7 @@ tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: defau
 .notice {
   padding: var(--sp-3) var(--sp-4);
   border-radius: 3px;
-  font-size: var(--t-sm);
+  font-size: var(--t-ui);
   margin-bottom: var(--sp-4);
   border: 1px solid;
   max-width: 80ch;
@@ -461,9 +534,10 @@ tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: defau
   background: transparent;
   color: var(--ink);
   border-radius: 3px;
-  padding: 7px 14px;
+  padding: 8px 15px;
   font: inherit;
-  font-size: var(--t-sm);
+  font-size: var(--t-ui);
+  font-weight: var(--w-medium);
   cursor: pointer;
   transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
@@ -472,7 +546,7 @@ tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: defau
   background: var(--action);
   color: var(--on-action);
   border-color: var(--action);
-  font-weight: 600;
+  font-weight: var(--w-label);
 }
 .btn.primary:hover { background: var(--action-hover); border-color: var(--action-hover); }
 .btn:disabled { opacity: 0.45; cursor: default; }
