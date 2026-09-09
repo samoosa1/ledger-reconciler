@@ -8,9 +8,19 @@ Matching order:
 Anything left over on either side is unmatched. Matched pairs still get
 checked for amount drift, and invoice numbers that appear more than once
 are flagged as duplicates regardless of whether they matched.
+
+Two payment shapes that are common in practice and look like errors to a
+naive matcher are recognised explicitly, and reported as informational
+flags rather than as amount mismatches:
+
+- ``paid_in_instalments``: several ledger rows carry the same reference and
+  together sum to the invoice.
+- ``combined_payment``: one ledger row's reference names several invoice
+  numbers and its amount is their sum.
 """
 from __future__ import annotations
 
+import re
 from datetime import timedelta
 from difflib import SequenceMatcher
 
@@ -47,6 +57,27 @@ def _find_by_reference(invoice: Invoice, ledger_rows: list[LedgerRow]) -> Ledger
     return None
 
 
+def _find_all_by_reference(invoice: Invoice, ledger_rows: list[LedgerRow]) -> list[LedgerRow]:
+    if not invoice.invoice_number:
+        return []
+    return [row for row in ledger_rows if row.reference and row.reference == invoice.invoice_number]
+
+
+def _reference_tokens(reference: str | None) -> list[str]:
+    return re.split(r"[\s,;+/&]+", reference.strip()) if reference else []
+
+
+def _find_combined(invoice: Invoice, ledger_rows: list[LedgerRow]) -> LedgerRow | None:
+    """A row whose reference lists this invoice number among others."""
+    if not invoice.invoice_number:
+        return None
+    for row in ledger_rows:
+        toks = _reference_tokens(row.reference)
+        if len(toks) >= 2 and invoice.invoice_number in toks:
+            return row
+    return None
+
+
 def _find_by_amount_and_date(invoice: Invoice, ledger_rows: list[LedgerRow]) -> LedgerRow | None:
     if invoice.amount is None or invoice.invoice_date is None:
         return None
@@ -73,33 +104,54 @@ def reconcile(invoices: list[Invoice], ledger_rows: list[LedgerRow]) -> list[Mat
         if inv.invoice_number:
             number_counts[inv.invoice_number] = number_counts.get(inv.invoice_number, 0) + 1
 
+    # Combined payments are resolved first, across invoices: one ledger row
+    # settles several invoices, so it is consumed once and every invoice it
+    # names gets the same row.
+    combined: dict[int, tuple[LedgerRow, list[Invoice]]] = {}
+    for inv in invoices:
+        row = _find_combined(inv, unmatched_ledger)
+        if row is not None:
+            combined.setdefault(id(row), (row, []))[1].append(inv)
+    combined_rows: dict[int, LedgerRow] = {}
+    for row, inv_list in combined.values():
+        if len(inv_list) < 2 or any(i.amount is None for i in inv_list):
+            continue
+        if _amounts_close(sum(i.amount for i in inv_list), row.amount):
+            unmatched_ledger.remove(row)
+            for i in inv_list:
+                combined_rows[id(i)] = row
+
     for inv in invoices:
         flags: list[str] = []
         if inv.invoice_number is None or inv.vendor is None or inv.invoice_date is None or inv.amount is None:
             flags.append("unreadable_invoice")
 
-        # Both matching strategies need either an invoice number or an
-        # amount+date pair. If neither is present, there's nothing to
-        # search with — reporting "no_ledger_entry" on top of that would
-        # claim a real finding (searched, found nothing) when actually
-        # nothing was searched at all. Distinguishing these two matters:
-        # one means "the payment might genuinely be missing," the other
-        # means "we can't say anything about this invoice."
         can_attempt = bool(inv.invoice_number) or (inv.amount is not None and inv.invoice_date is not None)
         match = None
-        if can_attempt:
-            match = _find_by_reference(inv, unmatched_ledger) or _find_by_amount_and_date(inv, unmatched_ledger)
-            if match:
-                unmatched_ledger.remove(match)
-                if not _amounts_close(inv.amount, match.amount):
-                    flags.append("amount_mismatch")
+        extra: list[LedgerRow] = []
+        if id(inv) in combined_rows:
+            match = combined_rows[id(inv)]
+            flags.append("combined_payment")
+        elif can_attempt:
+            same_ref = _find_all_by_reference(inv, unmatched_ledger)
+            if len(same_ref) >= 2 and inv.amount is not None and _amounts_close(sum(r.amount or 0.0 for r in same_ref), inv.amount):
+                match, extra = same_ref[0], same_ref[1:]
+                for r in same_ref:
+                    unmatched_ledger.remove(r)
+                flags.append("paid_in_instalments")
             else:
-                flags.append("no_ledger_entry")
+                match = _find_by_reference(inv, unmatched_ledger) or _find_by_amount_and_date(inv, unmatched_ledger)
+                if match:
+                    unmatched_ledger.remove(match)
+                    if not _amounts_close(inv.amount, match.amount):
+                        flags.append("amount_mismatch")
+                else:
+                    flags.append("no_ledger_entry")
 
         if inv.invoice_number and number_counts[inv.invoice_number] > 1:
             flags.append("duplicate_invoice")
 
-        results.append(MatchResult(invoice=inv, ledger_row=match, flags=flags))
+        results.append(MatchResult(invoice=inv, ledger_row=match, flags=flags, extra_rows=extra))
 
     for row in unmatched_ledger:
         results.append(MatchResult(invoice=None, ledger_row=row, flags=["no_invoice"]))
@@ -116,7 +168,13 @@ def reconcile(invoices: list[Invoice], ledger_rows: list[LedgerRow]) -> list[Mat
 def _assert_full_coverage(invoices: list[Invoice], ledger_rows: list[LedgerRow],
                            results: list[MatchResult]) -> None:
     seen_invoices = [r.invoice for r in results if r.invoice is not None]
-    seen_ledger = [r.ledger_row for r in results if r.ledger_row is not None]
+    seen_ledger_ids = set()
+    for r in results:
+        if r.ledger_row is not None:
+            seen_ledger_ids.add(id(r.ledger_row))
+        for x in r.extra_rows:
+            seen_ledger_ids.add(id(x))
+    seen_ledger = [row for row in ledger_rows if id(row) in seen_ledger_ids]
 
     if len(seen_invoices) != len(invoices):
         raise CoverageError(

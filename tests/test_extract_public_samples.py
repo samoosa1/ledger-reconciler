@@ -33,4 +33,7 @@ def test_canadapost_multicolumn_layout_degrades_honestly():
     assert inv.amount == 1673.01
     assert inv.invoice_number is None
     assert inv.vendor is None
-    assert inv.invoice_date is None
+    # The date column is labelled "Invoice date (Y-M-D)" and its value is the
+    # only year-first date standing alone on a line, so reading it is not a
+    # guess: year-first cannot be confused with a day/month order.
+    assert inv.invoice_date == date(2025, 6, 21)

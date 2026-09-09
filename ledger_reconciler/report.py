@@ -17,8 +17,9 @@ _OK_FILL = PatternFill("solid", fgColor="E6F4EA")
 
 _DETAIL_HEADERS = [
     "Status", "Invoice #", "Vendor", "Invoice Date", "Invoice Amount",
-    "Ledger Row", "Ledger Date", "Ledger Description", "Ledger Amount", "Source File",
+    "Ledger Row", "Ledger Date", "Ledger Description", "Ledger Amount", "Source File", "Read Via",
 ]
+_READ_VIA = {"text": "text layer", "ocr": "OCR (verify)", "none": "unreadable"}
 
 
 def _style_header(ws, headers: list[str]) -> None:
@@ -78,6 +79,7 @@ def build_report(results: list[MatchResult], out_path: Path) -> None:
             row.description if row else None,
             row.amount if row else None,
             inv.source_file if inv else None,
+            _READ_VIA.get(inv.extraction_method, inv.extraction_method) if inv else None,
         ]
         fill = _OK_FILL if not r.flags else _FLAG_FILL
         for col, value in enumerate(values, start=1):

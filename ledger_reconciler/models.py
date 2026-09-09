@@ -12,6 +12,7 @@ class Invoice:
     vendor: str | None
     invoice_date: date | None
     amount: float | None
+    extraction_method: str = "text"   # "text" | "ocr" | "none"
 
 
 @dataclass
@@ -28,6 +29,9 @@ class MatchResult:
     invoice: Invoice | None
     ledger_row: LedgerRow | None
     flags: list[str] = field(default_factory=list)
+    # Further ledger rows that settle the same invoice (instalments). The
+    # first row stays in ledger_row so single-row consumers keep working.
+    extra_rows: list[LedgerRow] = field(default_factory=list)
 
     @property
     def status(self) -> str:

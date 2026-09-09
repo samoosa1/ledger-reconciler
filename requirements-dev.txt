@@ -1,3 +1,6 @@
--r requirements.txt
-reportlab>=4.0
+-r requirements-ocr.txt
 pytest>=8.0
+# sample-data generator
+jinja2>=3.1
+playwright>=1.45        # then: .venv/bin/playwright install chromium
+reportlab>=4.0          # still used by the test fixtures

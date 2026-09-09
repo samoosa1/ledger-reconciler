@@ -52,3 +52,39 @@ def test_amount_and_date_fallback_when_no_reference():
     [result] = reconcile([inv], [row])
     assert result.ledger_row is row
     assert result.flags == []
+
+
+def test_two_instalments_with_same_reference_are_not_a_mismatch():
+    a = _row(idx=2, amount=60.0)
+    b = _row(idx=3, d=date(2025, 1, 24), desc="Payment to Acme Co (balance)", amount=40.0)
+    [result] = reconcile([_inv(amount=100.0)], [a, b])
+    assert result.flags == ["paid_in_instalments"]
+    assert result.ledger_row is a and result.extra_rows == [b]
+
+
+def test_instalments_that_do_not_sum_are_still_a_mismatch():
+    a = _row(idx=2, amount=60.0)
+    b = _row(idx=3, amount=30.0)
+    results = reconcile([_inv(amount=100.0)], [a, b])
+    inv_result = next(r for r in results if r.invoice is not None)
+    assert "amount_mismatch" in inv_result.flags
+    assert sum(1 for r in results if r.flags == ["no_invoice"]) == 1
+
+
+def test_one_transfer_settling_two_invoices_matches_both():
+    inv_a = _inv(number="INV-1", amount=100.0, source="a.pdf")
+    inv_b = _inv(number="INV-2", amount=50.0, source="b.pdf")
+    row = _row(desc="Wire transfer INV-1 + INV-2", ref="INV-1 INV-2", amount=150.0)
+    results = reconcile([inv_a, inv_b], [row])
+    assert [r.flags for r in results] == [["combined_payment"], ["combined_payment"]]
+    assert all(r.ledger_row is row for r in results)
+
+
+def test_combined_reference_with_wrong_total_falls_back_to_no_match():
+    inv_a = _inv(number="INV-1", amount=100.0, source="a.pdf")
+    inv_b = _inv(number="INV-2", amount=50.0, source="b.pdf")
+    row = _row(ref="INV-1 INV-2", amount=140.0)
+    results = reconcile([inv_a, inv_b], [row])
+    flags = sorted(tuple(r.flags) for r in results)
+    assert ("no_invoice",) in flags
+    assert all("combined_payment" not in r.flags for r in results)

@@ -1,0 +1,7 @@
+# Optional: OCR for scanned invoices (no text layer). Also needs the
+# tesseract binary on PATH (brew install tesseract / apt install tesseract-ocr).
+-r requirements.txt
+pymupdf>=1.24
+pytesseract>=0.3
+numpy>=1.26
+Pillow>=10

@@ -13,3 +13,6 @@ web/.vite/
 .DS_Store
 .vercel
 .env*
+
+# graphify cache
+graphify-out/

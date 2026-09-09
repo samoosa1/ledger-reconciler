@@ -1,0 +1,1140 @@
+{
+  "seed": 7,
+  "invoices": [
+    {
+      "file": "scan_0000.pdf",
+      "vendor": "Wrenfield Software Ltd",
+      "invoice_number": "WS-0622",
+      "invoice_date": "2025-01-11",
+      "amount": 741.98,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "IMG_2001.pdf",
+      "vendor": "Bluefern Supplies Ltd",
+      "invoice_number": "BF-00432",
+      "invoice_date": "2025-01-15",
+      "amount": 661.51,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0002.pdf",
+      "vendor": "Saltmarsh Coffee Roasters",
+      "invoice_number": "478",
+      "invoice_date": "2025-01-16",
+      "amount": 339.32,
+      "currency": "USD",
+      "template": "thermal_receipt.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "CF-2025-507.pdf",
+      "vendor": "Cedar & Finch Consulting",
+      "invoice_number": "CF-2025-507",
+      "invoice_date": "2025-01-17",
+      "amount": 818.85,
+      "currency": "USD",
+      "template": "minimal_freelancer.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0004.pdf",
+      "vendor": "Cedar & Finch Consulting",
+      "invoice_number": "CF-2025-509",
+      "invoice_date": "2025-01-18",
+      "amount": 2469.34,
+      "currency": "USD",
+      "template": "minimal_freelancer.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "IMG_2005.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-258",
+      "invoice_date": "2025-01-21",
+      "amount": 5374.15,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Nordway_20250121.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-262",
+      "invoice_date": "2025-01-21",
+      "amount": 4105.2,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "",
+      "planted": [
+        "duplicate_invoice"
+      ]
+    },
+    {
+      "file": "IMG_2007.pdf",
+      "vendor": "Meridian Print Services",
+      "invoice_number": "MPS000153",
+      "invoice_date": "2025-01-21",
+      "amount": 8141.11,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0008.pdf",
+      "vendor": "Orrin Bakke Elektro AS",
+      "invoice_number": "160",
+      "invoice_date": "2025-01-21",
+      "amount": 3846.39,
+      "currency": "EUR",
+      "template": "minimal_freelancer.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "Meridian_20250122.pdf",
+      "vendor": "Meridian Print Services",
+      "invoice_number": "MPS000154",
+      "invoice_date": "2025-01-22",
+      "amount": 3185.87,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "162.pdf",
+      "vendor": "Orrin Bakke Elektro AS",
+      "invoice_number": "162",
+      "invoice_date": "2025-01-22",
+      "amount": 2992.86,
+      "currency": "EUR",
+      "template": "minimal_freelancer.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "BF-00434.pdf",
+      "vendor": "Bluefern Supplies Ltd",
+      "invoice_number": "BF-00434",
+      "invoice_date": "2025-01-23",
+      "amount": 4827.6,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "flatbed",
+      "planted": [
+        "partial_payment"
+      ]
+    },
+    {
+      "file": "Orrin_20250123.pdf",
+      "vendor": "Orrin Bakke Elektro AS",
+      "invoice_number": "164",
+      "invoice_date": "2025-01-23",
+      "amount": 868.85,
+      "currency": "EUR",
+      "template": "minimal_freelancer.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "KDY2025000000198.pdf",
+      "vendor": "Karadut Yazılım A.Ş.",
+      "invoice_number": "KDY2025000000198",
+      "invoice_date": "2025-01-24",
+      "amount": 207617.33,
+      "currency": "TRY",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Halden_20250126.pdf",
+      "vendor": "Halden & Roux Avocats",
+      "invoice_number": "HR-0649",
+      "invoice_date": "2025-01-26",
+      "amount": 4649.76,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "BF-00436.pdf",
+      "vendor": "Bluefern Supplies Ltd",
+      "invoice_number": "BF-00436",
+      "invoice_date": "2025-01-28",
+      "amount": 1349.38,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "BF-00439.pdf",
+      "vendor": "Bluefern Supplies Ltd",
+      "invoice_number": "BF-00439",
+      "invoice_date": "2025-01-29",
+      "amount": 2130.07,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "flatbed",
+      "planted": [
+        "combined_payment"
+      ]
+    },
+    {
+      "file": "Orrin_20250129.pdf",
+      "vendor": "Orrin Bakke Elektro AS",
+      "invoice_number": "166",
+      "invoice_date": "2025-01-29",
+      "amount": 5108.49,
+      "currency": "EUR",
+      "template": "minimal_freelancer.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "IMG_2018.pdf",
+      "vendor": "Meridian Print Services",
+      "invoice_number": "MPS000158",
+      "invoice_date": "2025-01-30",
+      "amount": 339.55,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0019.pdf",
+      "vendor": "Pinehollow Office Co",
+      "invoice_number": "PH/2025/0768",
+      "invoice_date": "2025-02-01",
+      "amount": 734.78,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "KDY2025000000200.pdf",
+      "vendor": "Karadut Yazılım A.Ş.",
+      "invoice_number": "KDY2025000000200",
+      "invoice_date": "2025-02-05",
+      "amount": 290496.74,
+      "currency": "TRY",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Nordway_20250206.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-265",
+      "invoice_date": "2025-02-06",
+      "amount": 984.86,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "phone",
+      "planted": []
+    },
+    {
+      "file": "CF-2025-512.pdf",
+      "vendor": "Cedar & Finch Consulting",
+      "invoice_number": "CF-2025-512",
+      "invoice_date": "2025-02-09",
+      "amount": 1834.5,
+      "currency": "USD",
+      "template": "minimal_freelancer.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "scan_0023.pdf",
+      "vendor": "Cedar & Finch Consulting",
+      "invoice_number": "CF-2025-513",
+      "invoice_date": "2025-02-11",
+      "amount": 5356.18,
+      "currency": "USD",
+      "template": "minimal_freelancer.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "482.pdf",
+      "vendor": "Saltmarsh Coffee Roasters",
+      "invoice_number": "482",
+      "invoice_date": "2025-02-13",
+      "amount": 110.98,
+      "currency": "USD",
+      "template": "thermal_receipt.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0025.pdf",
+      "vendor": "Karadut Yazılım A.Ş.",
+      "invoice_number": "KDY2025000000203",
+      "invoice_date": "2025-02-17",
+      "amount": 65649.65,
+      "currency": "TRY",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Pinehollow_20250221.pdf",
+      "vendor": "Pinehollow Office Co",
+      "invoice_number": "PH/2025/0772",
+      "invoice_date": "2025-02-21",
+      "amount": 2833.65,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0027.pdf",
+      "vendor": "Halden & Roux Avocats",
+      "invoice_number": "HR-0651",
+      "invoice_date": "2025-02-21",
+      "amount": 1275.9,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "CF-2025-517.pdf",
+      "vendor": "Cedar & Finch Consulting",
+      "invoice_number": "CF-2025-517",
+      "invoice_date": "2025-03-03",
+      "amount": 2838.29,
+      "currency": "USD",
+      "template": "minimal_freelancer.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "NW-266.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-266",
+      "invoice_date": "2025-03-04",
+      "amount": 1457.03,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "BF-00440.pdf",
+      "vendor": "Bluefern Supplies Ltd",
+      "invoice_number": "BF-00440",
+      "invoice_date": "2025-03-08",
+      "amount": 3968.87,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "flatbed",
+      "planted": [
+        "amount_typo:tenfold"
+      ]
+    },
+    {
+      "file": "scan_0031.pdf",
+      "vendor": "Halden & Roux Avocats",
+      "invoice_number": "HR-0654",
+      "invoice_date": "2025-03-09",
+      "amount": 382.2,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "IMG_2032.pdf",
+      "vendor": "Halden & Roux Avocats",
+      "invoice_number": "HR-0655",
+      "invoice_date": "2025-03-10",
+      "amount": 8505.54,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "167.pdf",
+      "vendor": "Orrin Bakke Elektro AS",
+      "invoice_number": "167",
+      "invoice_date": "2025-03-16",
+      "amount": 6718.75,
+      "currency": "EUR",
+      "template": "minimal_freelancer.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "WS-0625.pdf",
+      "vendor": "Wrenfield Software Ltd",
+      "invoice_number": "WS-0625",
+      "invoice_date": "2025-03-19",
+      "amount": 2307.2,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "KDY2025000000206.pdf",
+      "vendor": "Karadut Yazılım A.Ş.",
+      "invoice_number": "KDY2025000000206",
+      "invoice_date": "2025-03-20",
+      "amount": 133004.16,
+      "currency": "TRY",
+      "template": "grid_einvoice.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "IMG_2036.pdf",
+      "vendor": "Cedar & Finch Consulting",
+      "invoice_number": "CF-2025-520",
+      "invoice_date": "2025-03-21",
+      "amount": 3125.95,
+      "currency": "USD",
+      "template": "minimal_freelancer.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "HR-0659.pdf",
+      "vendor": "Halden & Roux Avocats",
+      "invoice_number": "HR-0659",
+      "invoice_date": "2025-03-23",
+      "amount": 4217.36,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0038.pdf",
+      "vendor": "Halden & Roux Avocats",
+      "invoice_number": "HR-0661",
+      "invoice_date": "2025-03-23",
+      "amount": 975.78,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0039.pdf",
+      "vendor": "Pinehollow Office Co",
+      "invoice_number": "PH/2025/0774",
+      "invoice_date": "2025-03-25",
+      "amount": 7555.6,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "scan_0040.pdf",
+      "vendor": "Amberlake Facilities",
+      "invoice_number": "AF-00176",
+      "invoice_date": "2025-03-27",
+      "amount": 13261.53,
+      "currency": "AUD",
+      "template": "statement.html",
+      "scanned": "",
+      "planted": [
+        "amount_typo:tenfold"
+      ]
+    },
+    {
+      "file": "TIB-0000697.pdf",
+      "vendor": "Tidewell Insurance Brokers",
+      "invoice_number": "TIB-0000697",
+      "invoice_date": "2025-03-27",
+      "amount": 1165.75,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "KDY2025000000208.pdf",
+      "vendor": "Karadut Yazılım A.Ş.",
+      "invoice_number": "KDY2025000000208",
+      "invoice_date": "2025-04-03",
+      "amount": 259192.27,
+      "currency": "TRY",
+      "template": "grid_einvoice.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "Saltmarsh_20250403.pdf",
+      "vendor": "Saltmarsh Coffee Roasters",
+      "invoice_number": "484",
+      "invoice_date": "2025-04-03",
+      "amount": 596.65,
+      "currency": "USD",
+      "template": "thermal_receipt.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Tidewell_20250403.pdf",
+      "vendor": "Tidewell Insurance Brokers",
+      "invoice_number": "TIB-0000699",
+      "invoice_date": "2025-04-03",
+      "amount": 2330.26,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Wrenfield_20250404.pdf",
+      "vendor": "Wrenfield Software Ltd",
+      "invoice_number": "WS-0629",
+      "invoice_date": "2025-04-04",
+      "amount": 2545.81,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "flatbed",
+      "planted": [
+        "duplicate_invoice"
+      ]
+    },
+    {
+      "file": "IMG_2046.pdf",
+      "vendor": "Tidewell Insurance Brokers",
+      "invoice_number": "TIB-0000702",
+      "invoice_date": "2025-04-05",
+      "amount": 3300.39,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "MPS000161.pdf",
+      "vendor": "Meridian Print Services",
+      "invoice_number": "MPS000161",
+      "invoice_date": "2025-04-11",
+      "amount": 182.02,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "phone",
+      "planted": []
+    },
+    {
+      "file": "IMG_2048.pdf",
+      "vendor": "Wrenfield Software Ltd",
+      "invoice_number": "WS-0631",
+      "invoice_date": "2025-04-14",
+      "amount": 3896.95,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": [
+        "fx_rounding"
+      ]
+    },
+    {
+      "file": "BF-00442.pdf",
+      "vendor": "Bluefern Supplies Ltd",
+      "invoice_number": "BF-00442",
+      "invoice_date": "2025-04-23",
+      "amount": 2622.11,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "IMG_2050.pdf",
+      "vendor": "Cedar & Finch Consulting",
+      "invoice_number": "CF-2025-523",
+      "invoice_date": "2025-04-23",
+      "amount": 1557.02,
+      "currency": "USD",
+      "template": "minimal_freelancer.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Karadut_20250423.pdf",
+      "vendor": "Karadut Yazılım A.Ş.",
+      "invoice_number": "KDY2025000000210",
+      "invoice_date": "2025-04-23",
+      "amount": 78864.08,
+      "currency": "TRY",
+      "template": "grid_einvoice.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "IMG_2052.pdf",
+      "vendor": "Saltmarsh Coffee Roasters",
+      "invoice_number": "485",
+      "invoice_date": "2025-04-23",
+      "amount": 202.22,
+      "currency": "USD",
+      "template": "thermal_receipt.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "AF-00180.pdf",
+      "vendor": "Amberlake Facilities",
+      "invoice_number": "AF-00180",
+      "invoice_date": "2025-04-25",
+      "amount": 18020.81,
+      "currency": "AUD",
+      "template": "statement.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "BF-00446.pdf",
+      "vendor": "Bluefern Supplies Ltd",
+      "invoice_number": "BF-00446",
+      "invoice_date": "2025-04-27",
+      "amount": 4136.69,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "IMG_2055.pdf",
+      "vendor": "Karadut Yazılım A.Ş.",
+      "invoice_number": "KDY2025000000212",
+      "invoice_date": "2025-04-30",
+      "amount": 88863.38,
+      "currency": "TRY",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Wrenfield_20250430.pdf",
+      "vendor": "Wrenfield Software Ltd",
+      "invoice_number": "WS-0633",
+      "invoice_date": "2025-04-30",
+      "amount": 7203.77,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": [
+        "combined_payment"
+      ]
+    },
+    {
+      "file": "IMG_2057.pdf",
+      "vendor": "Amberlake Facilities",
+      "invoice_number": "AF-00184",
+      "invoice_date": "2025-05-02",
+      "amount": 10590.53,
+      "currency": "AUD",
+      "template": "statement.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0058.pdf",
+      "vendor": "Orrin Bakke Elektro AS",
+      "invoice_number": "171",
+      "invoice_date": "2025-05-02",
+      "amount": 2305.18,
+      "currency": "EUR",
+      "template": "minimal_freelancer.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "IMG_2059.pdf",
+      "vendor": "Wrenfield Software Ltd",
+      "invoice_number": "WS-0636",
+      "invoice_date": "2025-05-04",
+      "amount": 1538.69,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "AF-00188.pdf",
+      "vendor": "Amberlake Facilities",
+      "invoice_number": "AF-00188",
+      "invoice_date": "2025-05-05",
+      "amount": 5379.09,
+      "currency": "AUD",
+      "template": "statement.html",
+      "scanned": "phone",
+      "planted": []
+    },
+    {
+      "file": "174.pdf",
+      "vendor": "Orrin Bakke Elektro AS",
+      "invoice_number": "174",
+      "invoice_date": "2025-05-07",
+      "amount": 1215.81,
+      "currency": "EUR",
+      "template": "minimal_freelancer.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "IMG_2062.pdf",
+      "vendor": "Saltmarsh Coffee Roasters",
+      "invoice_number": "489",
+      "invoice_date": "2025-05-11",
+      "amount": 192.08,
+      "currency": "USD",
+      "template": "thermal_receipt.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "IMG_2063.pdf",
+      "vendor": "Amberlake Facilities",
+      "invoice_number": "AF-00190",
+      "invoice_date": "2025-05-13",
+      "amount": 9495.15,
+      "currency": "AUD",
+      "template": "statement.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0064.pdf",
+      "vendor": "Karadut Yazılım A.Ş.",
+      "invoice_number": "KDY2025000000215",
+      "invoice_date": "2025-05-17",
+      "amount": 48949.2,
+      "currency": "TRY",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "scan_0065.pdf",
+      "vendor": "Halden & Roux Avocats",
+      "invoice_number": "HR-0664",
+      "invoice_date": "2025-05-20",
+      "amount": 6501.48,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "IMG_2066.pdf",
+      "vendor": "Amberlake Facilities",
+      "invoice_number": "AF-00191",
+      "invoice_date": "2025-05-22",
+      "amount": 12627.82,
+      "currency": "AUD",
+      "template": "statement.html",
+      "scanned": "",
+      "planted": [
+        "partial_payment"
+      ]
+    },
+    {
+      "file": "scan_0067.pdf",
+      "vendor": "Cedar & Finch Consulting",
+      "invoice_number": "CF-2025-526",
+      "invoice_date": "2025-05-24",
+      "amount": 1599.61,
+      "currency": "USD",
+      "template": "minimal_freelancer.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "IMG_2068.pdf",
+      "vendor": "Meridian Print Services",
+      "invoice_number": "MPS000165",
+      "invoice_date": "2025-05-26",
+      "amount": 748.22,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "phone",
+      "planted": []
+    },
+    {
+      "file": "scan_0069.pdf",
+      "vendor": "Cedar & Finch Consulting",
+      "invoice_number": "CF-2025-530",
+      "invoice_date": "2025-05-28",
+      "amount": 2347.74,
+      "currency": "USD",
+      "template": "minimal_freelancer.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "scan_0070.pdf",
+      "vendor": "Tidewell Insurance Brokers",
+      "invoice_number": "TIB-0000704",
+      "invoice_date": "2025-05-28",
+      "amount": 830.66,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Pinehollow_20250529.pdf",
+      "vendor": "Pinehollow Office Co",
+      "invoice_number": "PH/2025/0778",
+      "invoice_date": "2025-05-29",
+      "amount": 1998.52,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "NW-269.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-269",
+      "invoice_date": "2025-05-30",
+      "amount": 6989.33,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "MPS000168.pdf",
+      "vendor": "Meridian Print Services",
+      "invoice_number": "MPS000168",
+      "invoice_date": "2025-05-30",
+      "amount": 4776.36,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Pinehollow_20250601.pdf",
+      "vendor": "Pinehollow Office Co",
+      "invoice_number": "PH/2025/0782",
+      "invoice_date": "2025-06-01",
+      "amount": 10248.93,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Tidewell_20250601.pdf",
+      "vendor": "Tidewell Insurance Brokers",
+      "invoice_number": "TIB-0000705",
+      "invoice_date": "2025-06-01",
+      "amount": 226.53,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "phone",
+      "planted": []
+    },
+    {
+      "file": "NW-272.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-272",
+      "invoice_date": "2025-06-02",
+      "amount": 1598.16,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Halden_20250602.pdf",
+      "vendor": "Halden & Roux Avocats",
+      "invoice_number": "HR-0666",
+      "invoice_date": "2025-06-02",
+      "amount": 1311.34,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "Wrenfield_20250602.pdf",
+      "vendor": "Wrenfield Software Ltd",
+      "invoice_number": "WS-0640",
+      "invoice_date": "2025-06-02",
+      "amount": 2672.88,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "PH-2025-0786.pdf",
+      "vendor": "Pinehollow Office Co",
+      "invoice_number": "PH/2025/0786",
+      "invoice_date": "2025-06-03",
+      "amount": 5624.56,
+      "currency": "EUR",
+      "template": "grid_einvoice.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "175.pdf",
+      "vendor": "Orrin Bakke Elektro AS",
+      "invoice_number": "175",
+      "invoice_date": "2025-06-03",
+      "amount": 6223.05,
+      "currency": "EUR",
+      "template": "minimal_freelancer.html",
+      "scanned": "flatbed",
+      "planted": [
+        "missing_ledger_entry"
+      ]
+    },
+    {
+      "file": "scan_0081.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-274",
+      "invoice_date": "2025-06-04",
+      "amount": 317.59,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "AF-00193.pdf",
+      "vendor": "Amberlake Facilities",
+      "invoice_number": "AF-00193",
+      "invoice_date": "2025-06-04",
+      "amount": 15670.64,
+      "currency": "AUD",
+      "template": "statement.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "TIB-0000707.pdf",
+      "vendor": "Tidewell Insurance Brokers",
+      "invoice_number": "TIB-0000707",
+      "invoice_date": "2025-06-07",
+      "amount": 2250.41,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "IMG_2084.pdf",
+      "vendor": "Karadut Yazılım A.Ş.",
+      "invoice_number": "KDY2025000000217",
+      "invoice_date": "2025-06-10",
+      "amount": 126011.64,
+      "currency": "TRY",
+      "template": "grid_einvoice.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "MPS000171.pdf",
+      "vendor": "Meridian Print Services",
+      "invoice_number": "MPS000171",
+      "invoice_date": "2025-06-13",
+      "amount": 4325.18,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "flatbed",
+      "planted": [
+        "missing_ledger_entry"
+      ]
+    },
+    {
+      "file": "IMG_2086.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-278",
+      "invoice_date": "2025-06-15",
+      "amount": 3700.84,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "flatbed",
+      "planted": [
+        "missing_ledger_entry"
+      ]
+    },
+    {
+      "file": "NW-279.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-279",
+      "invoice_date": "2025-06-16",
+      "amount": 5167.84,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "",
+      "planted": []
+    },
+    {
+      "file": "IMG_2088.pdf",
+      "vendor": "Wrenfield Software Ltd",
+      "invoice_number": "WS-0641",
+      "invoice_date": "2025-06-20",
+      "amount": 1783.88,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "flatbed",
+      "planted": []
+    },
+    {
+      "file": "178.pdf",
+      "vendor": "Orrin Bakke Elektro AS",
+      "invoice_number": "178",
+      "invoice_date": "2025-06-25",
+      "amount": 14213.95,
+      "currency": "EUR",
+      "template": "minimal_freelancer.html",
+      "scanned": "flatbed",
+      "planted": [
+        "amount_typo:transpose"
+      ]
+    },
+    {
+      "file": "Wrenfield_20250404_rescan.pdf",
+      "vendor": "Wrenfield Software Ltd",
+      "invoice_number": "WS-0629",
+      "invoice_date": "2025-04-04",
+      "amount": 2545.81,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "flatbed",
+      "planted": [
+        "duplicate_invoice"
+      ]
+    },
+    {
+      "file": "Nordway_20250121_rescan.pdf",
+      "vendor": "Nordway Logistics",
+      "invoice_number": "NW-262",
+      "invoice_date": "2025-01-21",
+      "amount": 4105.2,
+      "currency": "USD",
+      "template": "us_letter.html",
+      "scanned": "flatbed",
+      "planted": [
+        "duplicate_invoice"
+      ]
+    },
+    {
+      "file": "BF-00448_CN.pdf",
+      "vendor": "Bluefern Supplies Ltd",
+      "invoice_number": "BF-00448",
+      "invoice_date": "2025-05-19",
+      "amount": -3264.48,
+      "currency": "GBP",
+      "template": "uk_service.html",
+      "scanned": "",
+      "planted": [
+        "credit_note"
+      ]
+    }
+  ],
+  "ledger_rows": 92,
+  "faults": {
+    "missing_ledger_entry": [
+      "175.pdf",
+      "MPS000171.pdf",
+      "IMG_2086.pdf"
+    ],
+    "undocumented_payment": [
+      [
+        "2025-02-03",
+        "Direct debit  Meridian Print Services",
+        312.4
+      ],
+      [
+        "2025-03-28",
+        "Bank charges",
+        18.0
+      ],
+      [
+        "2025-04-30",
+        "Card purchase  Saltmarsh Coffee Roasters",
+        46.85
+      ]
+    ],
+    "amount_typo": [
+      [
+        "scan_0040.pdf",
+        13261.53,
+        132615.3
+      ],
+      [
+        "BF-00440.pdf",
+        3968.87,
+        39688.7
+      ],
+      [
+        "178.pdf",
+        14213.95,
+        14231.95
+      ]
+    ],
+    "duplicate_invoice": [
+      [
+        "Wrenfield_20250404.pdf",
+        "Wrenfield_20250404_rescan.pdf"
+      ],
+      [
+        "Nordway_20250121.pdf",
+        "Nordway_20250121_rescan.pdf"
+      ]
+    ],
+    "partial_payment": [
+      [
+        "IMG_2066.pdf",
+        8839.47,
+        3788.35
+      ],
+      [
+        "BF-00434.pdf",
+        2413.8,
+        2413.8
+      ]
+    ],
+    "combined_payment": [
+      [
+        "BF-00439.pdf",
+        "Wrenfield_20250430.pdf"
+      ]
+    ],
+    "fx_rounding": [
+      [
+        "IMG_2048.pdf",
+        3896.95,
+        3896.98
+      ]
+    ],
+    "credit_note": [
+      "BF-00448_CN.pdf"
+    ]
+  }
+}
