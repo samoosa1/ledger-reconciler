@@ -312,8 +312,14 @@ body {
 /* Centred in the stage rather than pinned to the top. The landing screen
    has one short block of content and a tall viewport; top-aligning it
    left the lower two thirds of the page visibly empty. */
-.empty { max-width: 58ch; }
-.stage:has(.empty) { display: grid; align-content: center; }
+.empty { max-width: 64ch; width: 100%; }
+.stage:has(.empty) { display: grid; align-content: center; justify-content: center; }
+/* Landing state only: the drop zone is the page's one ask, so it gets the
+   room a first-time visitor expects. Once results exist the rail narrows
+   back and the table takes the width. */
+.shell:has(.empty) { grid-template-columns: minmax(420px, 46%) 1fr; }
+.shell:has(.empty) .dropzone { min-height: 44svh; display: grid; place-content: center; }
+.shell:has(.empty) .masthead p { max-width: 52ch; }
 .empty h2 {
   font-family: var(--display);
   font-weight: var(--w-display);
@@ -577,7 +583,8 @@ tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: defau
 /* Structural, not fluid type: the rail stops being a sidebar and becomes
    a header band. */
 @media (max-width: 900px) {
-  .shell { grid-template-columns: 1fr; }
+  .shell, .shell:has(.empty) { grid-template-columns: 1fr; }
+  .shell:has(.empty) .dropzone { min-height: 30svh; }
   .rail {
     position: static;
     max-height: none;
