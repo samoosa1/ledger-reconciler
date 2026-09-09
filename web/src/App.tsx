@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import './App.css'
 import { UnrecognisedLedgerError } from './domain/ledger'
 import type { MatchResult } from './domain/types'
@@ -111,82 +112,85 @@ export default function App() {
   }, [ledger, progress])
 
   return (
-    <div className="shell">
-      <aside className="rail">
-        <div className="masthead">
-          <h1>Reconcile invoices against your ledger</h1>
-          <p>
-            Drop a folder of invoice PDFs and your ledger export. Whatever
-            doesn&rsquo;t tie out is listed for review.
+    <>
+      <div className="shell">
+        <aside className="rail">
+          <div className="masthead">
+            <h1>Reconcile invoices against your ledger</h1>
+            <p>
+              Drop a folder of invoice PDFs and your ledger export. Whatever
+              doesn&rsquo;t tie out is listed for review.
+            </p>
+          </div>
+
+          <DropZone onFiles={handleFiles} onTrySample={handleSample} busy={busy} />
+
+          {stage !== 'idle' && (
+            <button className="btn" type="button" onClick={reset}>
+              Start over
+            </button>
+          )}
+
+          <p className="privacy">
+            <strong>Your files never leave this browser.</strong> There is no
+            server to send them to. Disconnect from the internet and it still
+            works.
           </p>
-        </div>
 
-        <DropZone onFiles={handleFiles} onTrySample={handleSample} busy={busy} />
+          <Colophon />
+        </aside>
 
-        {stage !== 'idle' && (
-          <button className="btn" type="button" onClick={reset}>
-            Start over
-          </button>
-        )}
+        <main className="stage">
+          {error && (
+            <p className="notice bad" role="alert">
+              {error}
+            </p>
+          )}
 
-        <p className="privacy">
-          <strong>Your files never leave this browser.</strong> There is no
-          server to send them to. Disconnect from the internet and it still
-          works.
-        </p>
+          {stage === 'idle' && <EmptyState />}
 
-        <Colophon />
-      </aside>
+          {stage === 'reading' && (
+            <ExtractionReview
+              progress={progress}
+              ledgerName={ledger?.name ?? null}
+              onContinue={handleReconcile}
+              busy={busy}
+            />
+          )}
 
-      <main className="stage">
-        {error && (
-          <p className="notice bad" role="alert">
-            {error}
-          </p>
-        )}
-
-        {stage === 'idle' && <EmptyState />}
-
-        {stage === 'reading' && (
-          <ExtractionReview
-            progress={progress}
-            ledgerName={ledger?.name ?? null}
-            onContinue={handleReconcile}
-            busy={busy}
-          />
-        )}
-
-        {stage === 'results' && (
-          <>
-            <div className="views" role="tablist" aria-label="Result view">
-              <button
-                className={`view-tab${view === 'exceptions' ? ' on' : ''}`}
-                type="button"
-                role="tab"
-                aria-selected={view === 'exceptions'}
-                onClick={() => setView('exceptions')}
-              >
-                Exceptions
-              </button>
-              <button
-                className={`view-tab${view === 'suppliers' ? ' on' : ''}`}
-                type="button"
-                role="tab"
-                aria-selected={view === 'suppliers'}
-                onClick={() => setView('suppliers')}
-              >
-                By supplier
-              </button>
-            </div>
-            {view === 'exceptions' ? (
-              <ResultsTable results={results} />
-            ) : (
-              <StatementTable results={results} />
-            )}
-          </>
-        )}
-      </main>
-    </div>
+          {stage === 'results' && (
+            <>
+              <div className="views" role="tablist" aria-label="Result view">
+                <button
+                  className={`view-tab${view === 'exceptions' ? ' on' : ''}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={view === 'exceptions'}
+                  onClick={() => setView('exceptions')}
+                >
+                  Exceptions
+                </button>
+                <button
+                  className={`view-tab${view === 'suppliers' ? ' on' : ''}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={view === 'suppliers'}
+                  onClick={() => setView('suppliers')}
+                >
+                  By supplier
+                </button>
+              </div>
+              {view === 'exceptions' ? (
+                <ResultsTable results={results} />
+              ) : (
+                <StatementTable results={results} />
+              )}
+            </>
+          )}
+        </main>
+      </div>
+      <Analytics />
+    </>
   )
 }
 
