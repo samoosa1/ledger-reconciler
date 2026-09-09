@@ -41,9 +41,22 @@ test('accepts real leap days and rejects fake ones', () => {
 })
 
 test('returns null on unsupported formats rather than guessing', () => {
-  expect(parseDate('15/01/2025')).toBeNull()
+  expect(parseDate('15 Jan')).toBeNull()
+  expect(parseDate('2025')).toBeNull()
   expect(parseDate('not a date')).toBeNull()
   expect(parseDate('')).toBeNull()
+})
+
+test('day-first and month-first are decided by the value, then by the US hint', () => {
+  expect(parseDate('15/01/2025')).toEqual({ year: 2025, month: 1, day: 15 }) // 15 cannot be a month
+  expect(parseDate('01/15/2025')).toEqual({ year: 2025, month: 1, day: 15 })
+  expect(parseDate('03/04/2025')).toEqual({ year: 2025, month: 4, day: 3 }) // ambiguous: day-first by default
+  expect(parseDate('03/04/2025', true)).toEqual({ year: 2025, month: 3, day: 4 }) // US hint flips it
+  expect(parseDate('01/16/25', true)).toEqual({ year: 2025, month: 1, day: 16 })
+  expect(parseDate('24.01.2025')).toEqual({ year: 2025, month: 1, day: 24 })
+  expect(parseDate('21 January 2025')).toEqual({ year: 2025, month: 1, day: 21 })
+  expect(parseDate('Mar 12, 2025')).toEqual({ year: 2025, month: 3, day: 12 })
+  expect(parseDate('2025.01.15')).toEqual({ year: 2025, month: 1, day: 15 })
 })
 
 test('daysBetween is signed and crosses month and year boundaries', () => {

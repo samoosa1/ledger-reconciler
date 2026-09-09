@@ -8,11 +8,12 @@
 import { extractFromText } from '../domain/extract'
 import { buildLedger } from '../domain/ledger'
 import { reconcile } from '../domain/match'
-import type { Invoice, LedgerRow, MatchResult } from '../domain/types'
+import type { ExtractionMethod, Invoice, LedgerRow, MatchResult } from '../domain/types'
+import { ocrPdfText } from '../lib/ocr'
 import { readPdfText } from '../lib/pdf'
 import { isPdfFile, isSpreadsheetFile, readSheetGrid } from '../lib/sheet'
 
-export type FileStatus = 'pending' | 'reading' | 'done' | 'failed'
+export type FileStatus = 'pending' | 'reading' | 'ocr' | 'done' | 'failed'
 
 export interface FileProgress {
   name: string
@@ -64,11 +65,21 @@ export async function readInvoices(
     progress[i] = { ...progress[i], status: 'reading' }
     onProgress([...progress])
     try {
-      const text = await readPdfText(files[i], files[i].name)
+      let text = await readPdfText(files[i], files[i].name)
+      let method: ExtractionMethod = 'text'
+      if (text.trim() === '') {
+        // No text layer: a scan. OCR is slower (a few seconds a page), so
+        // the row says so while it runs, and the result is marked as OCR
+        // so the reader knows the fields came from image recognition.
+        progress[i] = { ...progress[i], status: 'ocr' }
+        onProgress([...progress])
+        text = await ocrPdfText(files[i])
+        method = text.trim() === '' ? 'none' : 'ocr'
+      }
       progress[i] = {
         name: files[i].name,
         status: 'done',
-        invoice: extractFromText(text, files[i].name),
+        invoice: extractFromText(text, files[i].name, method),
       }
     } catch (e) {
       progress[i] = {
@@ -122,11 +133,13 @@ export const FLAG_LABELS: Record<string, string> = {
   no_invoice: 'Payment with no invoice',
   amount_mismatch: 'Amount differs',
   duplicate_invoice: 'Duplicate invoice',
+  paid_in_instalments: 'Paid in instalments',
+  combined_payment: 'Paid with other invoices',
 }
 
 export const FLAG_EXPLANATIONS: Record<string, string> = {
   unreadable_invoice:
-    'No usable text could be extracted from this PDF. It is most likely a scan; this tool reads text, not images.',
+    'Not every field could be read from this PDF, even after OCR for scans. Nothing was guessed; check the file by hand.',
   no_ledger_entry:
     'The invoice exists but no matching payment appears in the ledger.',
   no_invoice:
@@ -135,6 +148,10 @@ export const FLAG_EXPLANATIONS: Record<string, string> = {
     'The invoice and the ledger entry were matched, but the amounts differ.',
   duplicate_invoice:
     'This invoice number appears more than once, so the same invoice may be recorded twice.',
+  paid_in_instalments:
+    'Several ledger rows carry this invoice number and together they add up to the invoice. Nothing is wrong; it was paid in parts.',
+  combined_payment:
+    'One ledger entry settles this invoice together with others; its reference names them all and the amount is their sum.',
 }
 
 /** Loads the bundled synthetic sample set so the tool can be tried without files. */

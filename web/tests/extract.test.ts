@@ -61,7 +61,9 @@ test('multi-column layout degrades to null rather than guessing', () => {
   expect(got.amount).toBe(1673.01)
   expect(got.invoiceNumber).toBeNull()
   expect(got.vendor).toBeNull()
-  expect(got.invoiceDate).toBeNull()
+  // The date column is labelled "(Y-M-D)" and its value is the only
+  // year-first date alone on a line: reading it is not a guess.
+  expect(got.invoiceDate).toEqual({ year: 2025, month: 6, day: 21 })
 })
 
 test('empty text yields an all-null invoice, not an exception', () => {

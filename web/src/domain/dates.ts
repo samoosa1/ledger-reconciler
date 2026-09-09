@@ -27,6 +27,15 @@ const MONTHS = [
   'july', 'august', 'september', 'october', 'november', 'december',
 ]
 
+function monthIndex(word: string): number {
+  const w = word.toLowerCase().replace(/\.$/, '')
+  if (w === 'sept') return 9
+  const full = MONTHS.indexOf(w)
+  if (full !== -1) return full + 1
+  const abbrev = MONTHS.findIndex((m) => m.slice(0, 3) === w)
+  return abbrev === -1 ? -1 : abbrev + 1
+}
+
 /** Rejects days that don't exist in that month, as strptime does. */
 function isRealDate(year: number, month: number, day: number): boolean {
   if (month < 1 || month > 12 || day < 1) return false
@@ -39,26 +48,43 @@ function make(year: number, month: number, day: number): PlainDate | null {
 }
 
 /**
- * Parses the four formats the Python version accepts:
- *   %Y-%m-%d   2025-01-15
- *   %B %d, %Y  January 15, 2025
- *   %B %d %Y   January 15 2025
- *   %Y/%m/%d   2025/01/15
+ * Parses the formats the Python version accepts. Mirrors extract.parse_date.
+ *   2025-01-15  2025/01/15  2025.01.15        year first, unambiguous
+ *   15.01.2025  15/01/2025  01/15/2025  01/15/25
+ *   21 January 2025   January 17, 2025   Mar 12, 2025   12 Mar 2025
+ *
+ * Day-first versus month-first is decided by the value when one reading is
+ * impossible (a component above 12), otherwise by `preferUS`, which the
+ * caller derives from other clues on the page (USD, EIN, a US state+ZIP).
  * Returns null on anything else, matching strptime raising ValueError.
  */
-export function parseDate(raw: string): PlainDate | null {
-  const text = raw.trim()
+export function parseDate(raw: string, preferUS = false): PlainDate | null {
+  const text = raw.trim().replace(/[.,]$/, '')
 
-  const numeric = /^(\d{4})[-/](\d{2})[-/](\d{2})$/.exec(text)
+  const yearFirst = /^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})$/.exec(text)
+  if (yearFirst) return make(Number(yearFirst[1]), Number(yearFirst[2]), Number(yearFirst[3]))
+
+  const numeric = /^(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})$/.exec(text)
   if (numeric) {
-    return make(Number(numeric[1]), Number(numeric[2]), Number(numeric[3]))
+    const a = Number(numeric[1])
+    const b = Number(numeric[2])
+    let y = Number(numeric[3])
+    if (y < 100) y += 2000
+    if (a > 12 && b <= 12) return make(y, b, a)
+    if (b > 12 && a <= 12) return make(y, a, b)
+    return preferUS ? make(y, a, b) : make(y, b, a)
   }
 
-  const prose = /^([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})$/.exec(text)
+  const dayFirstProse = /^(\d{1,2})\s+([A-Za-z]{3,9})\.?,?\s+(\d{4})$/.exec(text)
+  if (dayFirstProse) {
+    const m = monthIndex(dayFirstProse[2])
+    return m === -1 ? null : make(Number(dayFirstProse[3]), m, Number(dayFirstProse[1]))
+  }
+
+  const prose = /^([A-Za-z]{3,9})\.?\s+(\d{1,2}),?\s+(\d{4})$/.exec(text)
   if (prose) {
-    const monthIndex = MONTHS.indexOf(prose[1].toLowerCase())
-    if (monthIndex === -1) return null
-    return make(Number(prose[3]), monthIndex + 1, Number(prose[2]))
+    const m = monthIndex(prose[1])
+    return m === -1 ? null : make(Number(prose[3]), m, Number(prose[2]))
   }
 
   return null

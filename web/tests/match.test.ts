@@ -47,6 +47,14 @@ test('amount mismatch still matches but flags', () => {
   expect(r.flags).toContain('amount_mismatch')
 })
 
+test('an unread amount is unreadable, not a mismatch', () => {
+  const ledgerRow = row({ amount: 150.0 })
+  const [r] = reconcile([inv({ amount: null })], [ledgerRow])
+  expect(r.ledgerRow).toBe(ledgerRow)
+  expect(r.flags).toContain('unreadable_invoice')
+  expect(r.flags).not.toContain('amount_mismatch')
+})
+
 test('duplicate invoice number flags both copies, only one claims the row', () => {
   const results = reconcile(
     [inv({ sourceFile: 'a.pdf' }), inv({ sourceFile: 'a_rescan.pdf' })],

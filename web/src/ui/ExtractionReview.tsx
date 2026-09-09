@@ -28,7 +28,8 @@ export function ExtractionReview({ progress, ledgerName, onContinue, busy }: Pro
   const unreadable = progress.filter(
     (p) =>
       p.status === 'failed' ||
-      (p.invoice && p.invoice.invoiceNumber === null && p.invoice.amount === null),
+      (p.invoice &&
+        (p.invoice.invoiceNumber === null || p.invoice.amount === null || p.invoice.invoiceDate === null)),
   ).length
 
   return (
@@ -43,9 +44,9 @@ export function ExtractionReview({ progress, ledgerName, onContinue, busy }: Pro
 
       {finished && unreadable > 0 && (
         <p className="notice warn">
-          {unreadable} {unreadable === 1 ? 'file' : 'files'} could not be read.
-          That usually means a scanned image rather than a text PDF. These are
-          reported as unverifiable rather than silently dropped.
+          {unreadable} {unreadable === 1 ? 'file' : 'files'} could not be read
+          in full, even after OCR. Missing fields are reported as unverifiable
+          rather than filled in with a guess.
         </p>
       )}
 
@@ -79,7 +80,11 @@ export function ExtractionReview({ progress, ledgerName, onContinue, busy }: Pro
                   <td>
                     {p.status === 'pending' && <span className="tag idle">queued</span>}
                     {p.status === 'reading' && <span className="tag live">reading</span>}
-                    {p.status === 'done' && !partial && <span className="tag ok">read</span>}
+                    {p.status === 'ocr' && <span className="tag live">OCR…</span>}
+                    {p.status === 'done' && !partial && inv?.extractionMethod === 'ocr' && (
+                      <span className="tag warn" title="Read by OCR from a scanned image; verify against the original">OCR</span>
+                    )}
+                    {p.status === 'done' && !partial && inv?.extractionMethod !== 'ocr' && <span className="tag ok">read</span>}
                     {p.status === 'done' && partial && <span className="tag warn">partial</span>}
                     {p.status === 'failed' && <span className="tag bad">failed</span>}
                   </td>

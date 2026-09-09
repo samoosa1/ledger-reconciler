@@ -27,7 +27,7 @@
     "text": "invoice\namberlake\n279 27\n",
     "expected": {
       "invoiceNumber": null,
-      "vendor": "amberlake",
+      "vendor": null,
       "invoiceDate": null,
       "amount": null
     }
@@ -39,7 +39,7 @@
     "expected": {
       "invoiceNumber": null,
       "vendor": null,
-      "invoiceDate": null,
+      "invoiceDate": "2025-06-21",
       "amount": 1673.01
     }
   },

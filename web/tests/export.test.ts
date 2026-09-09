@@ -124,5 +124,5 @@ test('a payment with no invoice leaves the invoice columns empty', async () => {
 
 test('column widths are written into the file', async () => {
   const wb = await buildWorkbook(reconcile([inv()], [row()]))
-  expect(wb.Sheets.Detail['!cols']).toHaveLength(10)
+  expect(wb.Sheets.Detail['!cols']).toHaveLength(11)
 })

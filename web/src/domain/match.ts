@@ -9,6 +9,14 @@
  *      description.
  *
  * Anything left over on either side is reported as unmatched.
+ *
+ * Two payment shapes that are common in practice and look like errors to a
+ * naive matcher are recognised explicitly and reported as informational
+ * flags rather than as amount mismatches:
+ *   - paid_in_instalments: several rows carry the same reference and
+ *     together sum to the invoice.
+ *   - combined_payment: one row's reference names several invoice numbers
+ *     and its amount is their sum.
  */
 
 import { daysBetween } from './dates'
@@ -50,6 +58,29 @@ function findByReference(invoice: Invoice, rows: LedgerRow[]): LedgerRow | null 
   return null
 }
 
+function findAllByReference(invoice: Invoice, rows: LedgerRow[]): LedgerRow[] {
+  if (!invoice.invoiceNumber) return []
+  return rows.filter((row) => row.reference !== null && row.reference === invoice.invoiceNumber)
+}
+
+function referenceTokens(reference: string | null): string[] {
+  return reference ? reference.trim().split(/[\s,;+/&]+/).filter(Boolean) : []
+}
+
+/** A row whose reference lists this invoice number among others. */
+function findCombined(invoice: Invoice, rows: LedgerRow[]): LedgerRow | null {
+  if (!invoice.invoiceNumber) return null
+  for (const row of rows) {
+    const toks = referenceTokens(row.reference)
+    if (toks.length >= 2 && toks.includes(invoice.invoiceNumber)) return row
+  }
+  return null
+}
+
+function remove(rows: LedgerRow[], row: LedgerRow): void {
+  rows.splice(rows.indexOf(row), 1)
+}
+
 function findByAmountAndDate(invoice: Invoice, rows: LedgerRow[]): LedgerRow | null {
   if (invoice.amount === null || invoice.invoiceDate === null) return null
 
@@ -78,6 +109,24 @@ export function reconcile(invoices: Invoice[], ledgerRows: LedgerRow[]): MatchRe
     }
   }
 
+  // Combined payments are resolved first, across invoices: one ledger row
+  // settles several invoices, so it is consumed once and every invoice it
+  // names gets the same row.
+  const combined = new Map<LedgerRow, Invoice[]>()
+  for (const inv of invoices) {
+    const row = findCombined(inv, unmatchedLedger)
+    if (row) combined.set(row, [...(combined.get(row) ?? []), inv])
+  }
+  const combinedRows = new Map<Invoice, LedgerRow>()
+  for (const [row, invList] of combined) {
+    if (invList.length < 2 || invList.some((i) => i.amount === null)) continue
+    const total = invList.reduce((acc, i) => acc + (i.amount as number), 0)
+    if (amountsClose(total, row.amount)) {
+      remove(unmatchedLedger, row)
+      for (const i of invList) combinedRows.set(i, row)
+    }
+  }
+
   for (const inv of invoices) {
     const flags: Flag[] = []
     if (
@@ -89,21 +138,36 @@ export function reconcile(invoices: Invoice[], ledgerRows: LedgerRow[]): MatchRe
 
     // Both strategies need either an invoice number or an amount+date pair.
     // With neither there is nothing to search on, and reporting
-    // "no_ledger_entry" would assert a finding that was never tested: it
-    // would claim a search happened and came up empty. One means the
-    // payment may genuinely be missing, the other means nothing can be
-    // said about this invoice at all.
+    // "no_ledger_entry" would assert a finding that was never tested.
     const canAttempt =
       Boolean(inv.invoiceNumber) || (inv.amount !== null && inv.invoiceDate !== null)
 
     let match: LedgerRow | null = null
-    if (canAttempt) {
-      match = findByReference(inv, unmatchedLedger) ?? findByAmountAndDate(inv, unmatchedLedger)
-      if (match) {
-        unmatchedLedger.splice(unmatchedLedger.indexOf(match), 1)
-        if (!amountsClose(inv.amount, match.amount)) flags.push('amount_mismatch')
+    let extraRows: LedgerRow[] = []
+    const combinedRow = combinedRows.get(inv)
+    if (combinedRow) {
+      match = combinedRow
+      flags.push('combined_payment')
+    } else if (canAttempt) {
+      const sameRef = findAllByReference(inv, unmatchedLedger)
+      const refSum = sameRef.reduce((acc, r) => acc + (r.amount ?? 0), 0)
+      if (sameRef.length >= 2 && inv.amount !== null && amountsClose(refSum, inv.amount)) {
+        match = sameRef[0]
+        extraRows = sameRef.slice(1)
+        for (const r of sameRef) remove(unmatchedLedger, r)
+        flags.push('paid_in_instalments')
       } else {
-        flags.push('no_ledger_entry')
+        match = findByReference(inv, unmatchedLedger) ?? findByAmountAndDate(inv, unmatchedLedger)
+        if (match) {
+          remove(unmatchedLedger, match)
+          // An unread amount is already reported as unreadable_invoice;
+          // calling it a mismatch would assert a comparison never made.
+          if (inv.amount !== null && !amountsClose(inv.amount, match.amount)) {
+            flags.push('amount_mismatch')
+          }
+        } else {
+          flags.push('no_ledger_entry')
+        }
       }
     }
 
@@ -111,11 +175,11 @@ export function reconcile(invoices: Invoice[], ledgerRows: LedgerRow[]): MatchRe
       flags.push('duplicate_invoice')
     }
 
-    results.push({ invoice: inv, ledgerRow: match, flags })
+    results.push({ invoice: inv, ledgerRow: match, flags, extraRows })
   }
 
   for (const row of unmatchedLedger) {
-    results.push({ invoice: null, ledgerRow: row, flags: ['no_invoice'] })
+    results.push({ invoice: null, ledgerRow: row, flags: ['no_invoice'], extraRows: [] })
   }
 
   assertFullCoverage(invoices, ledgerRows, results)
@@ -131,7 +195,14 @@ function assertFullCoverage(
   invoices: Invoice[], ledgerRows: LedgerRow[], results: MatchResult[],
 ): void {
   const seenInvoices = results.filter((r) => r.invoice !== null).length
-  const seenLedger = results.filter((r) => r.ledgerRow !== null).length
+  // A combined payment's row appears on several results and an instalment
+  // sits in extraRows, so count distinct rows rather than result rows.
+  const seenRows = new Set<LedgerRow>()
+  for (const r of results) {
+    if (r.ledgerRow) seenRows.add(r.ledgerRow)
+    for (const x of r.extraRows) seenRows.add(x)
+  }
+  const seenLedger = seenRows.size
 
   if (seenInvoices !== invoices.length) {
     throw new CoverageError(

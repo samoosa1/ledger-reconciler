@@ -33,7 +33,7 @@ const isBrowser = typeof window !== 'undefined'
 
 let cached: typeof PdfjsTypes | undefined
 
-async function loadPdfjs(): Promise<typeof PdfjsTypes> {
+export async function loadPdfjs(): Promise<typeof PdfjsTypes> {
   if (!cached) {
     cached = await import('pdfjs-dist')
     if (isBrowser) {
@@ -72,22 +72,46 @@ function isTextItem(item: unknown): item is TextItem {
  * project's own fixtures.
  */
 function assemble(items: unknown[]): string {
-  const lines: Array<{ y: number; parts: string[] }> = []
+  const lines: Array<{ y: number; parts: Array<{ x: number; end: number; str: string }> }> = []
   const TOLERANCE = 2 // points; fragments within this are the same line
 
   for (const item of items) {
     if (!isTextItem(item)) continue
     if (item.str === '') continue
+    const x = item.transform[4] as number
     const y = item.transform[5] as number
+    const part = { x, end: x + item.width, str: item.str }
 
     const existing = lines.find((l) => Math.abs(l.y - y) <= TOLERANCE)
-    if (existing) existing.parts.push(item.str)
-    else lines.push({ y, parts: [item.str] })
+    if (existing) existing.parts.push(part)
+    else lines.push({ y, parts: [part] })
   }
 
   // PDF y-coordinates grow upward, so descending y is top-to-bottom.
   lines.sort((a, b) => b.y - a.y)
-  return lines.map((l) => l.parts.join('').trim()).join('\n')
+  return lines.map((l) => joinLine(l.parts)).join('\n')
+}
+
+/**
+ * Two columns sharing a baseline (a vendor block on the left, a
+ * "Document type / Invoice No" block on the right) arrive as separate
+ * fragments with no space between them. Concatenating them verbatim glues
+ * "A.Ş." to "Document type" and the label patterns stop matching. A
+ * horizontal gap between fragments is therefore rendered as a space.
+ */
+function joinLine(parts: Array<{ x: number; end: number; str: string }>): string {
+  const GAP = 1 // points; anything wider is a real gap, not kerning
+  parts.sort((a, b) => a.x - b.x)
+  let out = ''
+  let prevEnd: number | null = null
+  for (const p of parts) {
+    if (prevEnd !== null && p.x - prevEnd > GAP && !out.endsWith(' ') && !p.str.startsWith(' ')) {
+      out += ' '
+    }
+    out += p.str
+    prevEnd = p.end
+  }
+  return out.trim()
 }
 
 /**

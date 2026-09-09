@@ -118,7 +118,7 @@ def main() -> None:
     INV_DIR.mkdir(parents=True)
 
     truths: list[Truth] = []
-    ledger: list[list] = []          # [date, description, reference, amount]
+    ledger: list[list] = []          # [date, description, reference, amount, owners]  owners: files this row settles
     faults: dict[str, list] = {k: [] for k in (
         "missing_ledger_entry", "undocumented_payment", "amount_typo", "duplicate_invoice",
         "partial_payment", "combined_payment", "fx_rounding", "credit_note")}
@@ -163,7 +163,7 @@ def main() -> None:
             ref = number if rng.random() < 0.8 else None
             if ref is None:
                 pay_date = d + timedelta(days=rng.randint(0, 4))  # matcher's date window when no reference
-            ledger.append([pay_date, desc_for(v, number), ref, total])
+            ledger.append([pay_date, desc_for(v, number), ref, total, {fname}])
 
         # ---- planted faults -------------------------------------------------
         eligible = [i for i, (t, v, _) in enumerate(files_by_idx) if v.template != "thermal_receipt.html"]
@@ -205,7 +205,7 @@ def main() -> None:
                 if row[2] == t.invoice_number or (row[2] is None and row[3] == t.amount):
                     first = round(t.amount * rng.choice([0.5, 0.6, 0.7]), 2)
                     row[3], row[2] = first, t.invoice_number
-                    ledger.append([row[0] + timedelta(days=rng.randint(7, 20)), row[1] + " (balance)", t.invoice_number, round(t.amount - first, 2)])
+                    ledger.append([row[0] + timedelta(days=rng.randint(7, 20)), row[1] + " (balance)", t.invoice_number, round(t.amount - first, 2), {t.file}])
                     t.planted.append("partial_payment"); faults["partial_payment"].append([t.file, first, round(t.amount - first, 2)])
                     break
 
@@ -214,7 +214,7 @@ def main() -> None:
         ledger[:] = [row for row in ledger if row[2] not in (a.invoice_number, b.invoice_number)]
         ledger.append([date.fromisoformat(max(a.invoice_date, b.invoice_date)) + timedelta(days=9),
                        f"Wire transfer {a.invoice_number} + {b.invoice_number}", f"{a.invoice_number} {b.invoice_number}",
-                       round(a.amount + b.amount, 2)])
+                       round(a.amount + b.amount, 2), {a.file, b.file}])
         for t in (a, b):
             t.planted.append("combined_payment")
         faults["combined_payment"].append([a.file, b.file])
@@ -233,7 +233,7 @@ def main() -> None:
         cn_file = INV_DIR / f"{number}_CN.pdf"
         r.render(cn_vendor.template, ctx, cn_file)
         truths.append(Truth(cn_file.name, cn_vendor.name, number, "2025-05-19", total, cn_vendor.currency, cn_vendor.template, "", ["credit_note"]))
-        ledger.append([date(2025, 5, 28), f"Refund {cn_vendor.name}", number, total])
+        ledger.append([date(2025, 5, 28), f"Refund {cn_vendor.name}", number, total, {cn_file.name}])
         faults["credit_note"].append(cn_file.name)
 
     for d_, desc, amt in [                                 # 2. payments with no invoice on file
@@ -241,18 +241,22 @@ def main() -> None:
         (date(2025, 3, 28), "Bank charges", 18.00),
         (date(2025, 4, 30), "Card purchase  Saltmarsh Coffee Roasters", 46.85),
     ]:
-        ledger.append([d_, desc, None, amt]); faults["undocumented_payment"].append([d_.isoformat(), desc, amt])
+        ledger.append([d_, desc, None, amt, set()]); faults["undocumented_payment"].append([d_.isoformat(), desc, amt])
 
     ledger.sort(key=lambda row: row[0])
-    wb = Workbook(); ws = wb.active; ws.title = "Transactions"
-    ws.append(["Date", "Description", "Reference", "Amount"])
-    for row in ledger:
-        ws.append(row)
-    for cell in ws["A"][1:]:
-        cell.number_format = "yyyy-mm-dd"
-    for cell in ws["D"][1:]:
-        cell.number_format = "#,##0.00"
-    wb.save(OUT / "ledger.xlsx")
+
+    def write_ledger(rows: list[list], path: Path) -> None:
+        wb = Workbook(); ws = wb.active; ws.title = "Transactions"
+        ws.append(["Date", "Description", "Reference", "Amount"])
+        for row in rows:
+            ws.append(row[:4])
+        for cell in ws["A"][1:]:
+            cell.number_format = "yyyy-mm-dd"
+        for cell in ws["D"][1:]:
+            cell.number_format = "#,##0.00"
+        wb.save(path)
+
+    write_ledger(ledger, OUT / "ledger.xlsx")
 
     (OUT / "EXPECTED.json").write_text(json.dumps({
         "seed": 7, "invoices": [asdict(t) for t in truths], "ledger_rows": len(ledger), "faults": faults,
@@ -268,7 +272,10 @@ def main() -> None:
     (WEB_SAMPLE / "invoices").mkdir(parents=True)
     for t in subset:
         shutil.copy(INV_DIR / t.file, WEB_SAMPLE / "invoices" / t.file)
-    shutil.copy(OUT / "ledger.xlsx", WEB_SAMPLE / "ledger.xlsx")
+    # the browser ledger carries only the rows that concern the subset, plus
+    # every row that settles no invoice at all (the undocumented payments)
+    subset_files = {t.file for t in subset}
+    write_ledger([row for row in ledger if not row[4] or row[4] & subset_files], WEB_SAMPLE / "ledger.xlsx")
     (WEB_SAMPLE / "manifest.json").write_text(json.dumps({"invoices": sorted(t.file for t in subset), "ledger": "ledger.xlsx"}, indent=2))
 
     scanned = sum(1 for t in truths if t.scanned)

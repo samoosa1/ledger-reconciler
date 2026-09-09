@@ -143,7 +143,9 @@ def reconcile(invoices: list[Invoice], ledger_rows: list[LedgerRow]) -> list[Mat
                 match = _find_by_reference(inv, unmatched_ledger) or _find_by_amount_and_date(inv, unmatched_ledger)
                 if match:
                     unmatched_ledger.remove(match)
-                    if not _amounts_close(inv.amount, match.amount):
+                    # An unread amount is already reported as unreadable_invoice;
+                    # calling it a mismatch would assert a comparison never made.
+                    if inv.amount is not None and not _amounts_close(inv.amount, match.amount):
                         flags.append("amount_mismatch")
                 else:
                     flags.append("no_ledger_entry")

@@ -170,7 +170,7 @@ export function ResultsTable({ results }: Props) {
                       >
                         <span className="sr-only">
                           {isOpen ? 'Hide details for' : 'Show details for'}{' '}
-                          {inv?.invoiceNumber ?? `ledger row ${row?.rowIndex}`}
+                          {inv ? (inv.invoiceNumber ?? inv.sourceFile) : `ledger row ${row?.rowIndex}`}
                         </span>
                         <span aria-hidden="true">{isOpen ? '−' : '+'}</span>
                       </button>

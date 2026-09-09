@@ -55,11 +55,13 @@ const DETAIL_HEADERS = [
   'Ledger Description',
   'Ledger Amount',
   'Source File',
+  'Read Via',
 ]
+const READ_VIA: Record<string, string> = { text: 'text layer', ocr: 'OCR (verify)', none: 'unreadable' }
 
 /** Column widths, in characters. Written into the file even though
  * SheetJS's own reader discards them on round-trip. */
-const DETAIL_WIDTHS = [26, 14, 26, 13, 15, 11, 13, 34, 14, 22]
+const DETAIL_WIDTHS = [26, 14, 26, 13, 15, 11, 13, 34, 14, 22, 13]
 
 function buildDetailSheet(xlsx: typeof XLSX, results: MatchResult[]): XLSX.WorkSheet {
   const rows: (string | number | null)[][] = [DETAIL_HEADERS]
@@ -82,6 +84,7 @@ function buildDetailSheet(xlsx: typeof XLSX, results: MatchResult[]): XLSX.WorkS
       cellText(row?.description),
       row?.amount ?? null,
       cellText(inv?.sourceFile),
+      inv ? READ_VIA[inv.extractionMethod] ?? inv.extractionMethod : '',
     ])
   }
 

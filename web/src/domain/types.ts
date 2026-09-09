@@ -13,12 +13,17 @@ import type { PlainDate } from './dates'
  * has no equivalent for.
  */
 
+/** How the fields were obtained. Mirrors Invoice.extraction_method. */
+export type ExtractionMethod = 'text' | 'ocr' | 'none'
+
 export interface Invoice {
   sourceFile: string
   invoiceNumber: string | null
   vendor: string | null
   invoiceDate: PlainDate | null
   amount: number | null
+  /** 'ocr' means the values came from image recognition and deserve a second look. */
+  extractionMethod: ExtractionMethod
 }
 
 export interface LedgerRow {
@@ -37,11 +42,18 @@ export type Flag =
   | 'no_invoice'
   | 'amount_mismatch'
   | 'duplicate_invoice'
+  | 'paid_in_instalments'
+  | 'combined_payment'
 
 export interface MatchResult {
   invoice: Invoice | null
   ledgerRow: LedgerRow | null
   flags: Flag[]
+  /**
+   * Further ledger rows that settle the same invoice (instalments). The
+   * first row stays in ledgerRow so single-row consumers keep working.
+   */
+  extraRows: LedgerRow[]
 }
 
 /** Equivalent to MatchResult.status in the Python model. */

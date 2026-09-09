@@ -6,12 +6,14 @@ import oracle from './fixtures/reconcile-oracle.json'
 
 /**
  * End-to-end oracle: the whole domain layer against the reference
- * implementation, on the real shipped sample data.
+ * implementation, on the shipped browser sample subset.
  *
  * The per-module tests prove each part in isolation; this proves they
- * compose. Every expected value came from running the Python CLI over
- * sample_data/, so a divergence here means the port disagrees with the
- * reference, not that an expectation was typed wrong.
+ * compose. Every expected value came from running the Python reference
+ * (tools/make_web_oracle.py, OCR disabled so it is deterministic) over
+ * web/public/sample, so a divergence here means the port disagrees with the
+ * reference, not that an expectation was typed wrong. Scanned files carry an
+ * empty text and must come back unreadable on both sides.
  */
 
 interface Oracle {
@@ -21,8 +23,12 @@ interface Oracle {
     sourceFile: string | null
     invoiceNumber: string | null
     ledgerRowIndex: number | null
+    extraRowIndexes: number[]
     flags: string[]
   }>
+  flagCounts: Record<string, number>
+  invoiceCount: number
+  ledgerRowCount: number
 }
 
 const data = oracle as Oracle
@@ -44,10 +50,11 @@ function runPort() {
   return reconcile(invoices, rows)
 }
 
-test('fixture describes the full sample set', () => {
-  expect(data.invoices).toHaveLength(17)
-  expect(data.ledgerGrid).toHaveLength(17) // header + 16 rows
-  expect(data.expected).toHaveLength(18)
+test('fixture describes the shipped sample subset', () => {
+  expect(data.invoices).toHaveLength(data.invoiceCount)
+  expect(data.ledgerGrid).toHaveLength(data.ledgerRowCount + 1) // header row
+  expect(data.invoiceCount).toBeGreaterThanOrEqual(20)
+  expect(data.invoices.filter((i) => i.text === '').length).toBeGreaterThan(0) // scans are in the set
 })
 
 test('produces the same number of results as the reference', () => {
@@ -59,29 +66,28 @@ test('every result matches the reference implementation exactly', () => {
     sourceFile: r.invoice?.sourceFile ?? null,
     invoiceNumber: r.invoice?.invoiceNumber ?? null,
     ledgerRowIndex: r.ledgerRow?.rowIndex ?? null,
+    extraRowIndexes: r.extraRows.map((x) => x.rowIndex),
     flags: r.flags as string[],
   }))
   expect(got).toEqual(data.expected)
 })
 
 /**
- * The four faults deliberately planted in the sample data, asserted by
- * name so a regression says which one broke rather than just changing a
- * count. The duplicate produces two flags because both copies are marked.
+ * Flag counts asserted by name so a regression says which finding broke
+ * rather than just changing a total. The counts come from the reference.
  */
-test('finds the four planted faults, five flags in total', () => {
-  const flagged = runPort().filter((r) => r.flags.length > 0)
-  expect(flagged).toHaveLength(5)
-
-  const byFlag = (f: string) => flagged.filter((r) => (r.flags as string[]).includes(f))
-  expect(byFlag('no_ledger_entry')).toHaveLength(2) // missing payment + the rescan
-  expect(byFlag('amount_mismatch')).toHaveLength(1)
-  expect(byFlag('duplicate_invoice')).toHaveLength(2)
-  expect(byFlag('no_invoice')).toHaveLength(1)
+test('flag counts match the reference by name', () => {
+  const counts: Record<string, number> = {}
+  for (const r of runPort()) for (const f of r.flags) counts[f] = (counts[f] ?? 0) + 1
+  expect(counts).toEqual(data.flagCounts)
 })
 
-test('the amount mismatch is the planted 50.00 discrepancy', () => {
-  const r = runPort().find((x) => (x.flags as string[]).includes('amount_mismatch'))!
-  const diff = Math.abs((r.invoice!.amount ?? 0) - (r.ledgerRow!.amount ?? 0))
-  expect(diff).toBeCloseTo(50.0, 6)
+test('the planted payment shapes are recognised, not reported as errors', () => {
+  const results = runPort()
+  const instalments = results.filter((r) => (r.flags as string[]).includes('paid_in_instalments'))
+  expect(instalments.length).toBe(data.flagCounts.paid_in_instalments ?? 0)
+  for (const r of instalments) {
+    expect(r.extraRows.length).toBeGreaterThan(0)
+    expect(r.flags).not.toContain('amount_mismatch')
+  }
 })

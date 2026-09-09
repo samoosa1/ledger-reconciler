@@ -35,6 +35,14 @@ def test_amount_mismatch_still_matches_but_flags():
     assert "amount_mismatch" in result.flags
 
 
+def test_unread_amount_is_unreadable_not_a_mismatch():
+    row = _row(amount=150.0)
+    [result] = reconcile([_inv(amount=None)], [row])
+    assert result.ledger_row is row
+    assert "unreadable_invoice" in result.flags
+    assert "amount_mismatch" not in result.flags
+
+
 def test_duplicate_invoice_number_flags_both_copies():
     inv_a = _inv(source="a.pdf")
     inv_b = _inv(source="a_rescan.pdf")

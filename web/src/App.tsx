@@ -193,8 +193,8 @@ function EmptyState() {
         ))}
       </ol>
       <p className="muted" style={{ marginTop: 'var(--sp-5)' }}>
-        Reads text-based PDFs. Scanned images aren&rsquo;t run through OCR;
-        they&rsquo;re reported as unreadable instead of silently dropped.
+        Text PDFs are read directly. Scanned images go through OCR in your browser,
+        are marked as such, and anything OCR cannot read is reported, never guessed.
       </p>
     </section>
   )

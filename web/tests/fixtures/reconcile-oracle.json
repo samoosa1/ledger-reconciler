@@ -1,329 +1,789 @@
 {
-  "invoices": [
-    {
-      "sourceFile": "INV-1001.pdf",
-      "text": "INVOICE\nInvoice #: INV-1001\nDate: 2025-01-10\nVendor: Nordway Logistics\nAmount Due: $858.34\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1002.pdf",
-      "text": "INVOICE\nInvoice #: INV-1002\nDate: 2025-01-14\nVendor: Cedar & Finch Consulting\nAmount Due: $463.94\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1003.pdf",
-      "text": "INVOICE\nInvoice #: INV-1003\nDate: 2025-01-18\nVendor: Pinehollow Office Co\nAmount Due: $1,604.13\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1004.pdf",
-      "text": "INVOICE\nInvoice #: INV-1004\nDate: 2025-01-22\nVendor: Meridian Print Services\nAmount Due: $285.15\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1005.pdf",
-      "text": "INVOICE\nInvoice #: INV-1005\nDate: 2025-01-26\nVendor: Amberlake Facilities\nAmount Due: $1,341.81\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1006.pdf",
-      "text": "INVOICE\nInvoice #: INV-1006\nDate: 2025-01-30\nVendor: Bluefern Supplies Ltd\nAmount Due: $953.77\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1007.pdf",
-      "text": "INVOICE\nInvoice #: INV-1007\nDate: 2025-02-03\nVendor: Nordway Logistics\nAmount Due: $252.24\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1008.pdf",
-      "text": "INVOICE\nInvoice #: INV-1008\nDate: 2025-02-07\nVendor: Cedar & Finch Consulting\nAmount Due: $1,276.95\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1009.pdf",
-      "text": "INVOICE\nInvoice #: INV-1009\nDate: 2025-02-11\nVendor: Pinehollow Office Co\nAmount Due: $205.49\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1010.pdf",
-      "text": "INVOICE\nInvoice #: INV-1010\nDate: 2025-02-15\nVendor: Meridian Print Services\nAmount Due: $1,108.71\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1011.pdf",
-      "text": "INVOICE\nInvoice #: INV-1011\nDate: 2025-02-19\nVendor: Amberlake Facilities\nAmount Due: $279.27\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1011_rescan.pdf",
-      "text": "INVOICE\nInvoice #: INV-1011\nDate: 2025-02-19\nVendor: Amberlake Facilities\nAmount Due: $279.27\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1012.pdf",
-      "text": "INVOICE\nInvoice #: INV-1012\nDate: 2025-02-23\nVendor: Bluefern Supplies Ltd\nAmount Due: $326.83\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1013.pdf",
-      "text": "INVOICE\nInvoice #: INV-1013\nDate: 2025-02-27\nVendor: Nordway Logistics\nAmount Due: $1,087.90\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1014.pdf",
-      "text": "INVOICE\nInvoice #: INV-1014\nDate: 2025-03-03\nVendor: Cedar & Finch Consulting\nAmount Due: $2,005.22\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1015.pdf",
-      "text": "INVOICE\nInvoice #: INV-1015\nDate: 2025-03-07\nVendor: Pinehollow Office Co\nAmount Due: $402.27\nThank you for your business.\n"
-    },
-    {
-      "sourceFile": "INV-1016.pdf",
-      "text": "INVOICE\nInvoice #: INV-1016\nDate: 2025-03-11\nVendor: Meridian Print Services\nAmount Due: $628.98\nThank you for your business.\n"
-    }
+ "invoices": [
+  {
+   "sourceFile": "162.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "175.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "178.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "AF-00180.pdf",
+   "text": "Amberlake Facilities\nLevel 3, 41 Exhibition St, Melbourne VIC 3000 · ABN 51 824 753 556\nTAX INVOICE\nInvoice AF-00180\nIssued 25/04/2025 · Due 25/05/2025\nAccount: Harrowgate Trading Co. · Suite 12, 45 Quayside, Bristol BS1 4TR\nDate Service Site Hours/Units Rate Amount\n25/04/2025 HVAC ﬁlter service Head ofﬁce 1 215.26 215.26\n28/04/2025 Security patrol, nights Depot 3 6 439.83 2,638.98\n01/05/2025 Grounds maintenance Showroom 6 392.00 2,352.00\n04/05/2025 HVAC ﬁlter service Warehouse B 10 556.83 5,568.30\n07/05/2025 Waste collection Warehouse B 1 305.63 305.63\n10/05/2025 Security patrol, nights Head ofﬁce 1 624.18 624.18\n13/05/2025 Waste collection Depot 3 12 389.85 4,678.20\nSubtotal (ex GST) 16,382.55\nGST 10% 1,638.26\nTotal amount due $18,020.81\nDirect deposit: BSB 083-004, Acc 12 776 4410. Please reference AF-00180.\nPage 1 of 1"
+  },
+  {
+   "sourceFile": "BF-00434.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "BF-00439.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "BF-00440.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "BF-00448_CN.pdf",
+   "text": "Bluefern Supplies Ltd\n14 Tanner Row, York YO1 6JB\nVAT Reg No: GB 482 7191 44\nCREDIT NOTE\nInvoice numberBF-00448\nInvoice date19/05/2025\nDue date03/07/2025\nBill to\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\nDESCRIPTION QTY UNIT PRICE AMOUNT\nArchive boxes, 25 units 2 -19.60 -39.20\nArchive boxes, 25 units 3 -172.91 -518.73\nCopy paper A4 80gsm, 20 reams 6 -330.58 -1,983.48\nArchive boxes, 25 units 1 -156.69 -156.69\nCopy paper A4 80gsm, 20 reams 1 -22.30 -22.30\nSubtotal -2,720.40\nVAT 20% -544.08\nTotal due £-3,264.48\nPayment · Bank transfer to Bluefern Supplies Ltd, sort code 40-11-02, account 31446291\nPlease quote invoice number BF-00448 with your payment. Terms: 30 days."
+  },
+  {
+   "sourceFile": "IMG_2018.pdf",
+   "text": "Meridian Print Services\nUnit 9, Cobalt Business Park, Newcastle NE27 0QJ\nVAT Reg No: GB 903 2287 15\nINVOICE\nInvoice number MPS000158\nInvoice date30 January 2025\nDue date16 March 2025\nBill to\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\nDESCRIPTION QTY UNIT PRICE AMOUNT\nRoller banner 850mm 3 94.32 282.96\nSubtotal 282.96\nVAT 20% 56.59\nTotal due £339.55\nPayment · BACS to Meridian Print Services Ltd, sort code 20-59-42, account 70882913\nPlease quote invoice number MPS000158 with your payment. Terms: 30 days."
+  },
+  {
+   "sourceFile": "IMG_2048.pdf",
+   "text": "Wrenfield Software Ltd\nStudio 2, 19 Rivington St, London EC2A 3DT\nVAT Reg No: GB 771 4025 08\nINVOICE\nInvoice numberWS-0631\nInvoice date2025-04-14\nDue date2025-05-14\nYour PO PO-4013\nBill to\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\nDESCRIPTION QTY UNIT PRICE AMOUNT\nSubscription, monthly 2 250.34 500.68\nOnboarding session 4 231.18 924.72\nSubscription, monthly 4 97.78 391.12\nOnboarding session 6 56.59 339.54\nAdditional seats 6 181.90 1,091.40\nSubtotal 3,247.46\nVAT 20% 649.49\nTotal due £3,896.95\nPayment · Payment by Faster Payments, sort code 04-00-04, account 21998730\nPlease quote invoice number WS-0631 with your payment. Terms: 30 days."
+  },
+  {
+   "sourceFile": "IMG_2052.pdf",
+   "text": "SALTMARSH COFFEE ROASTERS\n203 Water St, Brooklyn, NY 11201\nReceipt #485 04/23/25\nRegister 2 17:30\n1 Filter papers 26.93\n12 Cold brew 5L 132.72\n1 Cold brew 5L 26.09\nSUBTOTAL 185.74\nTAX 8.875% 16.48\nTOTAL $202.22\nCARD ****4885 202.22\nThank you!\nAccount: Harrowgate Trading Co."
+  },
+  {
+   "sourceFile": "IMG_2059.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "IMG_2066.pdf",
+   "text": "Amberlake Facilities\nLevel 3, 41 Exhibition St, Melbourne VIC 3000 · ABN 51 824 753 556\nTAX INVOICE\nInvoice AF-00191\nIssued 22/05/2025 · Due 06/07/2025\nAccount: Harrowgate Trading Co. · Suite 12, 45 Quayside, Bristol BS1 4TR\nDate Service Site Hours/Units Rate Amount\n22/05/2025 Grounds maintenance Showroom 3 462.41 1,387.23\n25/05/2025 Security patrol, nights Warehouse B 1 382.11 382.11\n28/05/2025 Waste collection Head ofﬁce 1 52.90 52.90\n31/05/2025 HVAC ﬁlter service Warehouse B 4 509.55 2,038.20\n03/06/2025 Cleaning, weekly Showroom 4 413.03 1,652.12\n06/06/2025 Security patrol, nights Showroom 1 224.13 224.13\n09/06/2025 Security patrol, nights Showroom 12 429.58 5,154.96\n12/06/2025 HVAC ﬁlter service Head ofﬁce 1 85.72 85.72\n15/06/2025 Security patrol, nights Showroom 3 167.49 502.47\nSubtotal (ex GST) 11,479.84\nGST 10% 1,147.98\nTotal amount due $12,627.82\nDirect deposit: BSB 083-004, Acc 12 776 4410. Please reference AF-00191.\nPage 1 of 1"
+  },
+  {
+   "sourceFile": "IMG_2084.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "IMG_2086.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "IMG_2088.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "KDY2025000000198.pdf",
+   "text": "Karadut Yazılım A.Ş.\nMaslak Mah. Büyükdere Cad. No:255 Sarıyer / İstanbul\nVKN: 5120398761\nIBAN TR33 0006 1005 1978 6457 8413 26\nDocument type Commercial invoice\nInvoice No KDY2025000000198\nIssue date 24.01.2025\nDue date 07.02.2025\nDocument ID e39026e9-a9d7-5d52-aa55-\n7b79ba936686\nINVOICE\nCustomer\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\n# Description Qty Unit Unit price Disc. Tax % Tax amount Line total\n1 Yazılım bakım hizmeti 12 pc 14.417,87 0,00 20 34.602,89 173.014,44\nAmount in words: Two hundred seven thousand six hundred seventeen\ntry and 33/100\nNotes: Thank you for your order.\nGoods/services total 173.014,44 TRY\nDiscount 0,00 TRY\nTax base 173.014,44 TRY\nKDV %20 34.602,89 TRY\nTotal payable 207.617,33 TRY"
+  },
+  {
+   "sourceFile": "MPS000171.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "Nordway_20250121.pdf",
+   "text": "Nordway Logistics\n1220 Harbor Rd, Suite 4, Portland, OR 97209 · EIN 84-3311902 Invoice\nBILL TO\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\naccounts@harrowgate-trading.example\nInvoice #NW-262\nDate 01/21/2025\nTerms Net 30\nDue 02/20/2025\nItem Description Qty Rate Amount\n1 Pallet handling 10 91.55 915.50\n2 Freight, regional route 6 395.30 2,371.80\n3 Warehouse storage, per week 4 67.47 269.88\n4 Pallet handling 1 373.31 373.31\n5 Fuel surcharge 1 174.71 174.71\nSubtotal 4,105.20\nSales tax 0.00\nBalance Due $4,105.20 USD\nACH: routing 123006800, account 559120044. Net 30.Thank you for your business.\nS. Whitcombe\nAuthorized signature"
+  },
+  {
+   "sourceFile": "Nordway_20250121_rescan.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "Orrin_20250129.pdf",
+   "text": "Orrin Bakke Elektro AS\nStorgata 14, 0155 OsloOrg.nr NO 918 322 109 MVA\nInvoice no. 166\nDate 29.01.2025\nFor Harrowgate Trading Co.\nMateriell 349,25\nKjøring x4 848,32\nKjøring x6 2.142,78\nMateriell 368,52\nMateriell x4 377,92\nMVA 25% 1.021,70\nTOTAL EUR 5.108,49\nKontonr 1503.44.21099"
+  },
+  {
+   "sourceFile": "Wrenfield_20250404.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "Wrenfield_20250404_rescan.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "Wrenfield_20250430.pdf",
+   "text": "Wrenfield Software Ltd\nStudio 2, 19 Rivington St, London EC2A 3DT\nVAT Reg No: GB 771 4025 08\nINVOICE\nInvoice numberWS-0633\nInvoice date2025-04-30\nDue date2025-05-30\nBill to\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\nDESCRIPTION QTY UNIT PRICE AMOUNT\nAdditional seats 2 197.95 395.90\nOnboarding session 10 245.51 2,455.10\nPriority support 10 176.71 1,767.10\nPriority support 3 132.56 397.68\nAdditional seats 6 164.56 987.36\nSubtotal 6,003.14\nVAT 20% 1,200.63\nTotal due £7,203.77\nPayment · Payment by Faster Payments, sort code 04-00-04, account 21998730\nPlease quote invoice number WS-0633 with your payment. Terms: 30 days."
+  },
+  {
+   "sourceFile": "Wrenfield_20250602.pdf",
+   "text": "Wrenfield Software Ltd\nStudio 2, 19 Rivington St, London EC2A 3DT\nVAT Reg No: GB 771 4025 08\nINVOICE\nInvoice numberWS-0640\nInvoice date2025-06-02\nDue date2025-07-02\nBill to\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\nDESCRIPTION QTY UNIT PRICE AMOUNT\nPriority support 1 136.42 136.42\nAdditional seats 10 171.18 1,711.80\nOnboarding session 1 99.65 99.65\nAdditional seats 1 279.53 279.53\nSubtotal 2,227.40\nVAT 20% 445.48\nTotal due £2,672.88\nPayment · Payment by Faster Payments, sort code 04-00-04, account 21998730\nPlease quote invoice number WS-0640 with your payment. Terms: 30 days."
+  },
+  {
+   "sourceFile": "scan_0002.pdf",
+   "text": "SALTMARSH COFFEE ROASTERS\n203 Water St, Brooklyn, NY 11201\nReceipt #478 01/16/25\nRegister 2 08:54\n6 Filter papers 45.12\n2 Espresso blend 1kg 22.20\n4 Espresso blend 1kg 29.92\n12 Single origin 250g 196.32\n2 Espresso blend 1kg 18.10\nSUBTOTAL 311.66\nTAX 8.875% 27.66\nTOTAL $339.32\nCARD ****8996 339.32\nThank you!\nAccount: Harrowgate Trading Co."
+  },
+  {
+   "sourceFile": "scan_0008.pdf",
+   "text": ""
+  },
+  {
+   "sourceFile": "scan_0031.pdf",
+   "text": "Halden & Roux Avocats\n12 rue de Turbigo, 75002 Paris\nN° TVA: FR 76 512 380 419\nIBAN FR76 3000 6000 0112 3456 7890 189\nDocument type Commercial invoice\nInvoice No HR-0654\nIssue date 09/03/2025\nDue date 23/04/2025\nDocument ID bfcd57b0-34c4-55e4-964f-\n383177a66327\nINVOICE\nCustomer\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\n# Description Qty Unit Unit price Disc. Tax % Tax amount Line total\n1 Honoraires forfaitaires 2 pc 159,25 0,00 20 63,70 318,50\nAmount in words: Three hundred eighty-two eur and 20/100\nNotes: Payment within 30 days.\nGoods/services total 318,50 EUR\nDiscount 0,00 EUR\nTax base 318,50 EUR\nTVA 20% 63,70 EUR\nTotal payable 382,20 EUR"
+  },
+  {
+   "sourceFile": "scan_0040.pdf",
+   "text": "Amberlake Facilities\nLevel 3, 41 Exhibition St, Melbourne VIC 3000 · ABN 51 824 753 556\nTAX INVOICE\nInvoice AF-00176\nIssued 27/03/2025 · Due 10/04/2025\nAccount: Harrowgate Trading Co. · Suite 12, 45 Quayside, Bristol BS1 4TR\nDate Service Site Hours/Units Rate Amount\n27/03/2025 Waste collection Head ofﬁce 12 211.21 2,534.52\n30/03/2025 Waste collection Head ofﬁce 2 409.28 818.56\n02/04/2025 Security patrol, nights Annex 1 618.26 618.26\n05/04/2025 Grounds maintenance Showroom 4 94.96 379.84\n08/04/2025 HVAC ﬁlter service Head ofﬁce 6 451.30 2,707.80\n11/04/2025 Grounds maintenance Showroom 12 359.39 4,312.68\n14/04/2025 Security patrol, nights Warehouse B 4 54.05 216.20\n17/04/2025 Grounds maintenance Warehouse B 1 360.15 360.15\n20/04/2025 Security patrol, nights Warehouse B 1 107.93 107.93\nSubtotal (ex GST) 12,055.94\nGST 10% 1,205.59\nTotal amount due $13,261.53\nDirect deposit: BSB 083-004, Acc 12 776 4410. Please reference AF-00176.\nPage 1 of 1"
+  },
+  {
+   "sourceFile": "scan_0064.pdf",
+   "text": "Karadut Yazılım A.Ş.\nMaslak Mah. Büyükdere Cad. No:255 Sarıyer / İstanbul\nVKN: 5120398761\nIBAN TR33 0006 1005 1978 6457 8413 26\nDocument type Commercial invoice\nInvoice No KDY2025000000215\nIssue date 17.05.2025\nDue date 16.06.2025\nDocument ID 0037b05f-5785-5cc6-81f1-\ne526d615a839\nINVOICE\nCustomer\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\n# Description Qty Unit Unit price Disc. Tax % Tax amount Line total\n1 Danışmanlık, saat 1 pc 15.353,05 0,00 20 3.070,61 15.353,05\n2 Sunucu barındırma 3 pc 3.224,18 0,00 20 1.934,51 9.672,54\n3 Lisans yenileme 1 pc 15.765,41 0,00 20 3.153,08 15.765,41\nAmount in words: Forty-eight thousand nine hundred forty-nine try and\n20/100\nNotes: Late payments incur 2% interest.\nGoods/services total 40.791,00 TRY\nDiscount 0,00 TRY\nTax base 40.791,00 TRY\nKDV %20 8.158,20 TRY\nTotal payable 48.949,20 TRY"
+  },
+  {
+   "sourceFile": "scan_0065.pdf",
+   "text": "Halden & Roux Avocats\n12 rue de Turbigo, 75002 Paris\nN° TVA: FR 76 512 380 419\nIBAN FR76 3000 6000 0112 3456 7890 189\nDocument type Commercial invoice\nInvoice No HR-0664\nIssue date 20/05/2025\nDue date 03/06/2025\nDocument ID c5133cdb-79ac-5326-91f8-\n4e291cd8bb55\nINVOICE\nCustomer\nHarrowgate Trading Co.\nSuite 12, 45 Quayside, Bristol BS1 4TR\n# Description Qty Unit Unit price Disc. Tax % Tax amount Line total\n1 Rédaction de contrat 10 pc 192,20 0,00 20 384,40 1.922,00\n2 Honoraires forfaitaires 10 pc 349,59 0,00 20 699,18 3.495,90\nAmount in words: Six thousand ﬁve hundred one eur and 48/100\nNotes: Payment within 30 days.\nGoods/services total 5.417,90 EUR\nDiscount 0,00 EUR\nTax base 5.417,90 EUR\nTVA 20% 1.083,58 EUR\nTotal payable 6.501,48 EUR"
+  },
+  {
+   "sourceFile": "scan_0067.pdf",
+   "text": "Cedar & Finch Consulting\n88 Alder St, Boulder, CO 80302EIN 47-2209918\nInvoice no. CF-2025-526\nDate May 24, 2025\nFor Harrowgate Trading Co.\nFollow-up call 180.89\nFollow-up call x6 1,001.10\nReport drafting 417.62\nTOTAL USD 1,599.61\nPlease pay by wire within 14 days."
+  }
+ ],
+ "ledgerGrid": [
+  [
+   "Date",
+   "Description",
+   "Reference",
+   "Amount"
   ],
-  "ledgerGrid": [
-    [
-      "Date",
-      "Description",
-      "Reference",
-      "Amount"
-    ],
-    [
-      {
-        "__date": "2025-01-10"
-      },
-      "Payment to Nordway Logistics",
-      "INV-1001",
-      858.34
-    ],
-    [
-      {
-        "__date": "2025-01-14"
-      },
-      "Payment to Cedar & Finch Consulting",
-      "INV-1002",
-      463.94
-    ],
-    [
-      {
-        "__date": "2025-01-18"
-      },
-      "Payment to Pinehollow Office Co",
-      "INV-1003",
-      1604.13
-    ],
-    [
-      {
-        "__date": "2025-01-26"
-      },
-      "Payment to Amberlake Facilities",
-      "INV-1005",
-      1341.81
-    ],
-    [
-      {
-        "__date": "2025-01-30"
-      },
-      "Payment to Bluefern Supplies Ltd",
-      "INV-1006",
-      953.77
-    ],
-    [
-      {
-        "__date": "2025-02-03"
-      },
-      "Payment to Nordway Logistics",
-      "INV-1007",
-      252.24
-    ],
-    [
-      {
-        "__date": "2025-02-05"
-      },
-      "Wire transfer - Amberlake Facilities",
-      null,
-      875
-    ],
-    [
-      {
-        "__date": "2025-02-07"
-      },
-      "Payment to Cedar & Finch Consulting",
-      "INV-1008",
-      1326.95
-    ],
-    [
-      {
-        "__date": "2025-02-11"
-      },
-      "Payment to Pinehollow Office Co",
-      "INV-1009",
-      205.49
-    ],
-    [
-      {
-        "__date": "2025-02-15"
-      },
-      "Payment to Meridian Print Services",
-      "INV-1010",
-      1108.71
-    ],
-    [
-      {
-        "__date": "2025-02-19"
-      },
-      "Payment to Amberlake Facilities",
-      "INV-1011",
-      279.27
-    ],
-    [
-      {
-        "__date": "2025-02-23"
-      },
-      "Payment to Bluefern Supplies Ltd",
-      "INV-1012",
-      326.83
-    ],
-    [
-      {
-        "__date": "2025-02-27"
-      },
-      "Payment to Nordway Logistics",
-      "INV-1013",
-      1087.9
-    ],
-    [
-      {
-        "__date": "2025-03-03"
-      },
-      "Payment to Cedar & Finch Consulting",
-      "INV-1014",
-      2005.22
-    ],
-    [
-      {
-        "__date": "2025-03-07"
-      },
-      "Payment to Pinehollow Office Co",
-      "INV-1015",
-      402.27
-    ],
-    [
-      {
-        "__date": "2025-03-11"
-      },
-      "Payment to Meridian Print Services",
-      "INV-1016",
-      628.98
-    ]
+  [
+   {
+    "__date": "2025-01-20"
+   },
+   "Saltmarsh Coffee Roasters - invoice 478",
+   "478",
+   339.32
   ],
-  "expected": [
-    {
-      "sourceFile": "INV-1001.pdf",
-      "invoiceNumber": "INV-1001",
-      "ledgerRowIndex": 2,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1002.pdf",
-      "invoiceNumber": "INV-1002",
-      "ledgerRowIndex": 3,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1003.pdf",
-      "invoiceNumber": "INV-1003",
-      "ledgerRowIndex": 4,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1004.pdf",
-      "invoiceNumber": "INV-1004",
-      "ledgerRowIndex": null,
-      "flags": [
-        "no_ledger_entry"
-      ]
-    },
-    {
-      "sourceFile": "INV-1005.pdf",
-      "invoiceNumber": "INV-1005",
-      "ledgerRowIndex": 5,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1006.pdf",
-      "invoiceNumber": "INV-1006",
-      "ledgerRowIndex": 6,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1007.pdf",
-      "invoiceNumber": "INV-1007",
-      "ledgerRowIndex": 7,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1008.pdf",
-      "invoiceNumber": "INV-1008",
-      "ledgerRowIndex": 9,
-      "flags": [
-        "amount_mismatch"
-      ]
-    },
-    {
-      "sourceFile": "INV-1009.pdf",
-      "invoiceNumber": "INV-1009",
-      "ledgerRowIndex": 10,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1010.pdf",
-      "invoiceNumber": "INV-1010",
-      "ledgerRowIndex": 11,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1011.pdf",
-      "invoiceNumber": "INV-1011",
-      "ledgerRowIndex": 12,
-      "flags": [
-        "duplicate_invoice"
-      ]
-    },
-    {
-      "sourceFile": "INV-1011_rescan.pdf",
-      "invoiceNumber": "INV-1011",
-      "ledgerRowIndex": null,
-      "flags": [
-        "no_ledger_entry",
-        "duplicate_invoice"
-      ]
-    },
-    {
-      "sourceFile": "INV-1012.pdf",
-      "invoiceNumber": "INV-1012",
-      "ledgerRowIndex": 13,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1013.pdf",
-      "invoiceNumber": "INV-1013",
-      "ledgerRowIndex": 14,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1014.pdf",
-      "invoiceNumber": "INV-1014",
-      "ledgerRowIndex": 15,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1015.pdf",
-      "invoiceNumber": "INV-1015",
-      "ledgerRowIndex": 16,
-      "flags": []
-    },
-    {
-      "sourceFile": "INV-1016.pdf",
-      "invoiceNumber": "INV-1016",
-      "ledgerRowIndex": 17,
-      "flags": []
-    },
-    {
-      "sourceFile": null,
-      "invoiceNumber": null,
-      "ledgerRowIndex": 8,
-      "flags": [
-        "no_invoice"
-      ]
-    }
+  [
+   {
+    "__date": "2025-01-22"
+   },
+   "Wire transfer 160",
+   null,
+   3846.39
+  ],
+  [
+   {
+    "__date": "2025-01-29"
+   },
+   "Wire transfer BF-00434",
+   "BF-00434",
+   2413.8
+  ],
+  [
+   {
+    "__date": "2025-02-02"
+   },
+   "Karadut Yazılım A.Ş. - invoice KDY2025000000198",
+   "KDY2025000000198",
+   207617.33
+  ],
+  [
+   {
+    "__date": "2025-02-03"
+   },
+   "Direct debit  Meridian Print Services",
+   null,
+   312.4
+  ],
+  [
+   {
+    "__date": "2025-02-06"
+   },
+   "Payment to Nordway Logistics",
+   "NW-262",
+   4105.2
+  ],
+  [
+   {
+    "__date": "2025-02-09"
+   },
+   "Card purchase Orrin Bakke Elektro AS",
+   "166",
+   5108.49
+  ],
+  [
+   {
+    "__date": "2025-02-11"
+   },
+   "Wire transfer 162",
+   "162",
+   2992.86
+  ],
+  [
+   {
+    "__date": "2025-02-14"
+   },
+   "Wire transfer BF-00434 (balance)",
+   "BF-00434",
+   2413.8
+  ],
+  [
+   {
+    "__date": "2025-02-15"
+   },
+   "Meridian Print Services - invoice MPS000158",
+   "MPS000158",
+   339.55
+  ],
+  [
+   {
+    "__date": "2025-03-19"
+   },
+   "Wire transfer BF-00440",
+   "BF-00440",
+   39688.7
+  ],
+  [
+   {
+    "__date": "2025-03-28"
+   },
+   "Bank charges",
+   null,
+   18
+  ],
+  [
+   {
+    "__date": "2025-03-29"
+   },
+   "Halden & Roux Avocats - invoice HR-0654",
+   "HR-0654",
+   382.2
+  ],
+  [
+   {
+    "__date": "2025-03-29"
+   },
+   "Wire transfer AF-00176",
+   "AF-00176",
+   132615.3
+  ],
+  [
+   {
+    "__date": "2025-04-18"
+   },
+   "Payment to Wrenfield Software Ltd",
+   "WS-0631",
+   3896.98
+  ],
+  [
+   {
+    "__date": "2025-04-26"
+   },
+   "Card purchase Amberlake Facilities",
+   null,
+   18020.81
+  ],
+  [
+   {
+    "__date": "2025-04-28"
+   },
+   "Payment to Wrenfield Software Ltd",
+   "WS-0629",
+   2545.81
+  ],
+  [
+   {
+    "__date": "2025-04-30"
+   },
+   "Card purchase  Saltmarsh Coffee Roasters",
+   null,
+   46.85
+  ],
+  [
+   {
+    "__date": "2025-05-09"
+   },
+   "Wire transfer BF-00439 + WS-0633",
+   "BF-00439 WS-0633",
+   9333.84
+  ],
+  [
+   {
+    "__date": "2025-05-15"
+   },
+   "SALTMARSH COFFEE ROASTERS 485",
+   "485",
+   202.22
+  ],
+  [
+   {
+    "__date": "2025-05-27"
+   },
+   "Card purchase Cedar & Finch Consulting",
+   "CF-2025-526",
+   1599.61
+  ],
+  [
+   {
+    "__date": "2025-05-28"
+   },
+   "BACS Wrenfield Software Ltd",
+   "WS-0636",
+   1538.69
+  ],
+  [
+   {
+    "__date": "2025-05-28"
+   },
+   "KARADUT YAZILIM A.Ş. KDY2025000000215",
+   "KDY2025000000215",
+   48949.2
+  ],
+  [
+   {
+    "__date": "2025-05-28"
+   },
+   "Refund Bluefern Supplies Ltd",
+   "BF-00448",
+   -3264.48
+  ],
+  [
+   {
+    "__date": "2025-06-02"
+   },
+   "Amberlake Facilities - invoice AF-00191",
+   "AF-00191",
+   8839.47
+  ],
+  [
+   {
+    "__date": "2025-06-09"
+   },
+   "Amberlake Facilities - invoice AF-00191 (balance)",
+   "AF-00191",
+   3788.35
+  ],
+  [
+   {
+    "__date": "2025-06-10"
+   },
+   "BACS Halden & Roux Avocats",
+   "HR-0664",
+   6501.48
+  ],
+  [
+   {
+    "__date": "2025-06-13"
+   },
+   "Payment to Wrenfield Software Ltd",
+   "WS-0640",
+   2672.88
+  ],
+  [
+   {
+    "__date": "2025-06-29"
+   },
+   "Payment to Karadut Yazılım A.Ş.",
+   "KDY2025000000217",
+   126011.64
+  ],
+  [
+   {
+    "__date": "2025-07-01"
+   },
+   "Card purchase Wrenfield Software Ltd",
+   "WS-0641",
+   1783.88
+  ],
+  [
+   {
+    "__date": "2025-07-10"
+   },
+   "Orrin Bakke Elektro AS - invoice 178",
+   "178",
+   14231.95
   ]
+ ],
+ "expected": [
+  {
+   "sourceFile": "162.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "175.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "178.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "AF-00180.pdf",
+   "invoiceNumber": "AF-00180",
+   "ledgerRowIndex": 17,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "BF-00434.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "BF-00439.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "BF-00440.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "BF-00448_CN.pdf",
+   "invoiceNumber": "BF-00448",
+   "ledgerRowIndex": 25,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "IMG_2018.pdf",
+   "invoiceNumber": "MPS000158",
+   "ledgerRowIndex": 11,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "IMG_2048.pdf",
+   "invoiceNumber": "WS-0631",
+   "ledgerRowIndex": 16,
+   "extraRowIndexes": [],
+   "flags": [
+    "amount_mismatch"
+   ]
+  },
+  {
+   "sourceFile": "IMG_2052.pdf",
+   "invoiceNumber": "485",
+   "ledgerRowIndex": 21,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "IMG_2059.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "IMG_2066.pdf",
+   "invoiceNumber": "AF-00191",
+   "ledgerRowIndex": 26,
+   "extraRowIndexes": [
+    27
+   ],
+   "flags": [
+    "paid_in_instalments"
+   ]
+  },
+  {
+   "sourceFile": "IMG_2084.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "IMG_2086.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "IMG_2088.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "KDY2025000000198.pdf",
+   "invoiceNumber": "KDY2025000000198",
+   "ledgerRowIndex": 5,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "MPS000171.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "Nordway_20250121.pdf",
+   "invoiceNumber": "NW-262",
+   "ledgerRowIndex": 7,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "Nordway_20250121_rescan.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "Orrin_20250129.pdf",
+   "invoiceNumber": "166",
+   "ledgerRowIndex": 8,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "Wrenfield_20250404.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "Wrenfield_20250404_rescan.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "Wrenfield_20250430.pdf",
+   "invoiceNumber": "WS-0633",
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_ledger_entry"
+   ]
+  },
+  {
+   "sourceFile": "Wrenfield_20250602.pdf",
+   "invoiceNumber": "WS-0640",
+   "ledgerRowIndex": 29,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "scan_0002.pdf",
+   "invoiceNumber": "478",
+   "ledgerRowIndex": 2,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "scan_0008.pdf",
+   "invoiceNumber": null,
+   "ledgerRowIndex": null,
+   "extraRowIndexes": [],
+   "flags": [
+    "unreadable_invoice"
+   ]
+  },
+  {
+   "sourceFile": "scan_0031.pdf",
+   "invoiceNumber": "HR-0654",
+   "ledgerRowIndex": 14,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "scan_0040.pdf",
+   "invoiceNumber": "AF-00176",
+   "ledgerRowIndex": 15,
+   "extraRowIndexes": [],
+   "flags": [
+    "amount_mismatch"
+   ]
+  },
+  {
+   "sourceFile": "scan_0064.pdf",
+   "invoiceNumber": "KDY2025000000215",
+   "ledgerRowIndex": 24,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "scan_0065.pdf",
+   "invoiceNumber": "HR-0664",
+   "ledgerRowIndex": 28,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": "scan_0067.pdf",
+   "invoiceNumber": "CF-2025-526",
+   "ledgerRowIndex": 22,
+   "extraRowIndexes": [],
+   "flags": []
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 3,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 4,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 6,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 9,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 10,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 12,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 13,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 18,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 19,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 20,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 23,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 30,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 31,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  },
+  {
+   "sourceFile": null,
+   "invoiceNumber": null,
+   "ledgerRowIndex": 32,
+   "extraRowIndexes": [],
+   "flags": [
+    "no_invoice"
+   ]
+  }
+ ],
+ "flagCounts": {
+  "unreadable_invoice": 15,
+  "amount_mismatch": 2,
+  "paid_in_instalments": 1,
+  "no_ledger_entry": 1,
+  "no_invoice": 14
+ },
+ "invoiceCount": 32,
+ "ledgerRowCount": 31
 }

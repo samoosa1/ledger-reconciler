@@ -20,7 +20,7 @@ import oracle from './fixtures/reconcile-oracle.json'
  * reference results.
  */
 
-const SAMPLE = resolve(__dirname, '../../sample_data')
+const SAMPLE = resolve(__dirname, '../public/sample')
 const blob = (path: string): Blob => new Blob([readFileSync(path)])
 
 interface Oracle {
@@ -29,16 +29,32 @@ interface Oracle {
     sourceFile: string | null
     invoiceNumber: string | null
     ledgerRowIndex: number | null
+    extraRowIndexes: number[]
     flags: string[]
   }>
+  ledgerRowCount: number
 }
 const data = oracle as Oracle
 
-test('pdf.js reassembles page text the way pypdf did', async () => {
-  const name = 'INV-1001.pdf'
-  const got = await readPdfText(blob(`${SAMPLE}/invoices/${name}`), name)
-  const fromPython = data.invoices.find((i) => i.sourceFile === name)!.text
-  expect(got.trim()).toBe(fromPython.trim())
+/**
+ * pdf.js and pypdf do not produce byte-identical text (pypdf sometimes
+ * glues a label to its value, pdf.js keeps the space), so the comparison is
+ * on the extracted fields, over every text-layer file in the subset. A
+ * reassembly regression shows up as a field going null or changing.
+ */
+test('pdf.js text drives the same extraction as pypdf text', async () => {
+  const textLayer = data.invoices.filter((i) => i.text.trim() !== '')
+  expect(textLayer.length).toBeGreaterThan(10)
+  for (const { sourceFile, text } of textLayer) {
+    const got = extractFromText(await readPdfText(blob(`${SAMPLE}/invoices/${sourceFile}`), sourceFile), sourceFile)
+    const ref = extractFromText(text, sourceFile)
+    expect(got, sourceFile).toEqual(ref)
+  }
+}, 30_000)
+
+test('a scanned PDF has no text layer and reads as empty', async () => {
+  const scan = data.invoices.find((i) => i.text.trim() === '')!
+  expect(await readPdfText(blob(`${SAMPLE}/invoices/${scan.sourceFile}`), scan.sourceFile)).toBe('')
 })
 
 test('an empty file yields empty text rather than throwing', async () => {
@@ -53,7 +69,7 @@ test('a non-PDF yields empty text rather than throwing', async () => {
 test('SheetJS grid drives the same ledger rows', async () => {
   const grid = await readSheetGrid(blob(`${SAMPLE}/ledger.xlsx`), 'ledger.xlsx')
   const rows = buildLedger(grid)
-  expect(rows).toHaveLength(16)
+  expect(rows).toHaveLength(data.ledgerRowCount)
   expect(rows[0].rowIndex).toBe(2)
   expect(rows.every((r) => r.ledgerDate !== null)).toBe(true)
   expect(rows.every((r) => r.amount !== null)).toBe(true)
@@ -79,6 +95,7 @@ test('real files through the full pipeline match the Python reference', async ()
     sourceFile: r.invoice?.sourceFile ?? null,
     invoiceNumber: r.invoice?.invoiceNumber ?? null,
     ledgerRowIndex: r.ledgerRow?.rowIndex ?? null,
+    extraRowIndexes: r.extraRows.map((x) => x.rowIndex),
     flags: r.flags as string[],
   }))
   expect(got).toEqual(data.expected)
