@@ -18,9 +18,10 @@ export function Colophon() {
   return (
     <footer className="colophon">
       <p className="colophon-lede">
-        I build document automation for finance teams. Invoice extraction,
-        ledger and receivables reconciliation, and reports that mark what
-        they could not verify instead of guessing.
+        <strong>Musa Ahmedoglu.</strong> I build document automation for
+        finance teams. Invoice extraction, ledger and receivables
+        reconciliation, and reports that mark what they could not verify
+        instead of guessing.
       </p>
 
       <p>
