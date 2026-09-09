@@ -5,6 +5,8 @@ import type { MatchResult } from './domain/types'
 import { DropZone } from './ui/DropZone'
 import { ExtractionReview } from './ui/ExtractionReview'
 import { ResultsTable } from './ui/ResultsTable'
+import { Colophon } from './ui/Colophon'
+import { StatementTable } from './ui/StatementTable'
 import {
   loadSampleFiles,
   readInvoices,
@@ -22,12 +24,14 @@ export default function App() {
   const [results, setResults] = useState<MatchResult[]>([])
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const [view, setView] = useState<'exceptions' | 'suppliers'>('exceptions')
 
   const reset = useCallback(() => {
     setStage('idle')
     setProgress([])
     setLedger(null)
     setResults([])
+    setView('exceptions')
     setError(null)
     setBusy(false)
   }, [])
@@ -130,6 +134,8 @@ export default function App() {
           server to send them to. Disconnect from the internet and it still
           works.
         </p>
+
+        <Colophon />
       </aside>
 
       <main className="stage">
@@ -150,7 +156,35 @@ export default function App() {
           />
         )}
 
-        {stage === 'results' && <ResultsTable results={results} />}
+        {stage === 'results' && (
+          <>
+            <div className="views" role="tablist" aria-label="Result view">
+              <button
+                className={`view-tab${view === 'exceptions' ? ' on' : ''}`}
+                type="button"
+                role="tab"
+                aria-selected={view === 'exceptions'}
+                onClick={() => setView('exceptions')}
+              >
+                Exceptions
+              </button>
+              <button
+                className={`view-tab${view === 'suppliers' ? ' on' : ''}`}
+                type="button"
+                role="tab"
+                aria-selected={view === 'suppliers'}
+                onClick={() => setView('suppliers')}
+              >
+                By supplier
+              </button>
+            </div>
+            {view === 'exceptions' ? (
+              <ResultsTable results={results} />
+            ) : (
+              <StatementTable results={results} />
+            )}
+          </>
+        )}
       </main>
     </div>
   )

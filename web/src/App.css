@@ -618,3 +618,52 @@ tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: defau
   line-height: 1;
 }
 .disclose:hover { color: var(--ink); }
+
+/* ============================ colophon ============================ */
+/* The demo is public and anonymous without this: the one place a reader
+   is already interested enough to want a next step. */
+.colophon {
+  border-top: 1px solid var(--line-soft);
+  padding-top: var(--sp-4);
+  font-size: var(--t-body);
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.colophon p { margin: 0; max-width: 46ch; text-wrap: pretty; }
+.colophon-lede { color: var(--ink); }
+.colophon strong { color: var(--ink); font-weight: var(--w-label); }
+.colophon a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.colophon a:hover { color: var(--accent-hover); }
+.colophon-links { display: flex; align-items: baseline; gap: var(--sp-2); flex-wrap: wrap; }
+.colophon-sep { color: var(--faint); }
+.colophon-fine { font-size: var(--t-ui); color: var(--faint); }
+
+/* ============================ result views ============================ */
+/* Two projections of one reconciliation: the exception list, and the same
+   results aggregated per supplier with ageing. */
+.views {
+  display: flex;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--line-soft);
+}
+.view-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: var(--t-ui);
+  font-weight: var(--w-medium);
+  padding: 0 var(--sp-3) var(--sp-2);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.view-tab:hover { color: var(--ink); }
+.view-tab.on { color: var(--ink); border-bottom-color: var(--accent); }
+
+/* The per-invoice breakdown nested inside a supplier row. */
+.grid.inner { margin: 0; font-size: var(--t-ui); }
+.grid.inner th { background: none; }
