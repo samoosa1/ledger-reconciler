@@ -17,6 +17,9 @@ export type FileStatus = 'pending' | 'reading' | 'ocr' | 'done' | 'failed'
 
 export interface FileProgress {
   name: string
+  /** Kept so the review screen can render a page preview; the bytes
+   * still never leave the browser. */
+  file: File
   status: FileStatus
   invoice?: Invoice
   error?: string
@@ -58,7 +61,7 @@ export async function readInvoices(
   files: File[],
   onProgress: (progress: FileProgress[]) => void,
 ): Promise<FileProgress[]> {
-  const progress: FileProgress[] = files.map((f) => ({ name: f.name, status: 'pending' }))
+  const progress: FileProgress[] = files.map((f) => ({ name: f.name, file: f, status: 'pending' }))
   onProgress([...progress])
 
   for (let i = 0; i < files.length; i++) {
@@ -78,12 +81,14 @@ export async function readInvoices(
       }
       progress[i] = {
         name: files[i].name,
+        file: files[i],
         status: 'done',
         invoice: extractFromText(text, files[i].name, method),
       }
     } catch (e) {
       progress[i] = {
         name: files[i].name,
+        file: files[i],
         status: 'failed',
         error: e instanceof Error ? e.message : String(e),
       }

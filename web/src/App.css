@@ -464,7 +464,9 @@ table.grid tbody tr:hover { background: var(--surface); }
    runs optically larger than Archivo at the same nominal size. */
 .mono { font-family: var(--mono); font-size: var(--t-micro); white-space: nowrap; }
 .clip { max-width: 34ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.chev { color: var(--faint); width: 1.5rem; text-align: right; }
+/* The disclosure column hugs its control. `width: 1%` with nowrap is the
+   table-layout idiom for "as narrow as the content". */
+.chev { width: 1%; white-space: nowrap; text-align: right; }
 tbody tr.clickable { cursor: pointer; }
 
 tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: default; }
@@ -608,16 +610,64 @@ tr.detail > td { background: var(--surface); padding: var(--sp-5); cursor: defau
   clip-path: inset(50%);
   white-space: nowrap;
 }
+/* Row disclosure. It was a bare +/− glyph in a 1.5rem column and read as
+   table decoration; readers did not find the drill-down. Now a labelled
+   control drawn with a control's outline (--edge, 3:1), and the open row
+   takes the accent wash so the expanded state matches the selection
+   language used everywhere else. The chevron turns with transform only. */
 .disclose {
-  background: none;
-  border: none;
-  padding: 0 var(--sp-1);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  border: 1px solid var(--edge);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 3px;
+  padding: 3px 6px 3px 9px;
   font: inherit;
-  color: var(--faint);
+  font-size: var(--t-micro);
+  font-weight: var(--w-medium);
+  line-height: 1.4;
   cursor: pointer;
-  line-height: 1;
+  touch-action: manipulation;
+  transition: color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              background var(--dur) var(--ease);
 }
-.disclose:hover { color: var(--ink); }
+.disclose:hover { color: var(--ink); border-color: var(--faint); background: var(--raised); }
+.disclose:active { transform: translateY(1px); }
+.disclose[aria-expanded="true"] {
+  color: var(--ink);
+  border-color: var(--accent-edge);
+  background: var(--accent-wash);
+}
+.disclose-chev {
+  flex: none;
+  transform-origin: center;
+  transition: transform var(--dur) var(--ease);
+}
+.disclose[aria-expanded="true"] .disclose-chev { transform: rotate(180deg); }
+
+/* ============================ page preview ============================ */
+/* First page of each invoice on the review screen. The page renders
+   paper-white on purpose: it is the document, the one thing on this
+   surface that is not chrome, and a white sheet on the dark desk is
+   exactly what it is. The box is fixed at A4 proportions and sits on
+   --raised while the render is pending, so it is its own skeleton. */
+.thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.thumb img { display: block; width: 100%; height: auto; }
+table.grid td.page { width: 1%; padding-top: var(--sp-2); padding-bottom: var(--sp-2); }
+/* Rows with a preview are taller than their text; middle alignment keeps
+   the figures level with the page they were read from. */
+table.grid.has-thumbs td { vertical-align: middle; }
 
 /* ============================ colophon ============================ */
 /* The demo is public and anonymous without this: the one place a reader

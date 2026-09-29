@@ -1,4 +1,5 @@
 import { toISO } from '../domain/dates'
+import { PageThumb } from './PageThumb'
 import type { FileProgress } from './pipeline'
 
 interface Props {
@@ -51,9 +52,10 @@ export function ExtractionReview({ progress, ledgerName, onContinue, busy }: Pro
       )}
 
       <div className="table-scroll">
-        <table className="grid">
+        <table className="grid has-thumbs">
           <thead>
             <tr>
+              <th>Page 1</th>
               <th>File</th>
               <th>Invoice</th>
               <th>Vendor</th>
@@ -70,6 +72,11 @@ export function ExtractionReview({ progress, ledgerName, onContinue, busy }: Pro
                 (inv.invoiceNumber === null || inv.amount === null || inv.invoiceDate === null)
               return (
                 <tr key={p.name}>
+                  {/* The page itself, small. A sideways scan or a cover
+                      letter explains a partial row faster than any tag. */}
+                  <td className="page">
+                    <PageThumb file={p.file} name={p.name} />
+                  </td>
                   <td className="mono clip">{p.name}</td>
                   <td className="mono">{inv?.invoiceNumber ?? <span className="faint">—</span>}</td>
                   <td className="clip">{inv?.vendor ?? <span className="faint">—</span>}</td>

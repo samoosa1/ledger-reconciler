@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react'
 import { toISO } from '../domain/dates'
 import type { MatchResult } from '../domain/types'
 import { downloadReport } from '../lib/export'
+import { Disclose } from './Disclose'
 import { FLAG_EXPLANATIONS, FLAG_LABELS, summarise } from './pipeline'
 
 interface Props {
@@ -109,7 +110,9 @@ export function ResultsTable({ results }: Props) {
               <th className="num">Invoice</th>
               <th className="num">Ledger</th>
               <th className="num">Row</th>
-              <th />
+              <th>
+                <span className="sr-only">Details</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -155,25 +158,14 @@ export function ResultsTable({ results }: Props) {
                       {row ? row.rowIndex : <span className="faint">—</span>}
                     </td>
                     <td className="chev">
-                      {/* A real button, not just a clickable <tr>: a table row
-                          is not focusable, so without this the finding
-                          explanations are unreachable by keyboard. The row
-                          click stays as a convenience for pointer users. */}
-                      <button
-                        type="button"
-                        className="disclose"
-                        aria-expanded={isOpen}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setOpenRow(isOpen ? null : id)
-                        }}
-                      >
-                        <span className="sr-only">
-                          {isOpen ? 'Hide details for' : 'Show details for'}{' '}
-                          {inv ? (inv.invoiceNumber ?? inv.sourceFile) : `ledger row ${row?.rowIndex}`}
-                        </span>
-                        <span aria-hidden="true">{isOpen ? '−' : '+'}</span>
-                      </button>
+                      <Disclose
+                        open={isOpen}
+                        onToggle={() => setOpenRow(isOpen ? null : id)}
+                        label="Details"
+                        srLabel={`${isOpen ? 'Hide' : 'Show'} details for ${
+                          inv ? (inv.invoiceNumber ?? inv.sourceFile) : `ledger row ${row?.rowIndex}`
+                        }`}
+                      />
                     </td>
                   </tr>
                   {isOpen && (

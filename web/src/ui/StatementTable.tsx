@@ -11,6 +11,7 @@ import { Fragment, useState } from 'react'
 import { toISO } from '../domain/dates'
 import { AGE_BUCKETS, BUCKET_LABELS, buildStatements, latestDate } from '../domain/statement'
 import type { MatchResult } from '../domain/types'
+import { Disclose } from './Disclose'
 
 interface Props {
   results: MatchResult[]
@@ -100,7 +101,9 @@ export function StatementTable({ results }: Props) {
                   {BUCKET_LABELS[b]}
                 </th>
               ))}
-              <th />
+              <th>
+                <span className="sr-only">Invoices</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -133,21 +136,12 @@ export function StatementTable({ results }: Props) {
                       </td>
                     ))}
                     <td className="chev">
-                      <button
-                        className="disclose"
-                        type="button"
-                        aria-expanded={isOpen}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setOpen(isOpen ? null : id)
-                        }}
-                      >
-                        <span className="sr-only">
-                          {isOpen ? 'Hide invoices for' : 'Show invoices for'}{' '}
-                          {s.vendor ?? 'the unreadable supplier'}
-                        </span>
-                        <span aria-hidden="true">{isOpen ? '−' : '+'}</span>
-                      </button>
+                      <Disclose
+                        open={isOpen}
+                        onToggle={() => setOpen(isOpen ? null : id)}
+                        label="Invoices"
+                        srLabel={`${isOpen ? 'Hide' : 'Show'} invoices for ${s.vendor ?? 'the unreadable supplier'}`}
+                      />
                     </td>
                   </tr>
                   {isOpen && (
