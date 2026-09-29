@@ -13,7 +13,7 @@
  * harvestable", which is what was asked for.
  */
 
-const PARTS = ['c2Ftb29zYS4xMDE2', 'OUBnbWFpbC5jb20='] as const
+const PARTS = ['bXVzYWRldjA0', 'QGdtYWlsLmNvbQ=='] as const
 
 /** Decodes the contact address. Called on demand, never at module scope. */
 export function contactAddress(): string {
